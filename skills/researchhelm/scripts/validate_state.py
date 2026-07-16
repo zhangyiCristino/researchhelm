@@ -12,7 +12,7 @@ from typing import Any, Iterable
 try:
     from sanitize_export import scan_value
 except ModuleNotFoundError:
-    from skills.autoresearch.scripts.sanitize_export import scan_value
+    from skills.researchhelm.scripts.sanitize_export import scan_value
 
 
 SCHEMA_VERSION = "1.0"

@@ -1,6 +1,6 @@
 interface:
   display_name: "ResearchHelm"
   short_description: "Scout, supervise, and audit bounded research"
-  default_prompt: "Use $autoresearch in pi mode to turn my resources into decision-ready research options and audited experiments."
+  default_prompt: "Use $researchhelm in pi mode to turn my resources into decision-ready research options and audited experiments."
 policy:
   allow_implicit_invocation: true

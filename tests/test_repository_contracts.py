@@ -5,11 +5,11 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL_ROOT = ROOT / "skills" / "autoresearch"
+SKILL_ROOT = ROOT / "skills" / "researchhelm"
 EXPECTED_OPENAI_YAML = """interface:
   display_name: "ResearchHelm"
   short_description: "Scout, supervise, and audit bounded research"
-  default_prompt: "Use $autoresearch in pi mode to turn my resources into decision-ready research options and audited experiments."
+  default_prompt: "Use $researchhelm in pi mode to turn my resources into decision-ready research options and audited experiments."
 policy:
   allow_implicit_invocation: true
 """
@@ -17,16 +17,18 @@ PRIMARY_REPOSITORY = "zhangyiCristino/researchhelm"
 LEGACY_REPOSITORY = "zhangyiCristino/autoresearch-skill"
 CLAUDE_INSTALL_CONTRACT = (
     f"/plugin marketplace add {PRIMARY_REPOSITORY}",
-    "/plugin install autoresearch@autoresearch-skill",
+    "/plugin install researchhelm@researchhelm",
     f"git clone https://github.com/{PRIMARY_REPOSITORY}.git",
-    "cp -r researchhelm/skills/autoresearch ~/.claude/skills/",
+    "cp -r researchhelm/skills/researchhelm ~/.claude/skills/",
 )
 LEGACY_REDIRECT_CONTRACT = (
     f"/plugin marketplace add {LEGACY_REPOSITORY}",
+    "/plugin install autoresearch@autoresearch-skill",
     f"git clone https://github.com/{LEGACY_REPOSITORY}.git",
     "cp -r autoresearch-skill/skills/autoresearch ~/.claude/skills/",
     f"npx skills add {LEGACY_REPOSITORY} --skill autoresearch",
     f"npx skills use {LEGACY_REPOSITORY}@autoresearch",
+    "mv .autoresearch .researchhelm",
 )
 
 
@@ -107,17 +109,17 @@ class RepositoryContractTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
-        self.assertEqual("autoresearch", plugin["name"])
-        self.assertEqual("autoresearch-skill", market["name"])
+        self.assertEqual("researchhelm", plugin["name"])
+        self.assertEqual("researchhelm", market["name"])
         self.assertEqual(1, len(market["plugins"]))
-        self.assertEqual("autoresearch", market["plugins"][0]["name"])
+        self.assertEqual("researchhelm", market["plugins"][0]["name"])
         self.assertEqual("./", market["plugins"][0]["source"])
 
     def test_claude_install_commands_and_paths_remain_exact(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         for command in CLAUDE_INSTALL_CONTRACT:
             self.assertEqual(1, readme.count(command), command)
-        self.assertEqual(1, readme.count("invoke `/autoresearch`"))
+        self.assertEqual(1, readme.count("invoke `/researchhelm`"))
 
     def test_primary_repository_metadata_and_commands_are_exact(self):
         plugin = json.loads(
@@ -138,7 +140,7 @@ class RepositoryContractTests(unittest.TestCase):
     def test_legacy_repository_commands_live_only_in_redirect_section(self):
         for name in ("README.md", "README.zh-CN.md"):
             text = (ROOT / name).read_text(encoding="utf-8")
-            section = markdown_section(text, "## Legacy repository redirect")
+            section = markdown_section(text, "## Legacy identifiers")
             for command in LEGACY_REDIRECT_CONTRACT:
                 self.assertEqual(1, text.count(command), f"{name}: {command}")
                 self.assertIn(command, section)

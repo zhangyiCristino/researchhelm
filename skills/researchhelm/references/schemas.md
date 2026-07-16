@@ -1,7 +1,7 @@
 # Flight Recorder state contract
 
 This document is the normative contract for the portable JSON and JSONL state
-stored in `.autoresearch/<run-id>/`. The eight files below are the complete
+stored in `.researchhelm/<run-id>/`. The eight files below are the complete
 source of truth. A rendered Cockpit is derived output and is not part of this
 contract.
 

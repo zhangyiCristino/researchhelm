@@ -8,7 +8,7 @@ README_FILES = (ROOT / "README.md", ROOT / "README.zh-CN.md")
 
 
 class LegacyCompatibilityTests(unittest.TestCase):
-    def test_claude_plugin_identity_and_source_are_unchanged(self):
+    def test_claude_plugin_identity_matches_v3_rename(self):
         plugin = json.loads(
             (ROOT / ".claude-plugin" / "plugin.json").read_text(
                 encoding="utf-8"
@@ -19,12 +19,12 @@ class LegacyCompatibilityTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
-        self.assertEqual("autoresearch", plugin["name"])
-        self.assertEqual("autoresearch-skill", market["name"])
-        self.assertEqual("autoresearch", market["plugins"][0]["name"])
+        self.assertEqual("researchhelm", plugin["name"])
+        self.assertEqual("researchhelm", market["name"])
+        self.assertEqual("researchhelm", market["plugins"][0]["name"])
         self.assertEqual("./", market["plugins"][0]["source"])
 
-    def test_v2_version_is_consistent(self):
+    def test_v3_version_is_consistent(self):
         plugin = json.loads(
             (ROOT / ".claude-plugin" / "plugin.json").read_text(
                 encoding="utf-8"
@@ -35,10 +35,10 @@ class LegacyCompatibilityTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
-        self.assertEqual("2.0.0", plugin["version"])
-        self.assertEqual("2.0.0", market["plugins"][0]["version"])
+        self.assertEqual("3.0.0", plugin["version"])
+        self.assertEqual("3.0.0", market["plugins"][0]["version"])
 
-    def test_every_readme_preserves_legacy_commands_and_paths(self):
+    def test_every_readme_documents_the_legacy_identity_migration(self):
         commands = (
             "/plugin marketplace add zhangyiCristino/autoresearch-skill",
             "/plugin install autoresearch@autoresearch-skill",
@@ -47,7 +47,7 @@ class LegacyCompatibilityTests(unittest.TestCase):
             "npx skills add zhangyiCristino/autoresearch-skill --skill autoresearch",
             "npx skills use zhangyiCristino/autoresearch-skill@autoresearch",
             "/autoresearch",
-            "skills/autoresearch/SKILL.md",
+            "mv .autoresearch .researchhelm",
         )
         for path in README_FILES:
             text = path.read_text(encoding="utf-8")
@@ -90,11 +90,11 @@ class LegacyCompatibilityTests(unittest.TestCase):
         chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
         for text in (english, chinese):
             self.assertIn(
-                "npx skills add zhangyiCristino/researchhelm --skill autoresearch",
+                "npx skills add zhangyiCristino/researchhelm --skill researchhelm",
                 text,
             )
             self.assertIn(
-                "npx skills use zhangyiCristino/researchhelm@autoresearch",
+                "npx skills use zhangyiCristino/researchhelm@researchhelm",
                 text,
             )
             self.assertIn("https://github.com/vercel-labs/skills", text)

@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-REFS = ROOT / "skills" / "autoresearch" / "references"
+REFS = ROOT / "skills" / "researchhelm" / "references"
 REQUIRED = {
     "resource-triage.md": (
         "# Resource Triage",
@@ -227,7 +227,7 @@ class ReferenceContractTests(unittest.TestCase):
                 "Do not install", "Do not invoke", "matching approval",
                 "rejected candidate", "recommendation cycle", "private research",
                 "subordinate", "permissions", "scope", "Do not claim",
-                "never recommend autoresearch itself",
+                "never recommend researchhelm itself",
                 "user asks for help finding a Skill",
                 "failure is directly attributable",
                 "future help after the idea decision",

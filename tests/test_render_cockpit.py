@@ -12,8 +12,8 @@ from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "skills" / "autoresearch" / "scripts" / "render_cockpit.py"
-TEMPLATE = ROOT / "skills" / "autoresearch" / "assets" / "templates" / "research-cockpit.html"
+SCRIPT = ROOT / "skills" / "researchhelm" / "scripts" / "render_cockpit.py"
+TEMPLATE = ROOT / "skills" / "researchhelm" / "assets" / "templates" / "research-cockpit.html"
 FIXTURE = ROOT / "tests" / "fixtures" / "complete-run"
 
 
@@ -28,7 +28,7 @@ def load_module():
 class RenderCockpitTests(unittest.TestCase):
     def test_template_locks_accessible_offline_visual_contract(self):
         template = TEMPLATE.read_text(encoding="utf-8")
-        self.assertEqual(1, template.count("__AUTORESEARCH_DATA__"))
+        self.assertEqual(1, template.count("__RESEARCHHELM_DATA__"))
         for section in (
             "resources",
             "ideas",

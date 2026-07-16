@@ -1,5 +1,5 @@
 ---
-name: autoresearch
+name: researchhelm
 description: Use when a user wants research ideas grounded in available resources, public-work overlap diligence, preregistered human-governed experiments, bounded metric optimization, reproducibility audits, claim-to-artifact evidence control, or approved recommendations for complementary research skills.
 ---
 
@@ -21,7 +21,7 @@ Suppress only eligible benign PII and only with explicit human approval. Credent
 
 1. Confirm this agent has files, shell, and Git. If any is missing, report the unsupported capability and stop.
 2. Resolve mode. Honor an explicit mode; Use scout for idea/overlap-only work; Use optimize only for an explicit scalar objective, frozen evaluator, scope, and budget; otherwise pi is the default. Never infer a more autonomous mode.
-3. Create or resume `.autoresearch/<run-id>/` and run `scripts/validate_state.py` before continuing.
+3. Create or resume `.researchhelm/<run-id>/` and run `scripts/validate_state.py` before continuing.
 4. If public search is required without network access, restrict work to supplied sources and state that public search was not performed.
 5. For an idea request in `pi` or `scout`, complete or request the full resource intake, return decision-ready candidates, and stop at GATE_1_IDEA. Never start a full run from an idea request. If candidate-critical resources are unavailable, request them and stop; never fabricate a candidate.
 

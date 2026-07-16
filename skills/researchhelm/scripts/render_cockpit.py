@@ -204,14 +204,14 @@ def render_cockpit(
         _remove_public_audit_metadata(data)
 
     template = TEMPLATE.read_text(encoding="utf-8")
-    if template.count("__AUTORESEARCH_DATA__") != 1:
+    if template.count("__RESEARCHHELM_DATA__") != 1:
         raise CockpitError("ERR_TEMPLATE_INVALID")
     data["data_boundary"] = (
         "Public sanitized export"
         if public
         else "Private local Cockpit - do not commit"
     )
-    html = template.replace("__AUTORESEARCH_DATA__", script_safe_json(data))
+    html = template.replace("__RESEARCHHELM_DATA__", script_safe_json(data))
     _atomic_write(output, html)
     return output
 

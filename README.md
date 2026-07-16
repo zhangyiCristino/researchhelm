@@ -24,7 +24,7 @@ Silence is never approval. Each gate is bound to the current input hash, so an o
 
 ## Offline Research Cockpit
 
-The zero-dependency [Research Cockpit renderer](skills/autoresearch/scripts/render_cockpit.py) turns validated local run records into one self-contained HTML file. With networking disabled, it can audit the resource envelope, idea trade-offs and overlap, gate timeline, experiment cost/performance, and each claim's path to code, configuration, data, and artifacts.
+The zero-dependency [Research Cockpit renderer](skills/researchhelm/scripts/render_cockpit.py) turns validated local run records into one self-contained HTML file. With networking disabled, it can audit the resource envelope, idea trade-offs and overlap, gate timeline, experiment cost/performance, and each claim's path to code, configuration, data, and artifacts.
 
 The Gate-4-approved [one-GPU walkthrough](demo/one-gpu-public/) is now available as a sanitized public package with frozen code, configuration, split rules, aggregate metrics, claims, hashes, and a self-contained [Cockpit](demo/one-gpu-public/research-cockpit.html). It is a bounded product walkthrough, not a benchmark, novelty, SOTA, or universal-generalization claim.
 
@@ -35,7 +35,7 @@ The Gate-4-approved [one-GPU walkthrough](demo/one-gpu-public/) is now available
 For clients recognized by the [`skills` CLI](https://github.com/vercel-labs/skills):
 
 ```bash
-npx skills add zhangyiCristino/researchhelm --skill autoresearch
+npx skills add zhangyiCristino/researchhelm --skill researchhelm
 ```
 
 `skills` is a **third-party community installer**, not an official ResearchHelm runtime and not evidence of native client support. Its recognition of an install path establishes only the evidence label actually recorded in the compatibility registry.
@@ -45,35 +45,37 @@ npx skills add zhangyiCristino/researchhelm --skill autoresearch
 For clients supported by that same third-party community tool:
 
 ```bash
-npx skills use zhangyiCristino/researchhelm@autoresearch
+npx skills use zhangyiCristino/researchhelm@researchhelm
 ```
 
 This command is also provided by the third-party community installer. It does not make the named client an officially supported or `Native-tested` ResearchHelm runtime.
 
 ## Existing Claude Code users
 
-The marketplace and plugin identities remain unchanged; use the canonical repository address:
+Version 3.0.0 renames every identifier from `autoresearch` to `researchhelm`; install the current plugin:
 
 ```text
 /plugin marketplace add zhangyiCristino/researchhelm
-/plugin install autoresearch@autoresearch-skill
+/plugin install researchhelm@researchhelm
 ```
 
-The manual copy workflow remains available at the canonical repository path:
+The manual copy workflow uses the renamed skill folder:
 
 ```bash
 git clone https://github.com/zhangyiCristino/researchhelm.git
-cp -r researchhelm/skills/autoresearch ~/.claude/skills/
+cp -r researchhelm/skills/researchhelm ~/.claude/skills/
 ```
 
-Claude Code users can continue to invoke `/autoresearch`. Codex-oriented UI metadata lives in `skills/autoresearch/agents/openai.yaml`; that metadata is an adapter to the same canonical skill, not a separate protocol or an unsupported native-test claim.
+Claude Code users invoke `/researchhelm`. Codex-oriented UI metadata lives in `skills/researchhelm/agents/openai.yaml`; that metadata is an adapter to the same canonical skill, not a separate protocol or an unsupported native-test claim.
 
-## Legacy repository redirect
+## Legacy identifiers
 
 <details>
-<summary>Legacy URLs — GitHub auto-redirects these; expand only if you saved the old address.</summary>
+<summary>v2 identifiers and legacy URLs — expand if you installed before v3.0.0 or saved the old address.</summary>
 
-GitHub redirects the previous repository location to ResearchHelm for web and Git operations. Update saved URLs to `zhangyiCristino/researchhelm`; third-party installers are not guaranteed to follow GitHub redirects. Do not reuse the old repository name.
+Version 3.0.0 renamed the internal identity from `autoresearch` to `researchhelm`. To migrate an existing installation, remove the old `autoresearch` plugin or copied skill folder, reinstall with the current commands above, and call `/researchhelm` where you previously used `/autoresearch`. The old install command `/plugin install autoresearch@autoresearch-skill` and the old marketplace name no longer exist. To resume existing runs, rename the project state directory: `mv .autoresearch .researchhelm`.
+
+GitHub redirects the previous repository location to ResearchHelm for web and Git operations. Update saved URLs to `zhangyiCristino/researchhelm`; third-party installers are not guaranteed to follow GitHub redirects. Do not reuse the old repository name. These v2-era commands are recorded for reference only and no longer match the current tree:
 
 ```text
 /plugin marketplace add zhangyiCristino/autoresearch-skill
@@ -92,7 +94,7 @@ Download or clone the **complete repository**. Downloading only `SKILL.md` is un
 Give the agent this bootstrap, replacing `<download-path>` with the extracted or cloned location:
 
 ```text
-Read <download-path>/skills/autoresearch/SKILL.md completely.
+Read <download-path>/skills/researchhelm/SKILL.md completely.
 Resolve every relative reference from that skill directory.
 Check that you can read files, execute commands, and use Git.
 Use pi mode unless I explicitly request scout or optimize.
@@ -123,7 +125,7 @@ The public table below is generated from [`evals/compatibility/clients.json`](ev
 <!-- COMPATIBILITY:START -->
 | Client | Label | Version | Tested | Evidence |
 |---|---|---|---|---|
-| Canonical Agent Skills folder | Standard-validated | GitHub CLI 2.96.0 preview | 2026-07-15 | [evidence](TESTING.md) |
+| Canonical Agent Skills folder | Standard-validated | GitHub CLI 2.96.0 preview | 2026-07-16 | [evidence](TESTING.md) |
 <!-- COMPATIBILITY:END -->
 
 Label meanings:
@@ -154,16 +156,16 @@ The public walkthrough completed all four human gates and 18 frozen runs on UCI 
 
 When a concrete capability gap appears, ResearchHelm may show up to three evidence-backed Recommendation Cards, preferring an already installed equivalent and always offering a no-new-skill option. Every newly introduced skill requires approval of its exact source, immutable version or commit, content hash, permissions, data boundary, and stage constraints **before** installation or use. A changed hash or permission set invalidates the old approval.
 
-### Migrating from v1
+### Migrating from v1 and v2
 
-Existing Claude Code installation commands, `/autoresearch`, plugin IDs, and the mechanical `optimize` protocol remain available. The main change is routing: `pi` is now the default for research, `scout` stops after idea diligence, and `optimize` is selected only for an explicitly bounded scalar objective. Existing optimization users can request `optimize` and keep the original safety semantics.
+Version 3.0.0 completes the ResearchHelm rename: the plugin, marketplace, skill folder, command, and run-state directory now all use the `researchhelm` identity (see [Legacy identifiers](#legacy-identifiers)). The mechanical `optimize` protocol keeps its original safety semantics and `autoresearch/<tag>` branch naming. Routing is unchanged from v2: `pi` is the default for research, `scout` stops after idea diligence, and `optimize` is selected only for an explicitly bounded scalar objective.
 
 ### Verify and contribute
 
 - Test evidence and limitations: [TESTING.md](TESTING.md)
 - Compatibility evidence reports: [compatibility report form](.github/ISSUE_TEMPLATE/compatibility-report.yml)
 - Security reports: [SECURITY.md](SECURITY.md), never a public issue containing sensitive material
-- Canonical protocol: [`skills/autoresearch/SKILL.md`](skills/autoresearch/SKILL.md)
+- Canonical protocol: [`skills/researchhelm/SKILL.md`](skills/researchhelm/SKILL.md)
 
 Issues and pull requests are welcome when they include reproducible, sanitized evidence. Community compatibility reports stay `Community-reported` until independently reproduced.
 

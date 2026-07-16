@@ -19,7 +19,7 @@ from urllib.parse import quote
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "skills" / "autoresearch" / "scripts" / "inspect_skill.py"
+SCRIPT = ROOT / "skills" / "researchhelm" / "scripts" / "inspect_skill.py"
 SAFE = ROOT / "tests" / "fixtures" / "skills" / "safe-skill"
 RISKY = ROOT / "tests" / "fixtures" / "skills" / "risky-skill"
 REPORT_KEYS = {

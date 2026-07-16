@@ -71,11 +71,11 @@ jobs:
       - name: Run standards contracts
         run: python -m unittest tests.test_repository_contracts tests.test_skill_contract tests.test_release_contracts -v
       - name: Validate fixture state
-        run: python skills/autoresearch/scripts/validate_state.py tests/fixtures/complete-run
+        run: python skills/researchhelm/scripts/validate_state.py tests/fixtures/complete-run
       - name: Validate compatibility evidence
-        run: python skills/autoresearch/scripts/validate_compatibility.py validate evals/compatibility/clients.json
+        run: python skills/researchhelm/scripts/validate_compatibility.py validate evals/compatibility/clients.json
       - name: Check README compatibility blocks
-        run: python skills/autoresearch/scripts/validate_compatibility.py sync-readme --check
+        run: python skills/researchhelm/scripts/validate_compatibility.py sync-readme --check
 
   installer:
     name: Isolated installer paths

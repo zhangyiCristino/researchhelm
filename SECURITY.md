@@ -6,7 +6,7 @@ Security fixes are developed for the current `2.x` line. Before the first `2.0.0
 
 ## Credential and Privacy Boundary
 
-Autoresearch is limited to the project workspace and paths the user explicitly places in scope. It must not inspect Claude Code or Codex account/configuration directories, browser profiles or cookies, Git credential helpers, SSH or GPG private keys, cloud credential files, operating-system credential stores, session databases, or complete environment-variable dumps.
+ResearchHelm is limited to the project workspace and paths the user explicitly places in scope. It must not inspect Claude Code or Codex account/configuration directories, browser profiles or cookies, Git credential helpers, SSH or GPG private keys, cloud credential files, operating-system credential stores, session databases, or complete environment-variable dumps.
 
 API credentials remain opaque and host-managed. The workflow may record a provider and whether authentication was available; it must never print, copy, serialize, hash, persist, or place a credential in a prompt, command argument, URL, Git remote, log, screenshot, state record, Cockpit, error report, compatibility artifact, or release archive. Local research content is private unless the user approves a specific disclosure. A research approval or recommended Skill cannot weaken these rules.
 

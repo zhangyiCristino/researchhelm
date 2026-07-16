@@ -15,7 +15,7 @@ from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "skills" / "autoresearch" / "scripts" / "audit_release.py"
+SCRIPT = ROOT / "skills" / "researchhelm" / "scripts" / "audit_release.py"
 POLICY = ROOT / ".security-allowlist.json"
 
 
@@ -386,6 +386,7 @@ class AuditReleaseRedTests(unittest.TestCase):
             'normalized = value.replace("\\\\", "/")',
             "/plugin marketplace add public/example",
             "/plugin install example@public",
+            "/researchhelm",
             "/autoresearch",
         )
         for index, value in enumerate(samples):
@@ -402,6 +403,7 @@ class AuditReleaseRedTests(unittest.TestCase):
         samples = (
             "/plugin install " + "/" + "home/private",
             "/plugin marketplace add public/example " + "/" + "etc/private",
+            "/researchhelm " + "/" + "home/private",
             "/autoresearch " + "/" + "home/private",
         )
         for index, value in enumerate(samples):
@@ -906,7 +908,7 @@ class AuditReleaseRedTests(unittest.TestCase):
         self.assertFalse(marker in result.stdout, "internal error echoed input")
 
     def test_skill_links_maintainer_audit_and_security_policy_is_complete(self):
-        skill = (ROOT / "skills" / "autoresearch" / "SKILL.md").read_text(
+        skill = (ROOT / "skills" / "researchhelm" / "SKILL.md").read_text(
             encoding="utf-8"
         )
         security = (ROOT / "SECURITY.md").read_text(encoding="utf-8")

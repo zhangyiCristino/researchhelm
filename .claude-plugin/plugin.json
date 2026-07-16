@@ -1,6 +1,6 @@
 {
-  "name": "autoresearch",
-  "version": "2.0.0",
+  "name": "researchhelm",
+  "version": "3.0.0",
   "description": "ResearchHelm is a human-governed research skill for resource-to-idea scouting, supervised bounded experiments, claim auditing, and an offline Research Cockpit.",
   "author": {
     "name": "zhangyiCristino",
@@ -10,6 +10,7 @@
   "repository": "https://github.com/zhangyiCristino/researchhelm",
   "license": "MIT",
   "keywords": [
+    "researchhelm",
     "autoresearch",
     "human-governed-research",
     "resource-scouting",

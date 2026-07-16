@@ -59,7 +59,7 @@ QUOTED_SLASH_SEPARATOR = re.compile(
     r"(?P<prefix>[rRuUbBfF]{0,2})(?P<quote>['\"])/(?P=quote)"
 )
 SLASH_COMMAND = re.compile(
-    r"(?:/plugin\s+(?:marketplace\s+add|install)\b|/autoresearch\b)"
+    r"(?:/plugin\s+(?:marketplace\s+add|install)\b|/researchhelm\b|/autoresearch\b)"
 )
 FILESYSTEM_ROOT_SEGMENTS = {
     "dev",

@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL = ROOT / "skills" / "autoresearch" / "SKILL.md"
+SKILL = ROOT / "skills" / "researchhelm" / "SKILL.md"
 
 
 class SkillContractTests(unittest.TestCase):
@@ -15,7 +15,7 @@ class SkillContractTests(unittest.TestCase):
         self.assertIsNotNone(match)
         fields = [line.split(":", 1) for line in match.group(1).splitlines() if ":" in line and not line.startswith(" ")]
         self.assertEqual(["name", "description"], [key for key, _ in fields])
-        self.assertIn("name: autoresearch", match.group(1))
+        self.assertIn("name: researchhelm", match.group(1))
         self.assertIn("Use when", match.group(1))
         self.assertEqual(SKILL.parent.name, fields[0][1].strip())
         self.assertLessEqual(len(fields[1][1].strip()), 1024)

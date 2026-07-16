@@ -11,7 +11,7 @@ Map the research stage to a specific capability gap before searching:
 - During experiment design and execution, look only for missing domain evaluation, statistical, reproducibility, or artifact capability.
 - During post-processing, look only for missing analysis, visualization, claim-audit, or export capability.
 
-Trigger the sidecar when the user asks for help finding a Skill or when a failure is directly attributable to missing specialist capability. Do not recommend a Skill merely because it is popular or related to the topic. Suppress repeated recommendations when no stage input or capability gap has changed, and never recommend autoresearch itself.
+Trigger the sidecar when the user asks for help finding a Skill or when a failure is directly attributable to missing specialist capability. Do not recommend a Skill merely because it is popular or related to the topic. Suppress repeated recommendations when no stage input or capability gap has changed, and never recommend researchhelm itself.
 
 In `scout`, recommend only future help after the idea decision. In `optimize`, limit every recommendation to the approved metric, evaluator, scope, and budget.
 

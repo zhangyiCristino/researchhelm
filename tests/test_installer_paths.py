@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CANONICAL_SKILL = ROOT / "skills" / "autoresearch" / "SKILL.md"
+CANONICAL_SKILL = ROOT / "skills" / "researchhelm" / "SKILL.md"
 PINNED_PACKAGE = "skills@1.5.16"
 REPOSITORY = "zhangyiCristino/researchhelm"
 PROJECT_TARGETS = (
@@ -275,9 +275,9 @@ class InstallerPathTests(unittest.TestCase):
             path
             for base in (work, home)
             for path in base.rglob("SKILL.md")
-            if path.parent.name == "autoresearch"
+            if path.parent.name == "researchhelm"
         ]
-        self.assertTrue(candidates, "installed autoresearch SKILL.md not found")
+        self.assertTrue(candidates, "installed researchhelm SKILL.md not found")
         sandbox = self.sandbox.resolve(strict=True)
         for candidate in candidates:
             self.assertTrue(candidate.resolve(strict=True).is_relative_to(sandbox))
@@ -295,7 +295,7 @@ class InstallerPathTests(unittest.TestCase):
             "add",
             REPOSITORY,
             "--skill",
-            "autoresearch",
+            "researchhelm",
             "--agent",
             target,
         ]
@@ -340,14 +340,14 @@ class InstallerPathTests(unittest.TestCase):
                 "use",
                 REPOSITORY,
                 "--skill",
-                "autoresearch",
+                "researchhelm",
             ],
             environment,
             work,
         )
         output = result.stdout + result.stderr
         self.assertTrue(
-            "autoresearch" in output.lower() and "SKILL.md" in output,
+            "researchhelm" in output.lower() and "SKILL.md" in output,
             "generated prompt did not reference the canonical skill",
         )
 

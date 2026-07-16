@@ -282,6 +282,7 @@ class ReleaseContractTests(unittest.TestCase):
     def test_generated_state_ignore_rules_are_exact(self):
         lines = (ROOT / ".gitignore").read_text(encoding="utf-8").splitlines()
         for pattern in (
+            ".researchhelm/",
             ".autoresearch/",
             "*.pyc",
             "tests/fixtures/complete-run/cockpit.html",
@@ -293,7 +294,7 @@ class ReleaseContractTests(unittest.TestCase):
         result = subprocess.run(
             [
                 sys.executable,
-                "skills/autoresearch/scripts/validate_compatibility.py",
+                "skills/researchhelm/scripts/validate_compatibility.py",
                 "validate",
                 "evals/compatibility/clients.json",
             ],
@@ -307,7 +308,7 @@ class ReleaseContractTests(unittest.TestCase):
         result = subprocess.run(
             [
                 sys.executable,
-                "skills/autoresearch/scripts/validate_compatibility.py",
+                "skills/researchhelm/scripts/validate_compatibility.py",
                 "sync-readme",
                 "--check",
             ],
@@ -329,9 +330,9 @@ class ReleaseContractTests(unittest.TestCase):
             "python -m unittest discover -s tests -v",
             "gh skill publish --dry-run",
             "python -m unittest tests.test_repository_contracts tests.test_skill_contract tests.test_release_contracts -v",
-            "python skills/autoresearch/scripts/validate_state.py tests/fixtures/complete-run",
-            "python skills/autoresearch/scripts/validate_compatibility.py validate evals/compatibility/clients.json",
-            "python skills/autoresearch/scripts/validate_compatibility.py sync-readme --check",
+            "python skills/researchhelm/scripts/validate_state.py tests/fixtures/complete-run",
+            "python skills/researchhelm/scripts/validate_compatibility.py validate evals/compatibility/clients.json",
+            "python skills/researchhelm/scripts/validate_compatibility.py sync-readme --check",
             "https://github.com/cli/cli/releases/download/v2.96.0/gh_2.96.0_linux_amd64.tar.gz",
             "if: steps.gh-version.outputs.needs-upgrade == 'true'",
         ):
@@ -381,7 +382,7 @@ class ReleaseContractTests(unittest.TestCase):
             "actions/checkout@v7",
             "fetch-depth: 0",
             "persist-credentials: false",
-            "python skills/autoresearch/scripts/audit_release.py all --root . --ref HEAD",
+            "python skills/researchhelm/scripts/audit_release.py all --root . --ref HEAD",
             "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz",
             "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb",
             '"$RUNNER_TEMP/gitleaks" git --redact=100 --no-banner --no-color --log-level=error --max-archive-depth=2 .',

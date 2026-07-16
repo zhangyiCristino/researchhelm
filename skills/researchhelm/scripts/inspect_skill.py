@@ -149,7 +149,7 @@ def _load_security_module() -> Any:
     global _SECURITY_MODULE
     if _SECURITY_MODULE is None:
         path = Path(__file__).with_name("sanitize_export.py")
-        name = "_autoresearch_inspection_security"
+        name = "_researchhelm_inspection_security"
         spec = importlib.util.spec_from_file_location(name, path)
         if spec is None or spec.loader is None:
             raise UnsafeEntryError()

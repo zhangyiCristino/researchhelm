@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Audit tracked state, history, identities, and candidate archive
-        run: python skills/autoresearch/scripts/audit_release.py all --root . --ref HEAD
+        run: python skills/researchhelm/scripts/audit_release.py all --root . --ref HEAD
 
   gitleaks:
     name: Gitleaks 8.30.1

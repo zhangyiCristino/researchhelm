@@ -1,5 +1,6 @@
 evals/results/
 __pycache__/
+.researchhelm/
 .autoresearch/
 public-export/
 *.pyc

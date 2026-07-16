@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "skills" / "autoresearch" / "scripts" / "validate_state.py"
+SCRIPT = ROOT / "skills" / "researchhelm" / "scripts" / "validate_state.py"
 
 
 def load_module():

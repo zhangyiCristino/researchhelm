@@ -8,8 +8,8 @@
       "version": "GitHub CLI 2.96.0 preview",
       "operating_system": "Windows 11",
       "install_command": "gh skill publish --dry-run",
-      "tested_at": "2026-07-15",
-      "commit": "ef0da90ab3d06370a219bdde6924ea2c99887ce1",
+      "tested_at": "2026-07-16",
+      "commit": "61d5a004dfae7ea4eb0c18762361b12ca0fe6d69",
       "evidence": "TESTING.md",
       "limitations": [
         "Format validation emitted a recommended license warning; this is not a native-client claim.",

@@ -26,7 +26,7 @@
     "wall_time_seconds": 7200,
     "monetary_budget": 5,
     "allowed_scope": [
-      "skills/autoresearch/"
+      "skills/researchhelm/"
     ],
     "forbidden_scope": [
       "credential-stores/"

@@ -7,7 +7,7 @@
       "label": "Native-tested",
       "version": "1.2.3",
       "operating_system": "Example OS 1",
-      "install_command": "example-agent skill install ./skills/autoresearch",
+      "install_command": "example-agent skill install ./skills/researchhelm",
       "tested_at": "2026-04-13",
       "commit": "0123456789abcdef0123456789abcdef01234567",
       "evidence": "tests/fixtures/compatibility/evidence.txt",

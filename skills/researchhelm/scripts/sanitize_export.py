@@ -1091,7 +1091,7 @@ def _scan_loaded(loaded: dict[str, Any]) -> list[SecurityFinding]:
 
 def _load_validator_module() -> Any:
     path = Path(__file__).with_name("validate_state.py")
-    spec = importlib.util.spec_from_file_location("_autoresearch_validate_state", path)
+    spec = importlib.util.spec_from_file_location("_researchhelm_validate_state", path)
     if spec is None or spec.loader is None:
         raise OSError("validator is unavailable")
     module = importlib.util.module_from_spec(spec)
@@ -1759,7 +1759,7 @@ def _read_posix_public_file(
 
 
 def _load_inspection_module() -> Any:
-    name = "_autoresearch_secure_reader"
+    name = "_researchhelm_secure_reader"
     existing = sys.modules.get(name)
     if existing is not None:
         return existing

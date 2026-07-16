@@ -1,5 +1,5 @@
 {
-  "name": "autoresearch-skill",
+  "name": "researchhelm",
   "owner": {
     "name": "zhangyiCristino",
     "url": "https://github.com/zhangyiCristino"
@@ -7,10 +7,10 @@
   "description": "ResearchHelm supports human-governed research from resource scouting to audited claims, with bounded experiments and an offline Research Cockpit.",
   "plugins": [
     {
-      "name": "autoresearch",
+      "name": "researchhelm",
       "source": "./",
       "description": "Use ResearchHelm to scout resource-feasible ideas, supervise Builder-Verifier experiments, and audit claims while preserving the legacy optimize loop.",
-      "version": "2.0.0",
+      "version": "3.0.0",
       "license": "MIT"
     }
   ]
