@@ -2,6 +2,9 @@
 
 **Human-governed research, from resources to audited claims.**
 
+[![CI](https://github.com/zhangyiCristino/researchhelm/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/zhangyiCristino/researchhelm/actions/workflows/ci.yml)
+[![Security gates](https://github.com/zhangyiCristino/researchhelm/actions/workflows/security.yml/badge.svg?branch=master)](https://github.com/zhangyiCristino/researchhelm/actions/workflows/security.yml)
+
 ResearchHelm is **not an autonomous AI scientist**. It does not promise to turn a topic into a paper or replace scientific judgment. You remain the principal investigator: the agent gathers evidence, builds and verifies within approved limits, and ties every retained claim back to artifacts.
 
 `resources -> defensible ideas -> human decisions -> bounded execution -> audited claims`
@@ -67,6 +70,9 @@ Claude Code users can continue to invoke `/autoresearch`. Codex-oriented UI meta
 
 ## Legacy repository redirect
 
+<details>
+<summary>Legacy URLs — GitHub auto-redirects these; expand only if you saved the old address.</summary>
+
 GitHub redirects the previous repository location to ResearchHelm for web and Git operations. Update saved URLs to `zhangyiCristino/researchhelm`; third-party installers are not guaranteed to follow GitHub redirects. Do not reuse the old repository name.
 
 ```text
@@ -76,6 +82,8 @@ cp -r autoresearch-skill/skills/autoresearch ~/.claude/skills/
 npx skills add zhangyiCristino/autoresearch-skill --skill autoresearch
 npx skills use zhangyiCristino/autoresearch-skill@autoresearch
 ```
+
+</details>
 
 ## Portable bootstrap for other agents
 

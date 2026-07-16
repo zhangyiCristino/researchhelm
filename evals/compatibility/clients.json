@@ -9,7 +9,7 @@
       "operating_system": "Windows 11",
       "install_command": "gh skill publish --dry-run",
       "tested_at": "2026-07-15",
-      "commit": "5cb92013e041793c0ee5de2147b5d0accc2f016a",
+      "commit": "ef0da90ab3d06370a219bdde6924ea2c99887ce1",
       "evidence": "TESTING.md",
       "limitations": [
         "Format validation emitted a recommended license warning; this is not a native-client claim.",

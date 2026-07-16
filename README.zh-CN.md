@@ -2,6 +2,9 @@
 
 **人主导科研：从现有资源走向可审计结论。**
 
+[![CI](https://github.com/zhangyiCristino/researchhelm/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/zhangyiCristino/researchhelm/actions/workflows/ci.yml)
+[![Security gates](https://github.com/zhangyiCristino/researchhelm/actions/workflows/security.yml/badge.svg?branch=master)](https://github.com/zhangyiCristino/researchhelm/actions/workflows/security.yml)
+
 ResearchHelm **不是自主 AI 科学家**，也不承诺把一个题目自动变成论文，更不会替代科研判断。你始终是负责人：Agent 在获批边界内搜集证据、构建、验证，并把每条保留结论追溯到具体产物。
 
 `资源 -> 可辩护的想法 -> 人的决策 -> 受限执行 -> 经审计的结论`
@@ -67,6 +70,9 @@ Claude Code 用户仍可调用 `/autoresearch`。面向 Codex 的界面元数据
 
 ## Legacy repository redirect
 
+<details>
+<summary>旧仓库地址(GitHub 会自动重定向;保存过旧地址再展开)</summary>
+
 GitHub 会把旧仓库位置的网页和 Git 操作重定向到 ResearchHelm。请把保存的地址更新为 `zhangyiCristino/researchhelm`；第三方安装器不保证遵循 GitHub 重定向。不要重新占用旧仓库名。
 
 ```text
@@ -76,6 +82,8 @@ cp -r autoresearch-skill/skills/autoresearch ~/.claude/skills/
 npx skills add zhangyiCristino/autoresearch-skill --skill autoresearch
 npx skills use zhangyiCristino/autoresearch-skill@autoresearch
 ```
+
+</details>
 
 ## 给其他 Agent 的可移植引导
 

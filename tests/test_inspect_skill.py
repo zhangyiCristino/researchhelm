@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import base64
 import errno
 import importlib.util
@@ -431,7 +433,7 @@ class InspectSkillTests(unittest.TestCase):
             st_ctime_ns=1,
         )
 
-        with mock.patch.object(module.os, "scandir", return_value=iterator):
+        with mock.patch.object(module.sys, "platform", "darwin"), mock.patch.object(module.os, "scandir", return_value=iterator):
             with mock.patch.object(module.os, "stat", return_value=unsupported):
                 with mock.patch.object(module.os, "fstat", return_value=directory):
                     with mock.patch.object(module.os, "O_DIRECTORY", 0x10000, create=True):
@@ -452,7 +454,7 @@ class InspectSkillTests(unittest.TestCase):
         root_stat = posix_metadata()
         mounted_stat = posix_metadata(device=2, inode=2)
 
-        with mock.patch.object(module.os, "scandir", return_value=scan_names("mounted")):
+        with mock.patch.object(module.sys, "platform", "darwin"), mock.patch.object(module.os, "scandir", return_value=scan_names("mounted")):
             with mock.patch.object(module.os, "fstat", return_value=root_stat):
                 with mock.patch.object(module.os, "stat", return_value=mounted_stat):
                     with mock.patch.object(module.os, "open", side_effect=AssertionError):
@@ -561,7 +563,7 @@ class InspectSkillTests(unittest.TestCase):
         def scan(descriptor):
             return scan_names("child") if descriptor == 10 else scan_names()
 
-        with mock.patch.object(module.os, "scandir", side_effect=scan):
+        with mock.patch.object(module.sys, "platform", "darwin"), mock.patch.object(module.os, "scandir", side_effect=scan):
             with mock.patch.object(
                 module.os, "fstat", side_effect=lambda fd: root_stat if fd == 10 else child_stat
             ):
@@ -723,6 +725,7 @@ class InspectSkillTests(unittest.TestCase):
             events,
         )
 
+    @unittest.skipUnless(os.name == "nt", "Windows-only root handle logic")
     def test_windows_root_registration_base_exception_closes_new_handle(self):
         module = load_module()
         directory_info = {
@@ -1073,6 +1076,7 @@ class InspectSkillTests(unittest.TestCase):
                 root_stat = posix_metadata()
                 child_stat = posix_metadata(inode=2, mode=mode)
                 with ExitStack() as stack:
+                    stack.enter_context(mock.patch.object(module.sys, "platform", "darwin"))
                     stack.enter_context(
                         mock.patch.object(module.os, "scandir", return_value=scan_names("child"))
                     )
@@ -1117,6 +1121,7 @@ class InspectSkillTests(unittest.TestCase):
                 with self.assertRaises(module.UnsafeEntryError):
                     module._open_windows_root(Path("C:" + "\\" + "safe"))
 
+    @unittest.skipUnless(os.name == "nt", "Windows-only root handle logic")
     def test_root_component_handles_obey_max_files_before_open(self):
         module = load_module()
         directory_info = {
@@ -1390,6 +1395,7 @@ class InspectSkillTests(unittest.TestCase):
             finally:
                 os.close(descriptor)
 
+    @unittest.skipUnless(os.name == "nt", "Windows-only root handle logic")
     def test_windows_parent_reparse_handle_is_rejected_and_closed(self):
         module = load_module()
         directory = module._FILE_ATTRIBUTE_DIRECTORY
