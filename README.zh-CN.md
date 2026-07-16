@@ -125,7 +125,7 @@ Do not cross a human decision gate without my approval.
 <!-- COMPATIBILITY:START -->
 | Client | Label | Version | Tested | Evidence |
 |---|---|---|---|---|
-| Canonical Agent Skills folder | Standard-validated | GitHub CLI 2.96.0 preview | 2026-07-15 | [evidence](TESTING.md) |
+| Canonical Agent Skills folder | Standard-validated | GitHub CLI 2.96.0 preview | 2026-07-16 | [evidence](TESTING.md) |
 <!-- COMPATIBILITY:END -->
 
 标签含义：
