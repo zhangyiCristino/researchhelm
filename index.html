@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research Cockpit</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17212b;
+      --muted: #536170;
+      --paper: #f3f0e8;
+      --card: #fffdf8;
+      --line: #c7d0d8;
+      --blue: #0072b2;
+      --sky: #56b4e9;
+      --green: #009e73;
+      --orange: #e69f00;
+      --vermillion: #d55e00;
+      --purple: #6f4c9b;
+      --shadow: 0 16px 40px rgba(23, 33, 43, 0.09);
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--paper); }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(86, 180, 233, 0.16), transparent 34rem),
+        var(--paper);
+      font: 16px/1.55 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    header, main { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+    header { padding: 48px 0 22px; }
+    h1, h2, h3 { line-height: 1.1; }
+    h1 { margin: 0; max-width: 12ch; font-size: clamp(2.35rem, 7vw, 5.4rem); letter-spacing: -0.055em; }
+    h2 { margin: 0; font-size: clamp(1.55rem, 3vw, 2.2rem); letter-spacing: -0.025em; }
+    h3 { margin: 0 0 8px; font-size: 1rem; }
+    .lede { max-width: 65ch; color: var(--muted); font-size: 1.05rem; }
+    #data-boundary {
+      margin: 0 0 24px;
+      padding: 13px 16px;
+      border: 2px solid var(--orange);
+      border-radius: 12px;
+      background: #fff7d6;
+      font-weight: 750;
+    }
+    section {
+      margin: 0 0 24px;
+      padding: clamp(18px, 3vw, 30px);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 253, 248, 0.96);
+      box-shadow: var(--shadow);
+    }
+    section > header { width: auto; margin: 0 0 18px; padding: 0; }
+    section > header p { margin: 8px 0 0; color: var(--muted); }
+    section:focus-visible, [tabindex="0"]:focus-visible, a:focus-visible, button:focus-visible {
+      outline: 4px solid var(--orange);
+      outline-offset: 4px;
+    }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 12px; margin: 18px 0; }
+    .stat { min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: #f7fafb; }
+    .stat span { display: block; color: var(--muted); font-size: 0.78rem; font-weight: 750; letter-spacing: 0.06em; text-transform: uppercase; }
+    .stat strong { display: block; margin-top: 4px; overflow-wrap: anywhere; font-size: 1.05rem; }
+    .visual-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: start; }
+    figure { min-width: 0; margin: 0; }
+    figcaption { margin-top: 8px; color: var(--muted); font-size: 0.88rem; }
+    svg { display: block; width: 100%; height: auto; min-height: 220px; overflow: visible; border: 1px solid var(--line); border-radius: 14px; background: #fbfcfd; }
+    svg text { fill: var(--ink); font: 12px system-ui, sans-serif; }
+    .table-wrap { min-width: 0; overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; background: var(--card); font-size: 0.88rem; }
+    caption { padding: 10px 12px; color: var(--muted); text-align: left; font-weight: 700; }
+    th, td { padding: 10px 12px; border-top: 1px solid var(--line); text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+    th { color: #263746; background: #eaf2f6; }
+    tbody tr:nth-child(even) { background: #f7f9fa; }
+    .timeline { position: relative; display: grid; gap: 12px; margin: 0; padding: 4px 0 4px 32px; list-style: none; }
+    .timeline::before { content: ""; position: absolute; left: 11px; top: 10px; bottom: 10px; width: 3px; background: var(--sky); }
+    .decision-card { position: relative; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: #fbfcfd; }
+    .decision-card::before { content: ""; position: absolute; left: -28px; top: 18px; width: 12px; height: 12px; border: 3px solid var(--card); border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 2px var(--blue); }
+    .decision-card p { margin: 5px 0 0; color: var(--muted); }
+    .badge { display: inline-block; margin-right: 6px; padding: 2px 8px; border-radius: 999px; background: #e7f4ee; color: #075d48; font-size: 0.78rem; font-weight: 750; }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 10px 0 0; padding: 0; list-style: none; color: var(--muted); font-size: 0.82rem; }
+    .legend span { display: inline-block; width: 11px; height: 11px; margin-right: 5px; border-radius: 3px; vertical-align: -1px; }
+    footer { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 4px 0 40px; color: var(--muted); font-size: 0.85rem; }
+    .empty { color: var(--muted); font-style: italic; }
+
+    @media (max-width: 800px) {
+      .visual-grid { grid-template-columns: 1fr; }
+      header, main, footer { width: min(100% - 24px, 1180px); }
+      header { padding-top: 30px; }
+      section { border-radius: 15px; }
+      .stat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .stat strong { font-size: 0.95rem; letter-spacing: -0.01em; }
+    }
+
+    @media (max-width: 520px) {
+      body { font-size: 15px; }
+      header, main, footer { width: min(100% - 16px, 1180px); }
+      section { padding: 16px; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .stat strong { font-size: 0.92rem; letter-spacing: -0.01em; }
+      .table-wrap { overflow: visible; border: 0; }
+      table, tbody, tr, td { display: block; width: 100%; }
+      caption { display: block; width: 100%; }
+      thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+      caption { padding-inline: 0; }
+      tbody { display: grid; gap: 10px; }
+      tbody tr { padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+      td { display: grid; grid-template-columns: minmax(92px, 0.42fr) minmax(0, 1fr); gap: 8px; padding: 6px 0; border: 0; }
+      td::before { content: attr(data-label); color: var(--muted); font-weight: 750; }
+      svg { min-height: 190px; }
+    }
+
+    @media print {
+      @page { margin: 12mm; }
+      html { background: #fff !important; }
+      body { background: #fff; color: #000; font-size: 9pt; }
+      header, main, footer { width: 100%; }
+      header { padding: 0 0 8mm; }
+      h1 { font-size: 28pt; }
+      section { margin: 0 0 7mm; padding: 6mm; break-inside: avoid; border-color: #777; box-shadow: none; background: #fff; }
+      .visual-grid { grid-template-columns: 1fr; }
+      svg { max-height: 72mm; border-color: #777; }
+      .table-wrap { overflow: visible; }
+      #data-boundary { border-color: #555; background: #fff; }
+      #claims table { table-layout: fixed; font-size: 8pt; }
+      #claims th, #claims td { padding: 6px; overflow-wrap: normal; word-break: normal; }
+      #claims th:nth-child(1), #claims td:nth-child(1) { width: 9%; }
+      #claims th:nth-child(2), #claims td:nth-child(2) { width: 12%; }
+      #claims th:nth-child(3), #claims td:nth-child(3) { width: 26%; }
+      #claims th:nth-child(4), #claims td:nth-child(4) { width: 13%; }
+      #claims th:nth-child(5), #claims td:nth-child(5) { width: 18%; }
+      #claims th:nth-child(6), #claims td:nth-child(6) { width: 22%; }
+      footer { padding-bottom: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Research Cockpit</h1>
+    <p class="lede">A local, inspectable view of resources, human decisions, bounded experiments, and claim-level evidence.</p>
+  </header>
+  <main>
+    <p id="data-boundary" role="status"></p>
+    <section id="resources" tabindex="0" aria-labelledby="resources-title">
+      <header><h2 id="resources-title">Resource envelope</h2><p>Declared capacity and constraints for the current research run.</p></header>
+      <div class="content"></div>
+    </section>
+    <section id="ideas" tabindex="0" aria-labelledby="ideas-title">
+      <header><h2 id="ideas-title">Idea map</h2><p>Novelty position, feasibility, expected cost, and differentiating claim.</p></header>
+      <div class="content"></div>
+    </section>
+    <section id="overlap" tabindex="0" aria-labelledby="overlap-title">
+      <header><h2 id="overlap-title">Overlap matrix</h2><p>Question, method, data, evaluation, and claimed-contribution overlap.</p></header>
+      <div class="content"></div>
+    </section>
+    <section id="decisions" tabindex="0" aria-labelledby="decisions-title">
+      <header><h2 id="decisions-title">Decision timeline</h2><p>Chronological human gates bound to their recorded inputs.</p></header>
+      <div class="content"></div>
+    </section>
+    <section id="experiments" tabindex="0" aria-labelledby="experiments-title">
+      <header><h2 id="experiments-title">Experiment Pareto</h2><p>Performance against declared cost, including failed and crashed runs.</p></header>
+      <div class="content"></div>
+    </section>
+    <section id="claims" tabindex="0" aria-labelledby="claims-title">
+      <header><h2 id="claims-title">Claim evidence</h2><p>Every claim connected to registered artifacts and explicit caveats.</p></header>
+      <div class="content"></div>
+    </section>
+  </main>
+  <footer>Generated offline from validated autoresearch state. Visual summaries are paired with textual tables.</footer>
+  <script type="application/json" id="autoresearch-data">{"artifacts":{"artifacts":[{"artifact_id":"experiment-code","frozen":true,"kind":"experiment-code","path":"artifacts/public/experiment.py","producing_run":"demo-one-gpu","sha256":"6520c036e0539be651b7375157d9e2d88e56ae901b68ee179ec6d1dce1fe17be"},{"artifact_id":"experiment-config","frozen":true,"kind":"experiment-config","path":"artifacts/public/experiment-config.json","producing_run":"demo-one-gpu","sha256":"12fef056d1cd7ec770cf68fa9d5497014ef5c7783bce9e060946c489af3d7897"},{"artifact_id":"requirements-lock","frozen":true,"kind":"requirements-lock","path":"artifacts/public/requirements-lock.txt","producing_run":"demo-one-gpu","sha256":"cc72cfcd0e279156262e921705939b37e53ac39e205bdcc8cd002ff3de5f624e"},{"artifact_id":"split-manifest","frozen":true,"kind":"split-manifest","path":"artifacts/public/split-manifest.json","producing_run":"demo-one-gpu","sha256":"9155aed969f9b511620614507c3179fffa789d7ca51ee53e858ef97689a463e8"},{"artifact_id":"metrics-summary","frozen":true,"kind":"metrics-summary","path":"artifacts/public/metrics-summary.json","producing_run":"demo-one-gpu","sha256":"63504729729055851604c8f3772bc3df9c170ac52ff75282d91ff4dd06b78534"},{"artifact_id":"attribution","frozen":true,"kind":"attribution","path":"artifacts/public/ATTRIBUTION.md","producing_run":"demo-one-gpu","sha256":"52ee7534e3f59bf9af872504de86aea17fb228ceb7ee9fd6ac5d34cd974824d2"}],"record_type":"artifact-manifest","schema_version":"1.0"},"brief":{"constraints":{"allowed_scope":[".autoresearch/demo-one-gpu/"],"commands":[{"description":"Build and freeze deterministic split manifests without training.","template":"py .autoresearch/demo-one-gpu/artifacts/public/experiment.py prepare --config .autoresearch/demo-one-gpu/artifacts/public/experiment-config.json"},{"description":"Run only the Gate 2-approved two-condition pilot.","template":"py .autoresearch/demo-one-gpu/artifacts/public/experiment.py pilot --config .autoresearch/demo-one-gpu/artifacts/public/experiment-config.json"},{"description":"Independently verify the frozen pilot evidence before Gate 3.","template":"py .autoresearch/demo-one-gpu/artifacts/public/experiment.py verify-pilot --config .autoresearch/demo-one-gpu/artifacts/public/experiment-config.json"}],"forbidden_scope":["account or credential stores","environment dumps","host or device identifiers","project-private data","raw data or checkpoints in public export"],"monetary_budget":0,"wall_time_seconds":1800},"created_at":"2026-07-15T09:06:24Z","experiment_contract":{"authorization_scope":"pilot only; no full run and no public claim","builder_verifier":{"builder":"Implements only the approved split, model, configuration, and pilot; freezes code, data, schema, split, configuration, environment, and model-state hashes; does not open test metrics.","verifier":"Independently checks hashes, row counts, class coverage, partition equality and disjointness, train-only normalization, feature removal, deterministic replay, metrics, runtime, VRAM, artifact hashes, and privacy boundaries without editing Builder outputs."},"claim_limits":["The pilot can establish execution integrity only; it cannot support a scientific conclusion.","The final walkthrough is one bounded audit, not a benchmark, novelty claim, SOTA claim, universal scientific conclusion, GPU performance claim, or proof of native compatibility across agents.","Re-execution is scoped to the recorded environment and does not promise bitwise equality across PyTorch releases, platforms, or hardware."],"dataset":{"area3_test_label_counts":{"1":87528,"2":125093,"3":14300,"4":0,"5":5712,"6":7626,"7":13105},"area4_policy":"coverage failure only; class 4 has zero complementary training support, so no Area 4 model or macro-F1 comparison is allowed","columns_including_target":55,"data_sha256":"614360d0257557dd1792834a85a1cdebfadc3c4f30b011d56afee7ffb5b15771","doi":"10.24432/C50K5N","global_label_counts":{"1":211840,"2":283301,"3":35754,"4":2747,"5":9493,"6":17367,"7":20510},"license":"CC BY 4.0","rows":581012,"source_url":"https://archive.ics.uci.edu/static/public/31/covertype.zip","zip_sha256":"89a975c2457cd48e824238ae43c5a3cb762e42c4b4078d9b44a4514055105f6d"},"environment":{"cuda_build":"12.4","driver":"546.28","hardware_class":"NVIDIA GeForce RTX 4060 Laptop GPU with 8188 MiB VRAM","numpy":"1.26.4","python":"3.11.3","supply_chain_limit":"Existing local environment; package installation provenance was not independently verified. No new package installation is authorized.","torch":"2.6.0+cu124"},"features":{"continuous_columns":"columns 0 through 9; standardized with that condition's training partition only","input_columns":50,"limitation":"Soil_Type features may remain geographic proxies, so this is not proof of complete spatial generalization.","removed_columns":"target column 54 and Wilderness_Area columns 10 through 13","unchanged_columns":"Soil_Type columns 14 through 53 remain binary"},"future_full_requires_gate3":{"areas":[1,2,3],"conditions_per_area":2,"cumulative_gpu_hours_max_including_pilot":2,"cumulative_wall_hours_max_including_pilot":3,"epochs_per_run":5,"model_seeds":[17,29,43],"planned_runs":18,"test_open_policy":"Open each frozen test evaluator only after all approved full training runs finish; no result-driven retries or configuration changes."},"metrics_and_claim_rules":{"anomaly_pause":"absolute mean delta at least 0.20 or any seed absolute delta at least 0.30 pauses Gate 4 for leakage and evaluator audit","area_present_labels":{"1":"1,2,5,7","2":"1,2,7","3":"1,2,3,5,6,7"},"guardrails":"accuracy, per-class precision recall and F1, confusion matrix, prediction distribution, class coverage, validation metrics, runtime, peak VRAM, failures, and NaN counts","primary_effect":"For each area, delta equals macro-F1 on that area's present labels under matched random minus whole-area holdout.","qualified_per_area":"a finite audited effect that does not meet every supported threshold","supported_per_area":"mean delta at least 0.05, all three seed deltas positive, bootstrap lower bound above 0.02, and no Critical verifier finding","uncertainty":"mean and standard deviation across three seeds plus a fixed-seed stratified confusion-matrix bootstrap interval; this interval is descriptive and not a population-generalization guarantee","unsupported_or_reversed":"bootstrap upper bound below 0.05 refutes the preregistered five-point effect for that area; an upper bound below zero records reversal"},"pilot":{"automatic_retries":0,"currency_cost_max":0,"evaluate_test":false,"gpu_minutes_max":15,"model_seed":101,"runs":2,"success_checks":["Dataset, schema, counts, hashes, split equality, disjointness, and feature removal all match the frozen contract.","Training and validation losses are finite, and at least one later training epoch is lower than epoch one.","The Verifier independently replays the first 20 optimizer steps for both conditions with loss tolerance 1e-7 and matching canonical model-state tensor hashes.","CUDA is available on the approved GPU class, peak allocated VRAM is at most 7.2 GiB, and the projected full block fits its separate ceiling.","No integrity, privacy, security, budget, or deterministic-algorithm finding remains open."],"wall_minutes_max":30},"privacy":{"never_record_or_export":"raw data, full row indices, checkpoints, per-row predictions or logits, raw stdout or stderr, tracebacks, caches, package-manager logs, environment variables, usernames, hostnames, GPU UUIDs or serials, process lists, absolute paths, account data, credentials, tokens, or API information","public_artifacts":"reviewed minimal experiment code, frozen config, dependency lock, split rules and aggregate counts, aggregate metric summary, attribution, and SHA-256 hashes"},"research_question":"For UCI Covertype, how much does measured multiclass performance change when a whole wilderness area is held out instead of using a random test split with exactly matched per-class counts?","split":{"conditions":["whole-area holdout","class-count-matched random"],"invariants":["Each condition has disjoint train, validation, and test partitions whose union is all rows.","The two conditions have exactly equal train, validation, and test counts for every label.","Split manifests and aggregate counts are frozen and hashed before any CUDA training call.","Full row ID or index lists remain local and are never included in public export."],"pilot_area":3,"random_test_algorithm":"Within each label, sort all rows by SHA256('test|20260715|' + row_id) and take exactly the Area 3 test count without replacement.","random_test_seed":20260715,"row_id_algorithm":"SHA256(data_sha256 + ':' + zero_based_original_row_index)","validation_algorithm":"Within each condition and label, sort the post-test pool by SHA256('val|20260716|' + row_id) and take floor(0.10 * class_count).","validation_fraction_per_class":0.1,"validation_seed":20260716},"stop_rules":["Stop on any dataset, schema, count, hash, split, code, config, evaluator, or environment drift.","Stop on target or area leakage, partition overlap or omission, unequal paired counts, test access before Gate 3, NaN or Inf, OOM, deterministic-algorithm failure, privacy or security finding, or budget ceiling.","Do not fall back to CPU, reduce batch size, retry automatically, change seeds, tune on test, or expand network and storage scope.","Any semantic contract change invalidates Gate 2 approval and requires a new human decision."],"training":{"automatic_mixed_precision":false,"batch_size":4096,"betas":[0.9,0.999],"checkpoint_selection":"final epoch only","determinism":"same initialization per paired condition; torch deterministic algorithms enabled; cuDNN benchmark disabled; fixed generator; num_workers zero","early_stopping":false,"epochs":5,"epsilon":1e-08,"learning_rate":0.001,"loss":"unweighted cross entropy","model":"float32 MLP 50-128-64-7 with ReLU after each hidden layer","optimizer":"AdamW","scheduler":false,"weight_decay":0.0001}},"mode":"pi","network_status":{"approved_for_project_private_data":false,"available":false},"public_summary":"A bounded Covertype demonstration found higher matched-random than area-holdout macro-F1 in all nine paired comparisons; the claim remains limited to the recorded dataset, model, seeds, and split protocol.","record_type":"research-brief","resources":{"apis":[{"capability":"none during pilot","credential_available":false,"provider":"none during pilot"}],"compute":{"accelerator":"one NVIDIA GeForce RTX 4060 Laptop GPU","cpu":"local CPU, not identified or published","gpu_vram_gb":8,"storage_gb":2}},"resume":{"enabled":false},"run_id":"demo-one-gpu","schema_version":"1.0","stage":"GATE_4_CLAIMS","stage_input_hash":"b53b7dea0876df15edd403374f88c747fca3a3e606513345464bf21ea738776d","updated_at":"2026-07-15T12:27:56Z"},"claims":{"claims":[{"artifact_ids":["metrics-summary","split-manifest","experiment-code","experiment-config"],"caveats":["Bounded to one dataset, one fixed MLP, three seeds, and Areas 1 through 3."],"citations":["evidence-covertype-source","evidence-covertype-field-audit"],"claim_id":"claim-split-sensitivity","counter_evidence":["Area holdouts have incomplete class coverage and soil indicators may remain geographic proxies."],"run_ids":["demo-one-gpu"],"status":"supported","text":"In the recorded Covertype experiment, matched-random macro-F1 exceeded area-holdout macro-F1 in all nine paired seed-and-area comparisons."},{"artifact_ids":["metrics-summary"],"caveats":["The evidence does not establish a universal effect size or causal mechanism."],"citations":["evidence-split-search"],"claim_id":"claim-bounded-implication","counter_evidence":["Only three model seeds and one architecture were evaluated."],"run_ids":["demo-one-gpu"],"status":"qualified","text":"For this bounded setup, random splitting materially overestimated performance relative to whole-area holdout."},{"artifact_ids":["metrics-summary"],"caveats":["No novelty review, benchmark sweep, or cross-dataset replication was performed."],"citations":[],"claim_id":"claim-universal-or-sota","counter_evidence":["The protocol deliberately used a small fixed demonstration model."],"run_ids":["demo-one-gpu"],"status":"unsupported","text":"The result proves universal spatial generalization behavior, novelty, or state-of-the-art performance."}],"record_type":"claim-evidence","schema_version":"1.0"},"data_boundary":"Public sanitized export","decisions":[{"actor":"human","constraints":["Download data only from the official UCI source, then inspect fields and compute SHA-256 before use.","Keep raw data and checkpoints in ignored local storage; never commit or upload them.","Publish only reviewed minimal code, configuration, dependency locks, split rules, aggregate metrics, and hashes.","Make no novelty, SOTA, leaderboard, universal-science, GPU-performance, or cross-agent native-compatibility claim.","Do not begin GPU training before a separate Gate 2 approval."],"decision":"approve","event_hash":"09c0c9b07d691941cad7b664b3bd2921ed7ae08e969865e0e3244f5a710ca2df","event_id":"gate-1-covertype-split-sensitivity","input_hash":"57514f357477bd4d8f836020b3efa94f3a0241d4f3fc9a42ab2cf0282d03e10b","previous_event_hash":null,"rationale":"Approved the recommended UCI Covertype wilderness-area split-sensitivity walkthrough and the safe public reproducibility extension.","record_type":"decision","schema_version":"1.0","stage":"GATE_1_IDEA","timestamp":"2026-07-15T09:10:57Z"},{"actor":"human","constraints":["Authorize only two fixed-seed Pilot runs; do not authorize the Full block or any public scientific conclusion.","Use the frozen Area 3 class-count-matched split, 50-128-64-7 MLP, seed 101, batch 4096, five epochs, no early stopping, no test evaluation, and no automatic retry.","Stop at 15 GPU-minutes, 30 wall-minutes, currency cost above zero, deterministic-algorithm failure, CUDA/device mismatch, OOM, NaN, integrity failure, privacy finding, or contract drift.","Use the existing local Python, NumPy, and PyTorch environment only; do not install packages, expand network scope, or disclose environment variables, account data, personal paths, host identifiers, device UUIDs, or process lists.","Builder must freeze code, configuration, split manifest, and hashes; an independent Verifier must approve them before training and verify outputs before Gate 3.","Treat Area 4 only as a class-coverage failure and do not train or compare it."],"decision":"approve","event_hash":"ad9891e33da79ba8db873df2375d9383b50d19c6b30dd9ad971ae8f9a1755a1e","event_id":"gate-2-area3-pilot-local-resources","input_hash":"d65530ee6ccdd324a8f52aab4939aa2ae599b0ec6eb9a0c531c40fe2dfe1f373","previous_event_hash":"09c0c9b07d691941cad7b664b3bd2921ed7ae08e969865e0e3244f5a710ca2df","rationale":"Approved the exact Area 3 matched-random versus area-holdout Pilot only because the existing local compute and storage preflight met the recorded contract.","record_type":"decision","schema_version":"1.0","stage":"GATE_2_PLAN_AND_BUDGET","timestamp":"2026-07-15T10:30:00Z"},{"actor":"human","constraints":["Run only Areas 1 through 3 with two conditions and three frozen seeds.","Keep cumulative GPU time below two hours and do not publish conclusions before Gate 4."],"decision":"approve","event_hash":"b75d640eae67fc3fe272c9730f6928a0afbf0b26177c86078999a4286b81a546","event_id":"gate-3-covertype-full-block","input_hash":"8caf47c705769de1c6266074348a4700d4880ba43ac80411abe1546778caa880","previous_event_hash":"ad9891e33da79ba8db873df2375d9383b50d19c6b30dd9ad971ae8f9a1755a1e","rationale":"Approved the bounded eighteen-run Full block after the Pilot completed within the resource envelope.","record_type":"decision","schema_version":"1.0","stage":"GATE_3_FULL_RUN","timestamp":"2026-07-15T12:26:59Z"},{"actor":"human","constraints":["Publish only the supported and qualified wording with its caveats.","Do not claim novelty, SOTA, universality, or cross-dataset generalization."],"decision":"approve","event_hash":"fb3d6b0d54496fad7451859f11844b2e505a369a3d2689fa86b37f9718d59dfb","event_id":"gate-4-covertype-qualified-claims","input_hash":"b53b7dea0876df15edd403374f88c747fca3a3e606513345464bf21ea738776d","previous_event_hash":"b75d640eae67fc3fe272c9730f6928a0afbf0b26177c86078999a4286b81a546","rationale":"Approved publication of the qualified claim-to-artifact package after reviewing the bounded Full results.","record_type":"decision","schema_version":"1.0","stage":"GATE_4_CLAIMS","timestamp":"2026-07-15T12:26:59Z"}],"evidence":[{"content_hash":"8c4b0053624c198e026d3fbcc79ee5e7a4e2e339746493d93576c7e8178d9ba2","coverage":{"limitations":["No dataset bytes were downloaded.","The official page does not publish a cryptographic file checksum; the first approved download must be hashed before use."],"scope":"official dataset identity, dimensions, file size, DOI, license, feature groups, and limitations"},"evidence_id":"evidence-covertype-source","kind":"public-dataset-metadata","notes":"The digest binds a normalized metadata tuple, not dataset bytes. UCI reports DOI 10.24432/C50K5N, CC BY 4.0, 581012 rows, 54 features, and a 10.7 MB data file.","record_type":"evidence","retrieved_at":"2026-07-15T09:06:24Z","schema_version":"1.0","source":"https://archive.ics.uci.edu/dataset/31/covertype","status":"verified-metadata-only"},{"content_hash":"483ad79f6f0a39704444da2ba563a2e692e269af0bac37ea30c905c22ba4bfa5","coverage":{"limitations":["SciSpace transport failed for all three attempted queries.","The fallback search was limited to public arXiv and PMLR pages.","No exact-match result does not establish novelty; global overlap remains unknown."],"scope":"Covertype wilderness-area split sensitivity and feature-ablation overlap"},"evidence_id":"evidence-split-search","kind":"limited-public-literature-search","notes":"The retrieved Wilderness Area paper confirms prior reuse of Covertype's area structure but does not establish the proposed supervised split-sensitivity protocol as novel.","record_type":"evidence","retrieved_at":"2026-07-15T09:06:24Z","schema_version":"1.0","source":"public arXiv and PMLR search pages","status":"partial-search"},{"content_hash":"8237968b0543f1dcd4660568936fed9462fed5c38af0b4cf64de33dd1decc8e4","coverage":{"limitations":["The search was not systematic or exhaustive.","Retrieved work already studies class-weighted risk on Covertype and label smoothing in other domains.","No research novelty claim is permitted."],"scope":"Covertype class imbalance and general label-smoothing calibration overlap"},"evidence_id":"evidence-imbalance-search","kind":"limited-public-literature-search","notes":"Class weighting is overlapping prior work; label smoothing is a mature calibration method and would be only a bounded replication here.","record_type":"evidence","retrieved_at":"2026-07-15T09:06:24Z","schema_version":"1.0","source":"public arXiv and PMLR search pages","status":"partial-search"},{"content_hash":"89a975c2457cd48e824238ae43c5a3cb762e42c4b4078d9b44a4514055105f6d","coverage":{"limitations":["UCI did not publish a cryptographic checksum on the dataset page, so this is a locally measured first-download hash.","The hash identifies the bytes retrieved on this date and must be rechecked before every use."],"scope":"Downloaded archive identity and safe archive structure"},"evidence_id":"evidence-covertype-download","kind":"official-dataset-download","notes":"The 11251206-byte archive contained only covtype.data.gz, covtype.info, and old_covtype.info; it had zero traversal and zero encrypted entries.","record_type":"evidence","retrieved_at":"2026-07-15T09:15:27Z","schema_version":"1.0","source":"https://archive.ics.uci.edu/static/public/31/covertype.zip","status":"downloaded-and-archive-inspected"},{"content_hash":"614360d0257557dd1792834a85a1cdebfadc3c4f30b011d56afee7ffb5b15771","coverage":{"limitations":["This is a schema and coverage audit, not a scientific validation of labels.","Area 4 is unsuitable for the primary closed-set holdout comparison because class 4 appears only in area 4 and would be absent from training."],"scope":"Row shape, numeric type, one-hot integrity, global label counts, and label coverage by wilderness area"},"evidence_id":"evidence-covertype-field-audit","kind":"local-data-integrity-audit","notes":"All 581012 rows had 55 integer columns, valid one-hot wilderness and soil fields, and no malformed rows. Areas 1-3 retain every test class in their complementary training set; area 4 does not.","record_type":"evidence","retrieved_at":"2026-07-15T09:15:27Z","schema_version":"1.0","source":"covtype.data.gz from evidence-covertype-download","status":"integrity-checked"}],"experiments":[{"artifact_ids":["experiment-code","experiment-config","requirements-lock","split-manifest","metrics-summary","attribution"],"code_hash":"6520c036e0539be651b7375157d9e2d88e56ae901b68ee179ec6d1dce1fe17be","commit":"224c9e305b835d8dff8198c7be0e85ebadff99bc","config_hash":"12fef056d1cd7ec770cf68fa9d5497014ef5c7783bce9e060946c489af3d7897","cost":{"amount":0,"currency":"USD"},"data_hash":"614360d0257557dd1792834a85a1cdebfadc3c4f30b011d56afee7ffb5b15771","decision":"approve","environment":{"dependencies":{"numpy":"1.26.4","python":"3.11.3","torch":"2.6.0+cu124"},"drivers":{"nvidia":"546.28"},"hardware_class":"NVIDIA GeForce RTX 4060 Laptop GPU","runtime":"CPython CUDA 12.4"},"environment_hash":"21702172f97b15c40ba926c51f0db9e2c7545bc118d5731f61dbcbe8198a4e65","experiment_id":"covertype-area-split-full","metrics":{"primary":0.21110686982010207,"secondary":{"area1":0.20353988545341842,"area2":0.26097974473691904,"area3":0.16880097926996876}},"peak_memory":{"gpu_gib":0.12563133239746094},"record_type":"experiment","runtime":{"gpu_seconds":646.443375,"wall_seconds":646.4839999999967},"schema_version":"1.0","status":"success","uncertainty":{"method":"sample standard deviation across nine paired comparisons","value":0.04327989136576011}}],"ideas":{"candidates":[{"candidate_id":"covertype-split-sensitivity","differentiating_claim":"No method novelty is claimed; the useful output is a preregistered estimate of how strongly this evaluation choice changes the decision under one fixed protocol.","hypothesis":"A random stratified split reports materially higher macro-F1 than a whole-wilderness-area holdout under the same small MLP and budget after the four area-indicator columns are removed from model inputs.","mechanism":"Random splitting mixes records from the same ecogeographic areas across train and test, while an area holdout creates a stronger distribution shift; UCI documents meaningful elevation and species differences among the four areas.","minimum_falsification_experiment":"Freeze one random stratified split and one preselected area holdout, remove area indicators, run one seed for at most five epochs, and report macro-F1, per-class recall, class coverage, uncertainty, and measured GPU time without selecting the better-looking split after testing.","nearest_work":[{"evidence_id":"evidence-covertype-source"},{"evidence_id":"evidence-split-search"}],"overlap":{"claimed_contribution":"none","data":"high","evaluation":"partial","method":"partial","question":"partial"},"pivots":["If preregistered area holdouts lack adequate class coverage, stop and request a new Gate 1 decision instead of choosing a favorable area.","If the pilot forecasts a budget overrun, keep only the pilot as an unsupported or qualified result."],"resource_estimate":{"expected":{"gpu_time_seconds":3600,"runs":6,"wall_time_seconds":7200},"high":{"gpu_time_seconds":7200,"runs":15,"wall_time_seconds":10800},"low":{"gpu_time_seconds":300,"runs":2,"wall_time_seconds":900}},"risks":["Some held-out areas may omit target classes, so class coverage must be reported and unsupported comparisons must remain unsupported.","The dataset has no coordinates, so area holdout is not a complete spatial-generalization test.","Keeping the four area-indicator columns would leak the holdout identity into model inputs."],"scores":{"compute_fit":5,"evidence_quality":4,"feasibility":4,"impact":4,"information_gain":5,"risk":3},"status":"incremental"},{"candidate_id":"covertype-feature-group-ablation","differentiating_claim":"No feature-selection novelty is claimed; the experiment would expose a decision-relevant performance-versus-proxy-use trade-off for this exact dataset and model.","hypothesis":"The ten continuous cartographic features retain most of the all-feature macro-F1 while reducing reliance on wilderness-area and soil-type proxy variables.","mechanism":"Elevation, slope, hydrology, road, fire-point, and hillshade features may contain much of the predictive structure, while the 44 binary group indicators encode location and soil categories.","minimum_falsification_experiment":"Freeze one stratified split and one model configuration, then compare all 54 features against the ten continuous features for one seed with identical epochs and report macro-F1, worst-class recall, parameter count, and GPU time.","nearest_work":[{"evidence_id":"evidence-covertype-source"},{"evidence_id":"evidence-split-search"}],"overlap":{"claimed_contribution":"none","data":"high","evaluation":"partial","method":"high","question":"unknown"},"pivots":["If all-feature performance dominates, report the trade-off rather than searching for a favorable subset.","If feature meanings differ from the UCI metadata after inspection, stop before training."],"resource_estimate":{"expected":{"gpu_time_seconds":1800,"runs":6,"wall_time_seconds":3600},"high":{"gpu_time_seconds":3600,"runs":10,"wall_time_seconds":7200},"low":{"gpu_time_seconds":240,"runs":2,"wall_time_seconds":600}},"risks":["The proxy interpretation is descriptive and cannot establish causal ecological relationships.","A random split can still overstate generalization beyond the four documented areas."],"scores":{"compute_fit":5,"evidence_quality":3,"feasibility":5,"impact":3,"information_gain":4,"risk":2},"status":"unknown"},{"candidate_id":"covertype-class-weighting","differentiating_claim":"This would be a transparent replication for workflow demonstration only; prior work already evaluates class-weighted and worst-class risks on Covertype.","hypothesis":"Training-set-derived inverse-frequency class weights improve worst-class recall without an unacceptable macro-F1 loss under a frozen stratified split.","mechanism":"A weighted loss increases the contribution of less frequent classes during optimization.","minimum_falsification_experiment":"After verifying class counts from the training split only, compare unweighted and inverse-frequency cross-entropy for one seed and reject the hypothesis if worst-class recall does not improve or macro-F1 crosses the preregistered harm threshold.","nearest_work":[{"evidence_id":"evidence-covertype-source"},{"evidence_id":"evidence-imbalance-search"}],"overlap":{"claimed_contribution":"none","data":"high","evaluation":"high","method":"high","question":"high"},"pivots":["If the inspected training split is not materially imbalanced, reject the candidate before training.","If weighted loss destabilizes training, retain the failure artifact and stop rather than tuning after test inspection."],"resource_estimate":{"expected":{"gpu_time_seconds":1800,"runs":6,"wall_time_seconds":3600},"high":{"gpu_time_seconds":3600,"runs":10,"wall_time_seconds":7200},"low":{"gpu_time_seconds":240,"runs":2,"wall_time_seconds":600}},"risks":["Class weighting is established and cannot support a novelty claim.","Rare-class gains can trade off sharply against common-class performance."],"scores":{"compute_fit":5,"evidence_quality":4,"feasibility":5,"impact":2,"information_gain":2,"risk":2},"status":"overlapping"}],"record_type":"idea-candidates","schema_version":"1.0"},"skill_recommendations":[]}</script>
+  <script>
+  (() => {
+    "use strict";
+    const data = JSON.parse(document.getElementById("autoresearch-data").textContent);
+    const NS = "http://www.w3.org/2000/svg";
+    let figureNumber = 0;
+
+    const text = value => {
+      if (value === null || value === undefined || value === "") return "Not recorded";
+      if (Array.isArray(value)) return value.length ? value.map(text).join(", ") : "None";
+      if (typeof value === "object") return Object.entries(value).map(([key, item]) => `${key}: ${text(item)}`).join("; ");
+      return String(value);
+    };
+    const node = (tag, className, content) => {
+      const result = document.createElement(tag);
+      if (className) result.className = className;
+      if (content !== undefined) result.textContent = text(content);
+      return result;
+    };
+    const svgNode = (tag, attributes = {}) => {
+      const result = document.createElementNS(NS, tag);
+      Object.entries(attributes).forEach(([key, value]) => result.setAttribute(key, String(value)));
+      return result;
+    };
+    const appendSvgText = (svg, x, y, content, attributes = {}) => {
+      const label = svgNode("text", { x, y, ...attributes });
+      label.textContent = text(content);
+      svg.appendChild(label);
+      return label;
+    };
+    const frame = (label, description, height = 360) => {
+      figureNumber += 1;
+      const titleId = `figure-title-${figureNumber}`;
+      const descId = `figure-desc-${figureNumber}`;
+      const svg = svgNode("svg", { viewBox: `0 0 900 ${height}`, role: "img", "aria-labelledby": `${titleId} ${descId}` });
+      const title = svgNode("title", { id: titleId });
+      title.textContent = label;
+      const desc = svgNode("desc", { id: descId });
+      desc.textContent = description;
+      svg.append(title, desc);
+      const figure = document.createElement("figure");
+      figure.appendChild(svg);
+      const caption = document.createElement("figcaption");
+      caption.textContent = description;
+      figure.appendChild(caption);
+      return { figure, svg };
+    };
+    const table = (captionText, columns, rows) => {
+      const wrapper = node("div", "table-wrap");
+      const result = document.createElement("table");
+      const caption = document.createElement("caption");
+      caption.textContent = captionText;
+      const thead = document.createElement("thead");
+      const headRow = document.createElement("tr");
+      columns.forEach(column => {
+        const th = document.createElement("th");
+        th.scope = "col";
+        th.textContent = column.label;
+        headRow.appendChild(th);
+      });
+      thead.appendChild(headRow);
+      const tbody = document.createElement("tbody");
+      rows.forEach(row => {
+        const tr = document.createElement("tr");
+        columns.forEach(column => {
+          const td = document.createElement("td");
+          td.dataset.label = column.label;
+          td.textContent = text(column.value(row));
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      result.append(caption, thead, tbody);
+      wrapper.appendChild(result);
+      return wrapper;
+    };
+    const contentFor = id => document.querySelector(`#${id} .content`);
+    const empty = message => node("p", "empty", message);
+    const bounded = (value, low, high) => Math.max(low, Math.min(high, Number(value) || 0));
+    const finiteMetric = value => typeof value === "number" && Number.isFinite(value) ? value : Number.NaN;
+
+    document.getElementById("data-boundary").textContent = text(data.data_boundary);
+
+    const brief = data.brief || {};
+    const compute = (brief.resources || {}).compute || {};
+    const constraints = brief.constraints || {};
+    const resourceHost = contentFor("resources");
+    const stats = node("div", "stat-grid");
+    [
+      ["Mode", brief.mode], ["Stage", brief.stage], ["CPU", compute.cpu], ["Accelerator", compute.accelerator],
+      ["RAM", compute.ram_gb === undefined ? null : `${compute.ram_gb} GB`],
+      ["Storage", compute.storage_gb === undefined ? null : `${compute.storage_gb} GB`],
+      ["Time ceiling", constraints.wall_time_seconds === undefined ? null : `${constraints.wall_time_seconds} s`],
+      ["Budget", constraints.monetary_budget]
+    ].forEach(([label, value]) => {
+      const card = node("div", "stat");
+      card.append(node("span", "", label), node("strong", "", value));
+      stats.appendChild(card);
+    });
+    resourceHost.appendChild(stats);
+    const apis = ((brief.resources || {}).apis || []);
+    resourceHost.appendChild(table("Text equivalent for resource and data boundaries", [
+      { label: "Item", value: row => row.item },
+      { label: "Declared value", value: row => row.value }
+    ], [
+      { item: "Allowed scope", value: constraints.allowed_scope },
+      { item: "Forbidden scope", value: constraints.forbidden_scope },
+      { item: "Network available", value: (brief.network_status || {}).available },
+      { item: "APIs", value: apis.map(api => `${text(api.provider)} / ${text(api.capability)} / credential available: ${text(api.credential_available)}`) }
+    ]));
+
+    const ideas = ((data.ideas || {}).candidates || []);
+    const ideaHost = contentFor("ideas");
+    if (!ideas.length) {
+      ideaHost.appendChild(empty("No idea candidates recorded."));
+    } else {
+      const layout = node("div", "visual-grid");
+      const { figure, svg } = frame("Idea novelty, feasibility, and cost map", "Each circle is an idea. Horizontal position represents novelty status, vertical position represents feasibility, and circle size represents expected wall time.");
+      const novelty = { overlapping: 1, incremental: 2, unknown: 3, differentiated: 4 };
+      svg.append(svgNode("line", { x1: 80, y1: 310, x2: 850, y2: 310, stroke: "#536170", "stroke-width": 2 }));
+      svg.append(svgNode("line", { x1: 80, y1: 40, x2: 80, y2: 310, stroke: "#536170", "stroke-width": 2 }));
+      appendSvgText(svg, 465, 345, "Novelty status: overlap to differentiated", { "text-anchor": "middle" });
+      appendSvgText(svg, 22, 175, "Feasibility", { transform: "rotate(-90 22 175)", "text-anchor": "middle" });
+      ideas.forEach((idea, index) => {
+        const status = novelty[idea.status] || 3;
+        const feasibility = bounded((idea.scores || {}).feasibility, 0, 5);
+        const seconds = Number((((idea.resource_estimate || {}).expected || {}).wall_time_seconds)) || 1;
+        const x = 80 + ((status - 1) / 3) * 740;
+        const y = 310 - (feasibility / 5) * 245;
+        const radius = Math.max(13, Math.min(32, 10 + Math.log10(seconds + 1) * 6));
+        const circle = svgNode("circle", { cx: x, cy: y, r: radius, fill: index % 2 ? "#e69f00" : "#0072b2", opacity: 0.78, stroke: "#17212b", "stroke-width": 1.5, tabindex: 0, role: "img", "aria-label": `${text(idea.candidate_id)}; ${text(idea.status)}; feasibility ${feasibility}; expected ${seconds} seconds` });
+        svg.appendChild(circle);
+        appendSvgText(svg, x, y - radius - 7, idea.candidate_id, { "text-anchor": "middle", "font-weight": 700 });
+      });
+      layout.append(figure, table("Text equivalent for the idea map", [
+        { label: "Candidate", value: row => row.candidate_id },
+        { label: "Status", value: row => row.status },
+        { label: "Information gain", value: row => (row.scores || {}).information_gain },
+        { label: "Feasibility", value: row => (row.scores || {}).feasibility },
+        { label: "Expected time", value: row => `${(((row.resource_estimate || {}).expected || {}).wall_time_seconds) || "Not recorded"} s` },
+        { label: "Differentiating claim", value: row => row.differentiating_claim }
+      ], ideas));
+      ideaHost.appendChild(layout);
+    }
+
+    const overlapHost = contentFor("overlap");
+    if (!ideas.length) {
+      overlapHost.appendChild(empty("No overlap evidence recorded."));
+    } else {
+      const dimensions = ["question", "method", "data", "evaluation", "claimed_contribution"];
+      const palette = { none: "#d8e2ea", partial: "#56b4e9", high: "#d55e00", unknown: "#e69f00" };
+      const layout = node("div", "visual-grid");
+      const height = 105 + ideas.length * 62;
+      const { figure, svg } = frame("Five-column overlap grid", "Rows are candidate ideas. Each labeled cell reports overlap for question, method, data, evaluation, and claimed contribution.", height);
+      dimensions.forEach((dimension, column) => appendSvgText(svg, 260 + column * 122, 42, dimension.replace("_", " "), { "text-anchor": "middle", "font-weight": 700 }));
+      ideas.forEach((idea, row) => {
+        appendSvgText(svg, 12, 82 + row * 62, idea.candidate_id, { "font-weight": 700 });
+        dimensions.forEach((dimension, column) => {
+          const value = text((idea.overlap || {})[dimension]).toLowerCase();
+          const rect = svgNode("rect", { x: 202 + column * 122, y: 56 + row * 62, width: 112, height: 40, rx: 7, fill: palette[value] || palette.unknown, stroke: "#536170" });
+          svg.appendChild(rect);
+          appendSvgText(svg, 258 + column * 122, 82 + row * 62, value, { "text-anchor": "middle", "font-weight": 700 });
+        });
+      });
+      const legend = node("ul", "legend");
+      Object.entries(palette).forEach(([label, color]) => {
+        const item = document.createElement("li");
+        const swatch = document.createElement("span");
+        swatch.style.background = color;
+        item.append(swatch, document.createTextNode(label));
+        legend.appendChild(item);
+      });
+      figure.appendChild(legend);
+      layout.append(figure, table("Text equivalent for the overlap matrix", [
+        { label: "Candidate", value: row => row.candidate_id },
+        ...dimensions.map(dimension => ({ label: dimension.replace("_", " "), value: row => (row.overlap || {})[dimension] }))
+      ], ideas));
+      overlapHost.appendChild(layout);
+    }
+
+    const decisions = (data.decisions || []).slice().sort((left, right) => text(left.timestamp).localeCompare(text(right.timestamp)));
+    const decisionHost = contentFor("decisions");
+    if (!decisions.length) {
+      decisionHost.appendChild(empty("No gate decisions recorded."));
+    } else {
+      const layout = node("div", "visual-grid");
+      const timeline = node("ol", "timeline");
+      timeline.setAttribute("aria-label", "Chronological decision cards");
+      decisions.forEach(decision => {
+        const item = node("li", "decision-card");
+        const heading = document.createElement("h3");
+        const badge = node("span", "badge", decision.decision);
+        heading.append(badge, document.createTextNode(text(decision.stage)));
+        item.append(heading, node("p", "", `${text(decision.timestamp)} · ${text(decision.actor)}`), node("p", "", decision.rationale));
+        timeline.appendChild(item);
+      });
+      layout.append(timeline, table("Text equivalent for the decision timeline", [
+        { label: "Stage", value: row => row.stage },
+        { label: "Decision", value: row => row.decision },
+        { label: "Actor", value: row => row.actor },
+        { label: "Timestamp", value: row => row.timestamp },
+        { label: "Constraints", value: row => row.constraints }
+      ], decisions));
+      decisionHost.appendChild(layout);
+    }
+
+    const experiments = data.experiments || [];
+    const experimentHost = contentFor("experiments");
+    if (!experiments.length) {
+      experimentHost.appendChild(empty("No experiments recorded."));
+    } else {
+      const layout = node("div", "visual-grid");
+      const { figure, svg } = frame("Experiment cost and primary metric plot", "Successful experiments are circles positioned by cost and primary metric. Crashed experiments are marked with an X and retain a null metric.");
+      const validMetrics = experiments.map(item => finiteMetric((item.metrics || {}).primary)).filter(Number.isFinite);
+      const costs = experiments.map(item => Number((item.cost || {}).amount) || 0);
+      const minMetric = validMetrics.length ? Math.min(...validMetrics) : 0;
+      const maxMetric = validMetrics.length ? Math.max(...validMetrics) : 1;
+      const maxCost = Math.max(...costs, 1);
+      svg.append(svgNode("line", { x1: 80, y1: 310, x2: 850, y2: 310, stroke: "#536170", "stroke-width": 2 }));
+      svg.append(svgNode("line", { x1: 80, y1: 40, x2: 80, y2: 310, stroke: "#536170", "stroke-width": 2 }));
+      appendSvgText(svg, 465, 345, "Recorded cost", { "text-anchor": "middle" });
+      appendSvgText(svg, 22, 175, "Primary metric", { transform: "rotate(-90 22 175)", "text-anchor": "middle" });
+      experiments.forEach((experiment, index) => {
+        const cost = Number((experiment.cost || {}).amount) || 0;
+        const metric = finiteMetric((experiment.metrics || {}).primary);
+        const x = 90 + (cost / maxCost) * 730;
+        const y = Number.isFinite(metric) ? 295 - ((metric - minMetric) / Math.max(maxMetric - minMetric, 1e-9)) * 225 : 286;
+        if (experiment.status === "crash" || !Number.isFinite(metric)) {
+          svg.append(svgNode("line", { x1: x - 10, y1: y - 10, x2: x + 10, y2: y + 10, stroke: "#d55e00", "stroke-width": 5 }));
+          svg.append(svgNode("line", { x1: x - 10, y1: y + 10, x2: x + 10, y2: y - 10, stroke: "#d55e00", "stroke-width": 5 }));
+        } else {
+          svg.append(svgNode("circle", { cx: x, cy: y, r: 11, fill: index % 2 ? "#009e73" : "#0072b2", stroke: "#17212b", tabindex: 0, role: "img", "aria-label": `${text(experiment.experiment_id)}; cost ${cost}; primary metric ${metric}` }));
+        }
+        appendSvgText(svg, x, Math.max(54, y - 18), experiment.experiment_id, { "text-anchor": "middle", "font-weight": 700 });
+      });
+      layout.append(figure, table("Text equivalent for experiment cost and performance", [
+        { label: "Experiment", value: row => row.experiment_id },
+        { label: "Status", value: row => row.status },
+        { label: "Primary metric", value: row => (row.metrics || {}).primary },
+        { label: "Cost", value: row => `${text((row.cost || {}).amount)} ${text((row.cost || {}).currency)}` },
+        { label: "Runtime", value: row => `${text((row.runtime || {}).seconds)} s` },
+        { label: "Decision", value: row => row.decision }
+      ], experiments));
+      experimentHost.appendChild(layout);
+    }
+
+    const claims = ((data.claims || {}).claims || []);
+    const artifacts = ((data.artifacts || {}).artifacts || []);
+    const claimHost = contentFor("claims");
+    if (!claims.length) {
+      claimHost.appendChild(empty("No claims recorded."));
+    } else {
+      const layout = node("div", "visual-grid");
+      const height = Math.max(280, 90 + Math.max(claims.length, artifacts.length) * 62);
+      const { figure, svg } = frame("Claim-to-artifact evidence graph", "Claims appear on the left and registered artifacts on the right. Lines show every recorded claim-to-artifact relationship.", height);
+      const artifactIndex = new Map(artifacts.map((artifact, index) => [artifact.artifact_id, index]));
+      const claimY = index => 62 + index * ((height - 100) / Math.max(claims.length - 1, 1));
+      const artifactY = index => 62 + index * ((height - 100) / Math.max(artifacts.length - 1, 1));
+      claims.forEach((claim, claimIndex) => {
+        (claim.artifact_ids || []).forEach(artifactId => {
+          if (artifactIndex.has(artifactId)) svg.append(svgNode("line", { x1: 300, y1: claimY(claimIndex), x2: 610, y2: artifactY(artifactIndex.get(artifactId)), stroke: "#56b4e9", "stroke-width": 3, opacity: 0.8 }));
+        });
+      });
+      claims.forEach((claim, index) => {
+        const y = claimY(index);
+        svg.append(svgNode("rect", { x: 35, y: y - 20, width: 265, height: 40, rx: 8, fill: "#eaf2f6", stroke: "#0072b2" }));
+        appendSvgText(svg, 48, y + 4, `${text(claim.claim_id)} · ${text(claim.status)}`, { "font-weight": 700 });
+      });
+      artifacts.forEach((artifact, index) => {
+        const y = artifactY(index);
+        svg.append(svgNode("rect", { x: 610, y: y - 20, width: 255, height: 40, rx: 8, fill: "#e7f4ee", stroke: "#009e73" }));
+        appendSvgText(svg, 623, y + 4, `${text(artifact.artifact_id)} · ${text(artifact.kind)}`, { "font-weight": 700 });
+      });
+      layout.append(figure, table("Text equivalent for claim and artifact links", [
+        { label: "Claim", value: row => row.claim_id },
+        { label: "Status", value: row => row.status },
+        { label: "Claim text", value: row => row.text },
+        { label: "Artifacts", value: row => row.artifact_ids },
+        { label: "Caveats", value: row => row.caveats },
+        { label: "Counter-evidence", value: row => row.counter_evidence }
+      ], claims));
+      claimHost.appendChild(layout);
+    }
+  })();
+  </script>
+</body>
+</html>
