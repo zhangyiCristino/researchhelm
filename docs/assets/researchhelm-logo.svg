@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="120" viewBox="0 0 860 120" role="img" aria-label="ResearchHelm pipeline: resources to ideas to human gates to bounded experiments to audited claims">
+  <style>
+    .box { fill: #f6f8fa; stroke: #57606a; stroke-width: 1.5; rx: 10; }
+    .arrow { stroke: #57606a; stroke-width: 2; fill: none; }
+    .gate { fill: #fff8c5; stroke: #9a6700; stroke-width: 1.5; rx: 10; }
+    .label { font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; fill: #17212b; text-anchor: middle; }
+    .small { font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 10px; fill: #57606a; text-anchor: middle; }
+  </style>
+  <rect class="box" x="10" y="25" width="150" height="70"/>
+  <text class="label" x="85" y="58">Resources</text>
+  <text class="small" x="85" y="76">compute · time · budget · data</text>
+  <path class="arrow" d="M160 60 L190 60"/>
+  <rect class="box" x="190" y="25" width="150" height="70"/>
+  <text class="label" x="265" y="58">Ideas</text>
+  <text class="small" x="265" y="76">scout: feasible &amp; falsifiable</text>
+  <path class="arrow" d="M340 60 L370 60"/>
+  <rect class="gate" x="370" y="25" width="150" height="70"/>
+  <text class="label" x="445" y="52">Human gates</text>
+  <text class="small" x="445" y="70">4 approvals, hash-bound</text>
+  <text class="small" x="445" y="84">silence is never approval</text>
+  <path class="arrow" d="M520 60 L550 60"/>
+  <rect class="box" x="550" y="25" width="150" height="70"/>
+  <text class="label" x="625" y="58">Experiments</text>
+  <text class="small" x="625" y="76">bounded blocks, verifier</text>
+  <path class="arrow" d="M700 60 L730 60"/>
+  <rect class="box" x="730" y="25" width="120" height="70"/>
+  <text class="label" x="790" y="58">Claims</text>
+  <text class="small" x="790" y="76">audited to artifacts</text>
+</svg>
