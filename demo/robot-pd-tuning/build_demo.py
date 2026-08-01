@@ -516,7 +516,16 @@ def main() -> int:
         capture_output=True,
     )
     print("render_cockpit:", render.stdout.strip() or render.stderr.strip())
-    return 0 if render.returncode == 0 else 1
+    if render.returncode != 0:
+        return 1
+
+    visuals = subprocess.run(
+        [sys.executable, str(DEMO_DIR / "render_visuals.py")],
+        text=True,
+        capture_output=True,
+    )
+    print("render_visuals:", visuals.stdout.strip() or visuals.stderr.strip())
+    return 0 if visuals.returncode == 0 else 1
 
 
 if __name__ == "__main__":

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="420" viewBox="0 0 880 420" role="img" aria-label="Robot PD-tuning demo: end-effector trajectory and per-trial cost">
+<g id="arm-view">
+<text x="10" y="24" font-family="sans-serif" font-size="14" fill="#17212b">Best trial: end-effector trajectory (deterministic)</text>
+<text x="10" y="42" font-family="sans-serif" font-size="11" fill="#57606a">kp1=2.4103 kd1=1.671  kp2=1.0571 kd2=0.5242  terminal distance=0.049675
+</text>
+<polyline points="365.8,418.9 367.2,414.7 370.0,404.9 373.3,390.7 376.4,372.9 378.3,352.7 378.5,331.0 376.8,308.8 373.2,287.0 367.8,266.2 361.1,247.1 353.3,229.9 344.9,214.9 336.5,202.1 328.3,191.6 320.7,183.1 313.8,176.6 307.9,171.7 302.9,168.4 299.0,166.3 295.9,165.3 293.8,165.2 292.5,165.9 291.8,167.2 291.7,169.0 292.1,171.1 292.9,173.5 294.0,176.0 295.3,178.6 296.7,181.2" fill="none" stroke="#d4a72c" stroke-width="2" stroke-linejoin="round" opacity="0.85"/>
+<circle cx="110.0" cy="330.0" r="6" fill="#17212b"/>
+<line x1="110.0" y1="330.0" x2="173.5" y2="194.1" stroke="#8b949e" stroke-width="10" stroke-dasharray="4,3"/>
+<line x1="173.5" y1="194.1" x2="298.1" y2="183.4" stroke="#8b949e" stroke-width="10" stroke-dasharray="4,3"/>
+<line x1="110.0" y1="330.0" x2="173.5" y2="194.1" stroke="#0969da" stroke-width="6"/>
+<line x1="173.5" y1="194.1" x2="298.1" y2="183.4" stroke="#0969da" stroke-width="6"/>
+<path d="M 302.0 172.0 L 318.0 188.0 M 318.0 172.0 L 302.0 188.0" stroke="#cf222e" stroke-width="3"/>
+<circle cx="298.1" cy="183.4" r="5" fill="#0969da"/>
+<g font-family="sans-serif" font-size="11" fill="#57606a"><rect x="20" y="380" width="14" height="4" fill="#0969da"/><text x="40" y="385">final pose</text><rect x="110" y="380" width="14" height="4" fill="#d4a72c"/><text x="130" y="385">trajectory</text><rect x="215" y="380" width="14" height="4" fill="#cf222e"/><text x="235" y="385">target (0.8, 0.6)</text></g>
+</g>
+<g id="cost-bars">
+<text x="470" y="24" font-family="sans-serif" font-size="14" fill="#17212b">Cost per trial (lower is better)</text>
+<text x="470" y="42" font-family="sans-serif" font-size="11" fill="#57606a">green = kept, gray = discarded</text>
+<rect x="470" y="250.9" width="26" height="79.1" fill="#1a7f37" rx="2"><title>trial 1: cost 0.872641</title></rect>
+<text x="483.0" y="344" font-family="sans-serif" font-size="9" fill="#57606a" text-anchor="middle">1</text>
+<rect x="501" y="298.3" width="26" height="31.7" fill="#1a7f37" rx="2"><title>trial 2: cost 0.350052</title></rect>
+<text x="514.0" y="344" font-family="sans-serif" font-size="9" fill="#57606a" text-anchor="middle">2</text>
+<rect x="532" y="308.8" width="26" height="21.2" fill="#1a7f37" rx="2"><title>trial 3: cost 0.233291</title></rect>
+<text x="545.0" y="344" font-family="sans-serif" font-size="9" fill="#57606a" text-anchor="middle">3</text>
+<rect x="563" y="313.6" width="26" height="16.4" fill="#1a7f37" rx="2"><title>trial 4: cost 0.180638</title></rect>
+<text x="576.0" y="344" font-family="sans-serif" font-size="9" fill="#57606a" text-anchor="middle">4</text>
+<rect x="594" y="301.2" width="26" height="28.8" fill="#d0d7de" rx="2"><title>trial 5: cost 0.31736</title></rect>
+<text x="607.0" y="344" font-family="sans-serif" font-size="9" fill="#57606a" text-anchor="middle">5</text>
+<rect x="625" y="90.0" width="26" height="240.0" fill="#d0d7de" rx="2"><title>trial 6: cost 2.646421</title></rect>
+<text x="638.0" y="344" font-family="sans-serif" font-size="9" fill="#57606a" text-anchor="middle">6</text>
+<rect x="656" y="265.7" width="26" height="64.3" fill="#d0d7de" rx="2"><title>trial 7: cost 0.708518</title></rect>
+<text x="669.0" y="344" font-family="sans-serif" font-size="9" fill="#57606a" text-anchor="middle">7</text>
+<rect x="687" y="305.2" width="26" height="24.8" fill="#d0d7de" rx="2"><title>trial 8: cost 0.273588</title></rect>
+<text x="700.0" y="344" font-family="sans-serif" font-size="9" fill="#57606a" text-anchor="middle">8</text>
+<rect x="718" y="247.5" width="26" height="82.5" fill="#d0d7de" rx="2"><title>trial 9: cost 0.909797</title></rect>
+<text x="731.0" y="344" font-family="sans-serif" font-size="9" fill="#57606a" text-anchor="middle">9</text>
+<rect x="749" y="274.3" width="26" height="55.7" fill="#d0d7de" rx="2"><title>trial 10: cost 0.614424</title></rect>
+<text x="762.0" y="344" font-family="sans-serif" font-size="9" fill="#57606a" text-anchor="middle">10</text>
+<rect x="780" y="286.7" width="26" height="43.3" fill="#d0d7de" rx="2"><title>trial 11: cost 0.477413</title></rect>
+<text x="793.0" y="344" font-family="sans-serif" font-size="9" fill="#57606a" text-anchor="middle">11</text>
+<rect x="811" y="305.5" width="26" height="24.5" fill="#d0d7de" rx="2"><title>trial 12: cost 0.270047</title></rect>
+<text x="824.0" y="344" font-family="sans-serif" font-size="9" fill="#57606a" text-anchor="middle">12</text>
+<line x1="464" y1="330" x2="844" y2="330" stroke="#57606a" stroke-width="1"/>
+<g font-family="sans-serif" font-size="11" fill="#1a7f37"><text x="470" y="66">best: trial 4 — cost 0.180638, distance 0.049675</text></g>
+</g>
+</svg>

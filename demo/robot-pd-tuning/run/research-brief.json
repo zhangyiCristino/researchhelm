@@ -12,7 +12,7 @@
     "monetary_budget": 0,
     "wall_time_seconds": 600
   },
-  "created_at": "2026-08-01T13:47:36Z",
+  "created_at": "2026-08-01T13:59:07Z",
   "field_sensitivity": {
     "/constraints/allowed_scope/0": "public",
     "/constraints/commands/0/template": "public",
@@ -52,6 +52,6 @@
   "run_id": "robot-pd-tuning",
   "schema_version": "1.0",
   "stage": "BOUNDED_EXECUTION",
-  "stage_input_hash": "672d157ce997a8d437092a8d1d52e72db7bc9a12a32a4186491998b1fa9d9fdc",
-  "updated_at": "2026-08-01T13:48:06Z"
+  "stage_input_hash": "decae386a4ffb0165c5f3f84fde9acb6ce9a37c7da8094603330af9af4210348",
+  "updated_at": "2026-08-01T13:59:37Z"
 }

@@ -45,8 +45,13 @@ def simulate(
     dt: float = DT,
     duration: float = DURATION,
     energy_weight: float = ENERGY_WEIGHT,
+    trajectory: bool = False,
 ) -> dict:
-    """Simulate PD control for ``duration`` seconds; return metrics dict."""
+    """Simulate PD control for ``duration`` seconds; return metrics dict.
+
+    With ``trajectory=True`` the result also includes a downsampled end-
+    effector trajectory as ``trajectory`` (a list of (x, y) tuples).
+    """
     desired = _inverse_kinematics(*target)
     if desired is None:
         raise ValueError(f"target {target} out of reach")
@@ -60,7 +65,8 @@ def simulate(
 
     steps = int(duration / dt)
     energy = 0.0
-    for _ in range(steps):
+    sampled = []
+    for step in range(steps):
         e1 = q1_target - q1
         e2 = q2_target - q2
         tau1 = kp1 * e1 - kd1 * dq1
@@ -72,13 +78,20 @@ def simulate(
         q1 += dq1 * dt
         q2 += dq2 * dt
         energy += tau1 * tau1 + tau2 * tau2
+        if trajectory and step % 10 == 0:
+            sampled.append(
+                (
+                    round(L1 * math.cos(q1) + L2 * math.cos(q1 + q2), 6),
+                    round(L1 * math.sin(q1) + L2 * math.sin(q1 + q2), 6),
+                )
+            )
 
     x = L1 * math.cos(q1) + L2 * math.cos(q1 + q2)
     y = L1 * math.sin(q1) + L2 * math.sin(q1 + q2)
     distance = math.hypot(x - target[0], y - target[1])
     energy_cost = energy * dt
     cost = distance + energy_weight * energy_cost
-    return {
+    result = {
         "x": round(x, 6),
         "y": round(y, 6),
         "distance": round(distance, 6),
@@ -87,6 +100,9 @@ def simulate(
         "q1_final": round(q1, 6),
         "q2_final": round(q2, 6),
     }
+    if trajectory:
+        result["trajectory"] = sampled
+    return result
 
 
 def main() -> int:
