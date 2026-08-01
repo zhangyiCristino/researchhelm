@@ -6,3 +6,5 @@ public-export/
 *.pyc
 tests/fixtures/complete-run/cockpit.html
 gitleaks-report.*
+*.egg-info/
+
