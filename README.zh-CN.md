@@ -4,12 +4,55 @@
 
 [![CI](https://github.com/zhangyiCristino/researchhelm/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/zhangyiCristino/researchhelm/actions/workflows/ci.yml)
 [![Security gates](https://github.com/zhangyiCristino/researchhelm/actions/workflows/security.yml/badge.svg?branch=master)](https://github.com/zhangyiCristino/researchhelm/actions/workflows/security.yml)
+[![Release](https://img.shields.io/github/v/release/zhangyiCristino/researchhelm)](https://github.com/zhangyiCristino/researchhelm/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![在线演示](https://img.shields.io/badge/live%20demo-Research%20Cockpit-2ea44f)](https://zhangyiCristino.github.io/researchhelm/)
 
 ResearchHelm **不是自主 AI 科学家**，也不承诺把一个题目自动变成论文，更不会替代科研判断。你始终是负责人：Agent 在获批边界内搜集证据、构建、验证，并把每条保留结论追溯到具体产物。
 
 `资源 -> 可辩护的想法 -> 人的决策 -> 受限执行 -> 经审计的结论`
 
 [English README](README.md)
+
+## 什么是 ResearchHelm？
+
+ResearchHelm 是一套**人主导的科研协议**，面向具备读写文件、执行命令和使用 Git 能力的编码 Agent。它先把你的真实约束——算力、时间、预算、数据、许可证、代码、经验和截止日期——转化为可辩护的想法，再把获批的想法变成受限实验，让每条保留结论都能追溯到不可变证据。
+
+它适合**希望用 AI 提速、但不想交出控制权的研究者与工程师**：每道门都是人的决定，沉默不等于批准，旧批准不能授权已改变的代码、数据、范围或成本。
+
+## 快速上手
+
+三种方式进入，同一套协议：
+
+| 方式 | 适用场景 |
+|---|---|
+| `npx skills use zhangyiCristino/researchhelm@researchhelm` | 不安装直接试用（社区安装器） |
+| 下文 Claude Code 插件命令 | 现有 Claude Code 用户 |
+| 下文手动复制 Skill 目录 | 任意具备能力的编码 Agent |
+
+第一次使用？先跑 `scout`：它把你的资源梳理成可直接决策的想法，并在编写任何实验代码之前停下。
+
+## 在线演示
+
+打开**净化后的单 GPU 走查**——零依赖、自包含的 Research Cockpit 页面，可审计资源边界、决策时间线、实验成本，以及每条结论通向代码、配置、数据和产物的证据链：
+
+[**https://zhangyiCristino.github.io/researchhelm/**](https://zhangyiCristino.github.io/researchhelm/)
+
+![净化 Research Cockpit](docs/assets/research-cockpit-demo.png)
+
+## 工作原理
+
+```mermaid
+flowchart LR
+    A[你的资源<br/>算力 · 时间 · 预算 · 数据] --> B[scout: 可辩护的想法]
+    B -->|Gate 1: 想法| C[预注册计划与预算]
+    C -->|Gate 2: 计划与预算| D[受限实验块]
+    D -->|Gate 3: 完整实验| E[冻结证据]
+    E -->|Gate 4: 结论| F[经审计的结论]
+    F --> G[不可变产物 + Cockpit]
+```
+
+每条箭头都经过**人类决策门**。Agent 提议；你批准；证据绑定到精确的输入哈希。
 
 ## 从资源到经审计的结论
 
@@ -168,5 +211,31 @@ ResearchHelm 只在项目工作区和用户明确批准的路径内工作。它�
 - 规范协议：[`skills/researchhelm/SKILL.md`](skills/researchhelm/SKILL.md)
 
 欢迎提交带有可复现、已净化证据的 Issue 和 Pull Request。社区兼容性报告在维护者独立复现前始终保持 `Community-reported`。
+
+## 常见问题
+
+**与 karpathy/autoresearch 有什么区别？**
+
+ResearchHelm 以测试优先的方式泛化了 `修改 -> 验证 -> 保留/丢弃 -> 重复` 循环：增加资源到想法的侦察、四道人类决策门、Builder-Verifier 分工和结论到产物的审计。原循环保留为受限的 `optimize` 模式。
+
+**ResearchHelm 是自主 AI 科学家吗？**
+
+不是。你始终是负责人：Agent 在获批边界内搜集证据、构建、验证，并把每条保留结论追溯到具体产物。沉默不等于批准。
+
+**需要 GPU 吗？**
+
+不需要。协议天然感知资源；单 GPU 演示把 GPU 时间作为预算证据报告，而不是硬件要求。
+
+**能用于非科研任务吗？**
+
+`optimize` 模式用于有明确标量目标、已商定评估器、范围和预算的任务；含糊的科研任务进入 `pi`。
+
+**如何判断结论可信？**
+
+查看 [TESTING.md](TESTING.md)、[`demo/one-gpu-public/`](demo/one-gpu-public/) 下的冻结产物与 CI 中的发布审计。任何软件都不能承诺消除全部安全风险，本项目也不会作无边界声明。
+
+**如何贡献？**
+
+欢迎提交带可复现、已净化证据的 Issue 和 Pull Request，见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 协议灵感来自 [karpathy/autoresearch](https://github.com/karpathy/autoresearch)。项目采用 [MIT License](LICENSE)。

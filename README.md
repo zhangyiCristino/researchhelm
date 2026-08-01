@@ -4,12 +4,55 @@
 
 [![CI](https://github.com/zhangyiCristino/researchhelm/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/zhangyiCristino/researchhelm/actions/workflows/ci.yml)
 [![Security gates](https://github.com/zhangyiCristino/researchhelm/actions/workflows/security.yml/badge.svg?branch=master)](https://github.com/zhangyiCristino/researchhelm/actions/workflows/security.yml)
+[![Release](https://img.shields.io/github/v/release/zhangyiCristino/researchhelm)](https://github.com/zhangyiCristino/researchhelm/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Live demo](https://img.shields.io/badge/live%20demo-Research%20Cockpit-2ea44f)](https://zhangyiCristino.github.io/researchhelm/)
 
 ResearchHelm is **not an autonomous AI scientist**. It does not promise to turn a topic into a paper or replace scientific judgment. You remain the principal investigator: the agent gathers evidence, builds and verifies within approved limits, and ties every retained claim back to artifacts.
 
 `resources -> defensible ideas -> human decisions -> bounded execution -> audited claims`
 
 [中文说明](README.zh-CN.md)
+
+## What is ResearchHelm?
+
+ResearchHelm is a **human-governed research protocol** for capable coding agents. It turns your real envelope—compute, wall time, budget, data, licenses, and deadline—into defensible ideas, then turns approved ideas into bounded experiments whose claims trace back to immutable evidence.
+
+It is for **researchers and engineers who want AI to accelerate work without giving up control**: every gate is a human decision, silence is never approval, and an old approval cannot authorize changed code, data, scope, or cost.
+
+## Quick start
+
+Three ways in, same protocol:
+
+| Path | When to use |
+|---|---|
+| `npx skills use zhangyiCristino/researchhelm@researchhelm` | Try without installing (community installer) |
+| Claude Code plugin commands below | Existing Claude Code users |
+| Manual copy of the skill folder below | Any capable coding agent |
+
+New to ResearchHelm? Run `scout` first: it maps your resources into decision-ready ideas and stops before writing any experiment code.
+
+## Live demo
+
+Open the **sanitized one-GPU walkthrough** as a self-contained, zero-dependency Research Cockpit page — audit the resource envelope, gate timeline, experiment cost, and every claim's path to code, configuration, data, and artifacts:
+
+[**https://zhangyiCristino.github.io/researchhelm/**](https://zhangyiCristino.github.io/researchhelm/)
+
+![Sanitized Research Cockpit](docs/assets/research-cockpit-demo.png)
+
+## How it works
+
+```mermaid
+flowchart LR
+    A[Your resources<br/>compute · time · budget · data] --> B[scout: defensible ideas]
+    B -->|Gate 1: Idea| C[Preregistered plan + budget]
+    C -->|Gate 2: Plan and budget| D[Bounded experiment block]
+    D -->|Gate 3: Full run| E[Frozen evidence]
+    E -->|Gate 4: Claims| F[Audited claims]
+    F --> G[Immutable artifacts + Cockpit]
+```
+
+Every arrow crosses a **human decision gate**. The agent proposes; you approve; the evidence is bound to the exact input hash.
 
 ## From resources to audited claims
 
@@ -168,5 +211,31 @@ Version 3.0.0 completes the ResearchHelm rename: the plugin, marketplace, skill 
 - Canonical protocol: [`skills/researchhelm/SKILL.md`](skills/researchhelm/SKILL.md)
 
 Issues and pull requests are welcome when they include reproducible, sanitized evidence. Community compatibility reports stay `Community-reported` until independently reproduced.
+
+## FAQ
+
+**How is this different from karpathy/autoresearch?**
+
+ResearchHelm generalizes the `modify -> verify -> keep/discard -> repeat` loop in a test-first way: it adds resource-to-idea scouting, four explicit human gates, a Builder–Verifier split, and claim-to-artifact auditing. The loop remains available as the bounded `optimize` mode.
+
+**Is ResearchHelm an autonomous AI scientist?**
+
+No. You remain the principal investigator. The agent gathers evidence, builds and verifies within approved limits, and ties every retained claim back to artifacts. Silence is never approval.
+
+**Do I need a GPU?**
+
+No. The protocol is resource-aware by design; the one-GPU walkthrough reports GPU time as budget evidence, not as a hardware requirement.
+
+**Can I use it for non-research work?**
+
+`optimize` mode is for an explicitly bounded scalar objective with an agreed evaluator, scope, and budget. Ambiguous scientific work goes to `pi`.
+
+**How do I know the claims are trustworthy?**
+
+Inspect [TESTING.md](TESTING.md), the frozen demo artifacts under [`demo/one-gpu-public/`](demo/one-gpu-public/), and the release audit in CI. No software can promise absolute security; this project does not claim it.
+
+**How can I contribute?**
+
+Issues and pull requests are welcome when they include reproducible, sanitized evidence. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Protocol inspiration: [karpathy/autoresearch](https://github.com/karpathy/autoresearch). Released under the [MIT License](LICENSE).
