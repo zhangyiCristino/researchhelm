@@ -1,0 +1,47 @@
+name: Feature request
+description: Propose a change to ResearchHelm
+title: "[feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        ResearchHelm ships only changes that keep the human-governed boundary
+        intact: human gates, silence-is-never-approval, and claim-to-artifact
+        auditing are not negotiable. Proposals that weaken them are out of
+        scope by design.
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: The concrete problem or gap you hit, with context.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: What should change in the protocol, scripts, docs, or tests.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What else you tried or could be done instead.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: >-
+        Reproducible, sanitized evidence that supports the proposal (optional
+        but strongly encouraged). Community compatibility evidence belongs in
+        the dedicated compatibility-report form.
+  - type: checkboxes
+    id: data_safety
+    attributes:
+      label: Data safety confirmation
+      options:
+        - label: I removed secrets, credentials, account identifiers, private research data, personal paths, and machine identifiers from this report.
+          required: true

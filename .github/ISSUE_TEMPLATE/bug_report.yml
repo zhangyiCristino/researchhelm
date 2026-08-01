@@ -1,0 +1,54 @@
+name: Bug report
+description: Report a reproducible problem in ResearchHelm
+title: "[bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Before submitting, remove secrets, credentials, account identifiers,
+        private research data, personal paths, and machine identifiers.
+        Problems without reproducible evidence cannot be triaged.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the failure and its impact on the protocol or its safety boundaries.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Exact commands, mode (pi / scout / optimize), inputs, and the observed output.
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit
+      description: Release tag or full 40-character commit hash.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Client, client version, operating system, Python version if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: checkboxes
+    id: data_safety
+    attributes:
+      label: Data safety confirmation
+      options:
+        - label: I removed secrets, credentials, account identifiers, private research data, personal paths, and machine identifiers from this report.
+          required: true
