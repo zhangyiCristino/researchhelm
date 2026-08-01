@@ -1,0 +1,277 @@
+{
+  "best": {
+    "keep": true,
+    "metrics": {
+      "cost": 0.180638,
+      "distance": 0.049675,
+      "energy": 2.619265,
+      "q1_final": 1.133553,
+      "q2_final": -1.04779,
+      "x": 0.752228,
+      "y": 0.586383
+    },
+    "params": {
+      "kd1": 1.671,
+      "kd2": 0.5242,
+      "kp1": 2.4103,
+      "kp2": 1.0571
+    },
+    "runtime_seconds": 0.0,
+    "trial": 4
+  },
+  "parameter_space": {
+    "kd": [
+      0.1,
+      2.0
+    ],
+    "kp": [
+      0.5,
+      5.0
+    ]
+  },
+  "run_id": "robot-pd-tuning",
+  "seed": 7,
+  "trial_records": [
+    {
+      "keep": true,
+      "metrics": {
+        "cost": 0.872641,
+        "distance": 0.500037,
+        "energy": 7.452081,
+        "q1_final": 1.432316,
+        "q2_final": -0.653213,
+        "x": 0.438595,
+        "y": 0.945577
+      },
+      "params": {
+        "kd1": 0.3866,
+        "kd2": 0.2376,
+        "kp1": 1.9572,
+        "kp2": 3.4292
+      },
+      "runtime_seconds": 0.0,
+      "trial": 1
+    },
+    {
+      "keep": true,
+      "metrics": {
+        "cost": 0.350052,
+        "distance": 0.026385,
+        "energy": 6.473329,
+        "q1_final": 1.039712,
+        "q2_final": -0.822354,
+        "x": 0.792116,
+        "y": 0.62518
+      },
+      "params": {
+        "kd1": 0.7948,
+        "kd2": 1.0641,
+        "kp1": 2.9115,
+        "kp2": 0.761
+      },
+      "runtime_seconds": 0.0,
+      "trial": 2
+    },
+    {
+      "keep": true,
+      "metrics": {
+        "cost": 0.233291,
+        "distance": 0.211289,
+        "energy": 0.440033,
+        "q1_final": 0.92557,
+        "q2_final": -1.093784,
+        "x": 0.85377,
+        "y": 0.395667
+      },
+      "params": {
+        "kd1": 0.9239,
+        "kd2": 0.2724,
+        "kp1": 0.6687,
+        "kp2": 0.8143
+      },
+      "runtime_seconds": 0.0,
+      "trial": 3
+    },
+    {
+      "keep": true,
+      "metrics": {
+        "cost": 0.180638,
+        "distance": 0.049675,
+        "energy": 2.619265,
+        "q1_final": 1.133553,
+        "q2_final": -1.04779,
+        "x": 0.752228,
+        "y": 0.586383
+      },
+      "params": {
+        "kd1": 1.671,
+        "kd2": 0.5242,
+        "kp1": 2.4103,
+        "kp2": 1.0571
+      },
+      "runtime_seconds": 0.0,
+      "trial": 4
+    },
+    {
+      "keep": false,
+      "metrics": {
+        "cost": 0.31736,
+        "distance": 0.051635,
+        "energy": 5.314494,
+        "q1_final": 1.078288,
+        "q2_final": -0.848775,
+        "x": 0.770591,
+        "y": 0.642442
+      },
+      "params": {
+        "kd1": 1.9006,
+        "kd2": 0.8537,
+        "kp1": 3.3234,
+        "kp2": 3.097
+      },
+      "runtime_seconds": 0.0,
+      "trial": 5
+    },
+    {
+      "keep": false,
+      "metrics": {
+        "cost": 2.646421,
+        "distance": 0.679095,
+        "energy": 39.346515,
+        "q1_final": 0.280676,
+        "q2_final": -0.701124,
+        "x": 1.032974,
+        "y": -0.037882
+      },
+      "params": {
+        "kd1": 0.1885,
+        "kd2": 0.6503,
+        "kp1": 4.8931,
+        "kp2": 4.3631
+      },
+      "runtime_seconds": 0.0,
+      "trial": 6
+    },
+    {
+      "keep": false,
+      "metrics": {
+        "cost": 0.708518,
+        "distance": 0.611893,
+        "energy": 1.932509,
+        "q1_final": 1.674571,
+        "q2_final": -0.900748,
+        "x": 0.295469,
+        "y": 0.94621
+      },
+      "params": {
+        "kd1": 0.3238,
+        "kd2": 1.6506,
+        "kp1": 1.1491,
+        "kp2": 1.8882
+      },
+      "runtime_seconds": 0.0,
+      "trial": 7
+    },
+    {
+      "keep": false,
+      "metrics": {
+        "cost": 0.273588,
+        "distance": 0.149534,
+        "energy": 2.481077,
+        "q1_final": 1.15831,
+        "q2_final": -0.810891,
+        "x": 0.71066,
+        "y": 0.719912
+      },
+      "params": {
+        "kd1": 1.205,
+        "kd2": 0.8076,
+        "kp1": 1.3133,
+        "kp2": 3.3751
+      },
+      "runtime_seconds": 0.0,
+      "trial": 8
+    },
+    {
+      "keep": false,
+      "metrics": {
+        "cost": 0.909797,
+        "distance": 0.307129,
+        "energy": 12.053355,
+        "q1_final": 0.775076,
+        "q2_final": -0.983597,
+        "x": 0.91779,
+        "y": 0.316356
+      },
+      "params": {
+        "kd1": 0.2193,
+        "kd2": 0.4913,
+        "kp1": 2.9649,
+        "kp2": 0.7682
+      },
+      "runtime_seconds": 0.0,
+      "trial": 9
+    },
+    {
+      "keep": false,
+      "metrics": {
+        "cost": 0.614424,
+        "distance": 0.163514,
+        "energy": 9.018201,
+        "q1_final": 0.904735,
+        "q2_final": -0.94346,
+        "x": 0.870362,
+        "y": 0.452399
+      },
+      "params": {
+        "kd1": 0.9124,
+        "kd2": 1.2126,
+        "kp1": 3.5618,
+        "kp2": 1.9137
+      },
+      "runtime_seconds": 0.0,
+      "trial": 10
+    },
+    {
+      "keep": false,
+      "metrics": {
+        "cost": 0.477413,
+        "distance": 0.128781,
+        "energy": 6.972634,
+        "q1_final": 1.149194,
+        "q2_final": -0.835402,
+        "x": 0.721118,
+        "y": 0.701795
+      },
+      "params": {
+        "kd1": 0.6696,
+        "kd2": 1.4281,
+        "kp1": 2.5393,
+        "kp2": 4.0747
+      },
+      "runtime_seconds": 0.0,
+      "trial": 11
+    },
+    {
+      "keep": false,
+      "metrics": {
+        "cost": 0.270047,
+        "distance": 0.168806,
+        "energy": 2.024814,
+        "q1_final": 1.216774,
+        "q2_final": -0.894794,
+        "x": 0.68231,
+        "y": 0.721014
+      },
+      "params": {
+        "kd1": 1.1914,
+        "kd2": 1.7628,
+        "kp1": 1.5984,
+        "kp2": 2.8634
+      },
+      "runtime_seconds": 0.0,
+      "trial": 12
+    }
+  ],
+  "trials": 12
+}

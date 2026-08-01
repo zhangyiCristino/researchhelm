@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research Cockpit</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17212b;
+      --muted: #536170;
+      --paper: #f3f0e8;
+      --card: #fffdf8;
+      --line: #c7d0d8;
+      --blue: #0072b2;
+      --sky: #56b4e9;
+      --green: #009e73;
+      --orange: #e69f00;
+      --vermillion: #d55e00;
+      --purple: #6f4c9b;
+      --shadow: 0 16px 40px rgba(23, 33, 43, 0.09);
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--paper); }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(86, 180, 233, 0.16), transparent 34rem),
+        var(--paper);
+      font: 16px/1.55 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    header, main { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+    header { padding: 48px 0 22px; }
+    h1, h2, h3 { line-height: 1.1; }
+    h1 { margin: 0; max-width: 12ch; font-size: clamp(2.35rem, 7vw, 5.4rem); letter-spacing: -0.055em; }
+    h2 { margin: 0; font-size: clamp(1.55rem, 3vw, 2.2rem); letter-spacing: -0.025em; }
+    h3 { margin: 0 0 8px; font-size: 1rem; }
+    .lede { max-width: 65ch; color: var(--muted); font-size: 1.05rem; }
+    #data-boundary {
+      margin: 0 0 24px;
+      padding: 13px 16px;
+      border: 2px solid var(--orange);
+      border-radius: 12px;
+      background: #fff7d6;
+      font-weight: 750;
+    }
+    section {
+      margin: 0 0 24px;
+      padding: clamp(18px, 3vw, 30px);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 253, 248, 0.96);
+      box-shadow: var(--shadow);
+    }
+    section > header { width: auto; margin: 0 0 18px; padding: 0; }
+    section > header p { margin: 8px 0 0; color: var(--muted); }
+    section:focus-visible, [tabindex="0"]:focus-visible, a:focus-visible, button:focus-visible {
+      outline: 4px solid var(--orange);
+      outline-offset: 4px;
+    }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 12px; margin: 18px 0; }
+    .stat { min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: #f7fafb; }
+    .stat span { display: block; color: var(--muted); font-size: 0.78rem; font-weight: 750; letter-spacing: 0.06em; text-transform: uppercase; }
+    .stat strong { display: block; margin-top: 4px; overflow-wrap: anywhere; font-size: 1.05rem; }
+    .visual-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; align-items: start; }
+    figure { min-width: 0; margin: 0; }
+    figcaption { margin-top: 8px; color: var(--muted); font-size: 0.88rem; }
+    svg { display: block; width: 100%; height: auto; min-height: 220px; overflow: visible; border: 1px solid var(--line); border-radius: 14px; background: #fbfcfd; }
+    svg text { fill: var(--ink); font: 12px system-ui, sans-serif; }
+    .table-wrap { min-width: 0; overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; background: var(--card); font-size: 0.88rem; }
+    caption { padding: 10px 12px; color: var(--muted); text-align: left; font-weight: 700; }
+    th, td { padding: 10px 12px; border-top: 1px solid var(--line); text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+    th { color: #263746; background: #eaf2f6; }
+    tbody tr:nth-child(even) { background: #f7f9fa; }
+    .timeline { position: relative; display: grid; gap: 12px; margin: 0; padding: 4px 0 4px 32px; list-style: none; }
+    .timeline::before { content: ""; position: absolute; left: 11px; top: 10px; bottom: 10px; width: 3px; background: var(--sky); }
+    .decision-card { position: relative; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: #fbfcfd; }
+    .decision-card::before { content: ""; position: absolute; left: -28px; top: 18px; width: 12px; height: 12px; border: 3px solid var(--card); border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 2px var(--blue); }
+    .decision-card p { margin: 5px 0 0; color: var(--muted); }
+    .badge { display: inline-block; margin-right: 6px; padding: 2px 8px; border-radius: 999px; background: #e7f4ee; color: #075d48; font-size: 0.78rem; font-weight: 750; }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 10px 0 0; padding: 0; list-style: none; color: var(--muted); font-size: 0.82rem; }
+    .legend span { display: inline-block; width: 11px; height: 11px; margin-right: 5px; border-radius: 3px; vertical-align: -1px; }
+    footer { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 4px 0 40px; color: var(--muted); font-size: 0.85rem; }
+    .empty { color: var(--muted); font-style: italic; }
+
+    @media (max-width: 800px) {
+      .visual-grid { grid-template-columns: 1fr; }
+      header, main, footer { width: min(100% - 24px, 1180px); }
+      header { padding-top: 30px; }
+      section { border-radius: 15px; }
+      .stat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .stat strong { font-size: 0.95rem; letter-spacing: -0.01em; }
+    }
+
+    @media (max-width: 520px) {
+      body { font-size: 15px; }
+      header, main, footer { width: min(100% - 16px, 1180px); }
+      section { padding: 16px; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .stat strong { font-size: 0.92rem; letter-spacing: -0.01em; }
+      .table-wrap { overflow: visible; border: 0; }
+      table, tbody, tr, td { display: block; width: 100%; }
+      caption { display: block; width: 100%; }
+      thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+      caption { padding-inline: 0; }
+      tbody { display: grid; gap: 10px; }
+      tbody tr { padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+      td { display: grid; grid-template-columns: minmax(92px, 0.42fr) minmax(0, 1fr); gap: 8px; padding: 6px 0; border: 0; }
+      td::before { content: attr(data-label); color: var(--muted); font-weight: 750; }
+      svg { min-height: 190px; }
+    }
+
+    @media print {
+      @page { margin: 12mm; }
+      html { background: #fff !important; }
+      body { background: #fff; color: #000; font-size: 9pt; }
+      header, main, footer { width: 100%; }
+      header { padding: 0 0 8mm; }
+      h1 { font-size: 28pt; }
+      section { margin: 0 0 7mm; padding: 6mm; break-inside: avoid; border-color: #777; box-shadow: none; background: #fff; }
+      .visual-grid { grid-template-columns: 1fr; }
+      svg { max-height: 72mm; border-color: #777; }
+      .table-wrap { overflow: visible; }
+      #data-boundary { border-color: #555; background: #fff; }
+      #claims table { table-layout: fixed; font-size: 8pt; }
+      #claims th, #claims td { padding: 6px; overflow-wrap: normal; word-break: normal; }
+      #claims th:nth-child(1), #claims td:nth-child(1) { width: 9%; }
+      #claims th:nth-child(2), #claims td:nth-child(2) { width: 12%; }
+      #claims th:nth-child(3), #claims td:nth-child(3) { width: 26%; }
+      #claims th:nth-child(4), #claims td:nth-child(4) { width: 13%; }
+      #claims th:nth-child(5), #claims td:nth-child(5) { width: 18%; }
+      #claims th:nth-child(6), #claims td:nth-child(6) { width: 22%; }
+      footer { padding-bottom: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Research Cockpit</h1>
+    <p class="lede">A local, inspectable view of resources, human decisions, bounded experiments, and claim-level evidence.</p>
+  </header>
+  <main>
+    <p id="data-boundary" role="status"></p>
+    <section id="resources" tabindex="0" aria-labelledby="resources-title">
+      <header><h2 id="resources-title">Resource envelope</h2><p>Declared capacity and constraints for the current research run.</p></header>
+      <div class="content"></div>
+    </section>
+    <section id="ideas" tabindex="0" aria-labelledby="ideas-title">
+      <header><h2 id="ideas-title">Idea map</h2><p>Novelty position, feasibility, expected cost, and differentiating claim.</p></header>
+      <div class="content"></div>
+    </section>
+    <section id="overlap" tabindex="0" aria-labelledby="overlap-title">
+      <header><h2 id="overlap-title">Overlap matrix</h2><p>Question, method, data, evaluation, and claimed-contribution overlap.</p></header>
+      <div class="content"></div>
+    </section>
+    <section id="decisions" tabindex="0" aria-labelledby="decisions-title">
+      <header><h2 id="decisions-title">Decision timeline</h2><p>Chronological human gates bound to their recorded inputs.</p></header>
+      <div class="content"></div>
+    </section>
+    <section id="experiments" tabindex="0" aria-labelledby="experiments-title">
+      <header><h2 id="experiments-title">Experiment Pareto</h2><p>Performance against declared cost, including failed and crashed runs.</p></header>
+      <div class="content"></div>
+    </section>
+    <section id="claims" tabindex="0" aria-labelledby="claims-title">
+      <header><h2 id="claims-title">Claim evidence</h2><p>Every claim connected to registered artifacts and explicit caveats.</p></header>
+      <div class="content"></div>
+    </section>
+  </main>
+  <footer>Generated offline from validated ResearchHelm state. Visual summaries are paired with textual tables.</footer>
+  <script type="application/json" id="researchhelm-data">{"artifacts":{"artifacts":[{"artifact_id":"artifact-simulator","frozen":true,"kind":"code","path":"artifacts/simulator.py","producing_run":"robot-pd-tuning","sha256":"1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb"},{"artifact_id":"artifact-results","frozen":true,"kind":"result","path":"artifacts/results.json","producing_run":"robot-pd-tuning","sha256":"236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2"}],"field_sensitivity":{"/artifacts/0/kind":"public","/artifacts/0/path":"public","/artifacts/1/kind":"public","/artifacts/1/path":"public"},"record_type":"artifact-manifest","schema_version":"1.0"},"brief":{"constraints":{"allowed_scope":["demo/robot-pd-tuning/"],"commands":[{"template":"py demo/robot-pd-tuning/simulator.py"}],"forbidden_scope":[],"monetary_budget":0,"wall_time_seconds":600},"created_at":"2026-08-01T13:47:36Z","field_sensitivity":{"/constraints/allowed_scope/0":"public","/constraints/commands/0/template":"public","/private_question":"project-private","/public_summary":"public","/resources/apis/0/capability":"public","/resources/apis/0/provider":"public","/resources/compute/accelerator":"public","/resources/compute/cpu":"public"},"mode":"optimize","network_status":{"approved_for_project_private_data":false,"available":false},"private_question":"Which gain combination minimizes terminal distance and control effort?","public_summary":"Bounded offline PD-gain search for a deterministic planar arm simulator.","record_type":"research-brief","resources":{"apis":[{"capability":"none","credential_available":false,"provider":"none"}],"compute":{"accelerator":"none","cpu":"public-standard","ram_gb":16,"storage_gb":1}},"resume":{"enabled":false},"run_id":"robot-pd-tuning","schema_version":"1.0","stage":"BOUNDED_EXECUTION","stage_input_hash":"672d157ce997a8d437092a8d1d52e72db7bc9a12a32a4186491998b1fa9d9fdc","updated_at":"2026-08-01T13:48:06Z"},"claims":{"claims":[{"artifact_ids":["artifact-simulator","artifact-results"],"caveats":["Simulated walkthrough only; not a hardware, benchmark, or generalization claim."],"citations":["evidence-001"],"claim_id":"claim-001","counter_evidence":[],"run_ids":["robot-pd-tuning"],"status":"supported","text":"Best PD gains reach a terminal distance of 0.049675 at cost 0.180638 in the deterministic simulator."},{"artifact_ids":["artifact-simulator"],"caveats":["Deterministic only within this simulator and Python standard library."],"citations":["evidence-001"],"claim_id":"claim-002","counter_evidence":[],"run_ids":["robot-pd-tuning"],"status":"supported","text":"The full search reproduces exactly from the committed generator and seed."}],"field_sensitivity":{"/claims/0/caveats/0":"public","/claims/0/citations/0":"public","/claims/0/text":"public","/claims/1/caveats/0":"public","/claims/1/citations/0":"public","/claims/1/text":"public"},"record_type":"claim-evidence","schema_version":"1.0"},"data_boundary":"Private local Cockpit - do not commit","decisions":[{"actor":"human","constraints":["workspace-only"],"decision":"approve","event_hash":"d370f7fd56f828f6776e997d007bd43c51417a4e10b1300bccae8b0218fde3d4","event_id":"decision-gate-1-idea","field_sensitivity":{"/actor":"public","/constraints/0":"public","/rationale":"public"},"input_hash":"672d157ce997a8d437092a8d1d52e72db7bc9a12a32a4186491998b1fa9d9fdc","previous_event_hash":null,"rationale":"Select the PD-gain search candidate.","record_type":"decision","schema_version":"1.0","stage":"GATE_1_IDEA","timestamp":"2026-08-01T13:47:38Z"},{"actor":"human","constraints":["workspace-only"],"decision":"approve","event_hash":"1ea255108099361d89f45c5bbae0c2ec59d8ffaa22c4ec5c57cfe6eb94216403","event_id":"decision-gate-2-plan-and-budget","field_sensitivity":{"/actor":"public","/constraints/0":"public","/rationale":"public"},"input_hash":"672d157ce997a8d437092a8d1d52e72db7bc9a12a32a4186491998b1fa9d9fdc","previous_event_hash":"d370f7fd56f828f6776e997d007bd43c51417a4e10b1300bccae8b0218fde3d4","rationale":"Approve the bounded 12-trial search within the declared envelope.","record_type":"decision","schema_version":"1.0","stage":"GATE_2_PLAN_AND_BUDGET","timestamp":"2026-08-01T13:47:40Z"},{"actor":"human","constraints":["workspace-only"],"decision":"approve","event_hash":"6292e18b8ada016a07f40d6f02b591270032ad93bc27c3ff165ab9ef5683cfd0","event_id":"decision-gate-3-full-run","field_sensitivity":{"/actor":"public","/constraints/0":"public","/rationale":"public"},"input_hash":"672d157ce997a8d437092a8d1d52e72db7bc9a12a32a4186491998b1fa9d9fdc","previous_event_hash":"1ea255108099361d89f45c5bbae0c2ec59d8ffaa22c4ec5c57cfe6eb94216403","rationale":"Promote the search to the bounded execution block.","record_type":"decision","schema_version":"1.0","stage":"GATE_3_FULL_RUN","timestamp":"2026-08-01T13:47:42Z"}],"evidence":[{"content_hash":"d26f46f4dc8bdbca58a35562b7982937266b95a52b72f6322499d9765a35b7a8","coverage":{"limitations":[],"scope":"local-approved-optimization"},"evidence_id":"evidence-001","field_sensitivity":{"/coverage/scope":"public","/kind":"public","/notes":"public","/source":"public","/status":"public"},"kind":"documentation","notes":"Deterministic simulator and generator committed with the run.","record_type":"evidence","retrieved_at":"2026-08-01T13:47:36Z","schema_version":"1.0","source":"local-demo-generator","status":"verified"}],"experiments":[{"artifact_ids":["artifact-results"],"code_hash":"1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb","commit":"19320761816f5af6b4d849feb41ebe3a93b7253a","config_hash":"a6e4d7b44d76bc51a128d15e5eaa63d1092e26302ee91dc74065ee6a8b573343","cost":{"amount":0,"currency":"USD"},"data_hash":"236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2","decision":"approve","environment":{"dependencies":{"python":"3"},"drivers":{},"hardware_class":"public-standard","runtime":"CPython"},"environment_hash":"d5e1f75d8a5016e5642c1c8c13c38458a10caa786850e798eaedaebe6864ed3d","experiment_id":"experiment-001","field_sensitivity":{"/cost/currency":"public","/environment/dependencies/python":"public","/environment/hardware_class":"public","/environment/runtime":"public","/status":"public","/uncertainty/method":"public"},"metrics":{"primary":0.872641,"secondary":{"distance":0.500037,"energy":7.452081}},"peak_memory":{"megabytes":24},"record_type":"experiment","runtime":{"seconds":0.0},"schema_version":"1.0","status":"success","uncertainty":{"method":"none","value":null}},{"artifact_ids":["artifact-results"],"code_hash":"1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb","commit":"19320761816f5af6b4d849feb41ebe3a93b7253a","config_hash":"a6e4d7b44d76bc51a128d15e5eaa63d1092e26302ee91dc74065ee6a8b573343","cost":{"amount":0,"currency":"USD"},"data_hash":"236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2","decision":"approve","environment":{"dependencies":{"python":"3"},"drivers":{},"hardware_class":"public-standard","runtime":"CPython"},"environment_hash":"d5e1f75d8a5016e5642c1c8c13c38458a10caa786850e798eaedaebe6864ed3d","experiment_id":"experiment-002","field_sensitivity":{"/cost/currency":"public","/environment/dependencies/python":"public","/environment/hardware_class":"public","/environment/runtime":"public","/status":"public","/uncertainty/method":"public"},"metrics":{"primary":0.350052,"secondary":{"distance":0.026385,"energy":6.473329}},"peak_memory":{"megabytes":24},"record_type":"experiment","runtime":{"seconds":0.0},"schema_version":"1.0","status":"success","uncertainty":{"method":"none","value":null}},{"artifact_ids":["artifact-results"],"code_hash":"1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb","commit":"19320761816f5af6b4d849feb41ebe3a93b7253a","config_hash":"a6e4d7b44d76bc51a128d15e5eaa63d1092e26302ee91dc74065ee6a8b573343","cost":{"amount":0,"currency":"USD"},"data_hash":"236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2","decision":"approve","environment":{"dependencies":{"python":"3"},"drivers":{},"hardware_class":"public-standard","runtime":"CPython"},"environment_hash":"d5e1f75d8a5016e5642c1c8c13c38458a10caa786850e798eaedaebe6864ed3d","experiment_id":"experiment-003","field_sensitivity":{"/cost/currency":"public","/environment/dependencies/python":"public","/environment/hardware_class":"public","/environment/runtime":"public","/status":"public","/uncertainty/method":"public"},"metrics":{"primary":0.233291,"secondary":{"distance":0.211289,"energy":0.440033}},"peak_memory":{"megabytes":24},"record_type":"experiment","runtime":{"seconds":0.0},"schema_version":"1.0","status":"success","uncertainty":{"method":"none","value":null}},{"artifact_ids":["artifact-results"],"code_hash":"1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb","commit":"19320761816f5af6b4d849feb41ebe3a93b7253a","config_hash":"a6e4d7b44d76bc51a128d15e5eaa63d1092e26302ee91dc74065ee6a8b573343","cost":{"amount":0,"currency":"USD"},"data_hash":"236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2","decision":"approve","environment":{"dependencies":{"python":"3"},"drivers":{},"hardware_class":"public-standard","runtime":"CPython"},"environment_hash":"d5e1f75d8a5016e5642c1c8c13c38458a10caa786850e798eaedaebe6864ed3d","experiment_id":"experiment-004","field_sensitivity":{"/cost/currency":"public","/environment/dependencies/python":"public","/environment/hardware_class":"public","/environment/runtime":"public","/status":"public","/uncertainty/method":"public"},"metrics":{"primary":0.180638,"secondary":{"distance":0.049675,"energy":2.619265}},"peak_memory":{"megabytes":24},"record_type":"experiment","runtime":{"seconds":0.0},"schema_version":"1.0","status":"success","uncertainty":{"method":"none","value":null}},{"artifact_ids":["artifact-results"],"code_hash":"1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb","commit":"19320761816f5af6b4d849feb41ebe3a93b7253a","config_hash":"a6e4d7b44d76bc51a128d15e5eaa63d1092e26302ee91dc74065ee6a8b573343","cost":{"amount":0,"currency":"USD"},"data_hash":"236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2","decision":"reject","environment":{"dependencies":{"python":"3"},"drivers":{},"hardware_class":"public-standard","runtime":"CPython"},"environment_hash":"d5e1f75d8a5016e5642c1c8c13c38458a10caa786850e798eaedaebe6864ed3d","experiment_id":"experiment-005","field_sensitivity":{"/cost/currency":"public","/environment/dependencies/python":"public","/environment/hardware_class":"public","/environment/runtime":"public","/status":"public","/uncertainty/method":"public"},"metrics":{"primary":0.31736,"secondary":{"distance":0.051635,"energy":5.314494}},"peak_memory":{"megabytes":24},"record_type":"experiment","runtime":{"seconds":0.0},"schema_version":"1.0","status":"success","uncertainty":{"method":"none","value":null}},{"artifact_ids":["artifact-results"],"code_hash":"1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb","commit":"19320761816f5af6b4d849feb41ebe3a93b7253a","config_hash":"a6e4d7b44d76bc51a128d15e5eaa63d1092e26302ee91dc74065ee6a8b573343","cost":{"amount":0,"currency":"USD"},"data_hash":"236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2","decision":"reject","environment":{"dependencies":{"python":"3"},"drivers":{},"hardware_class":"public-standard","runtime":"CPython"},"environment_hash":"d5e1f75d8a5016e5642c1c8c13c38458a10caa786850e798eaedaebe6864ed3d","experiment_id":"experiment-006","field_sensitivity":{"/cost/currency":"public","/environment/dependencies/python":"public","/environment/hardware_class":"public","/environment/runtime":"public","/status":"public","/uncertainty/method":"public"},"metrics":{"primary":2.646421,"secondary":{"distance":0.679095,"energy":39.346515}},"peak_memory":{"megabytes":24},"record_type":"experiment","runtime":{"seconds":0.0},"schema_version":"1.0","status":"success","uncertainty":{"method":"none","value":null}},{"artifact_ids":["artifact-results"],"code_hash":"1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb","commit":"19320761816f5af6b4d849feb41ebe3a93b7253a","config_hash":"a6e4d7b44d76bc51a128d15e5eaa63d1092e26302ee91dc74065ee6a8b573343","cost":{"amount":0,"currency":"USD"},"data_hash":"236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2","decision":"reject","environment":{"dependencies":{"python":"3"},"drivers":{},"hardware_class":"public-standard","runtime":"CPython"},"environment_hash":"d5e1f75d8a5016e5642c1c8c13c38458a10caa786850e798eaedaebe6864ed3d","experiment_id":"experiment-007","field_sensitivity":{"/cost/currency":"public","/environment/dependencies/python":"public","/environment/hardware_class":"public","/environment/runtime":"public","/status":"public","/uncertainty/method":"public"},"metrics":{"primary":0.708518,"secondary":{"distance":0.611893,"energy":1.932509}},"peak_memory":{"megabytes":24},"record_type":"experiment","runtime":{"seconds":0.0},"schema_version":"1.0","status":"success","uncertainty":{"method":"none","value":null}},{"artifact_ids":["artifact-results"],"code_hash":"1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb","commit":"19320761816f5af6b4d849feb41ebe3a93b7253a","config_hash":"a6e4d7b44d76bc51a128d15e5eaa63d1092e26302ee91dc74065ee6a8b573343","cost":{"amount":0,"currency":"USD"},"data_hash":"236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2","decision":"reject","environment":{"dependencies":{"python":"3"},"drivers":{},"hardware_class":"public-standard","runtime":"CPython"},"environment_hash":"d5e1f75d8a5016e5642c1c8c13c38458a10caa786850e798eaedaebe6864ed3d","experiment_id":"experiment-008","field_sensitivity":{"/cost/currency":"public","/environment/dependencies/python":"public","/environment/hardware_class":"public","/environment/runtime":"public","/status":"public","/uncertainty/method":"public"},"metrics":{"primary":0.273588,"secondary":{"distance":0.149534,"energy":2.481077}},"peak_memory":{"megabytes":24},"record_type":"experiment","runtime":{"seconds":0.0},"schema_version":"1.0","status":"success","uncertainty":{"method":"none","value":null}},{"artifact_ids":["artifact-results"],"code_hash":"1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb","commit":"19320761816f5af6b4d849feb41ebe3a93b7253a","config_hash":"a6e4d7b44d76bc51a128d15e5eaa63d1092e26302ee91dc74065ee6a8b573343","cost":{"amount":0,"currency":"USD"},"data_hash":"236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2","decision":"reject","environment":{"dependencies":{"python":"3"},"drivers":{},"hardware_class":"public-standard","runtime":"CPython"},"environment_hash":"d5e1f75d8a5016e5642c1c8c13c38458a10caa786850e798eaedaebe6864ed3d","experiment_id":"experiment-009","field_sensitivity":{"/cost/currency":"public","/environment/dependencies/python":"public","/environment/hardware_class":"public","/environment/runtime":"public","/status":"public","/uncertainty/method":"public"},"metrics":{"primary":0.909797,"secondary":{"distance":0.307129,"energy":12.053355}},"peak_memory":{"megabytes":24},"record_type":"experiment","runtime":{"seconds":0.0},"schema_version":"1.0","status":"success","uncertainty":{"method":"none","value":null}},{"artifact_ids":["artifact-results"],"code_hash":"1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb","commit":"19320761816f5af6b4d849feb41ebe3a93b7253a","config_hash":"a6e4d7b44d76bc51a128d15e5eaa63d1092e26302ee91dc74065ee6a8b573343","cost":{"amount":0,"currency":"USD"},"data_hash":"236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2","decision":"reject","environment":{"dependencies":{"python":"3"},"drivers":{},"hardware_class":"public-standard","runtime":"CPython"},"environment_hash":"d5e1f75d8a5016e5642c1c8c13c38458a10caa786850e798eaedaebe6864ed3d","experiment_id":"experiment-010","field_sensitivity":{"/cost/currency":"public","/environment/dependencies/python":"public","/environment/hardware_class":"public","/environment/runtime":"public","/status":"public","/uncertainty/method":"public"},"metrics":{"primary":0.614424,"secondary":{"distance":0.163514,"energy":9.018201}},"peak_memory":{"megabytes":24},"record_type":"experiment","runtime":{"seconds":0.0},"schema_version":"1.0","status":"success","uncertainty":{"method":"none","value":null}},{"artifact_ids":["artifact-results"],"code_hash":"1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb","commit":"19320761816f5af6b4d849feb41ebe3a93b7253a","config_hash":"a6e4d7b44d76bc51a128d15e5eaa63d1092e26302ee91dc74065ee6a8b573343","cost":{"amount":0,"currency":"USD"},"data_hash":"236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2","decision":"reject","environment":{"dependencies":{"python":"3"},"drivers":{},"hardware_class":"public-standard","runtime":"CPython"},"environment_hash":"d5e1f75d8a5016e5642c1c8c13c38458a10caa786850e798eaedaebe6864ed3d","experiment_id":"experiment-011","field_sensitivity":{"/cost/currency":"public","/environment/dependencies/python":"public","/environment/hardware_class":"public","/environment/runtime":"public","/status":"public","/uncertainty/method":"public"},"metrics":{"primary":0.477413,"secondary":{"distance":0.128781,"energy":6.972634}},"peak_memory":{"megabytes":24},"record_type":"experiment","runtime":{"seconds":0.0},"schema_version":"1.0","status":"success","uncertainty":{"method":"none","value":null}},{"artifact_ids":["artifact-results"],"code_hash":"1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb","commit":"19320761816f5af6b4d849feb41ebe3a93b7253a","config_hash":"a6e4d7b44d76bc51a128d15e5eaa63d1092e26302ee91dc74065ee6a8b573343","cost":{"amount":0,"currency":"USD"},"data_hash":"236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2","decision":"reject","environment":{"dependencies":{"python":"3"},"drivers":{},"hardware_class":"public-standard","runtime":"CPython"},"environment_hash":"d5e1f75d8a5016e5642c1c8c13c38458a10caa786850e798eaedaebe6864ed3d","experiment_id":"experiment-012","field_sensitivity":{"/cost/currency":"public","/environment/dependencies/python":"public","/environment/hardware_class":"public","/environment/runtime":"public","/status":"public","/uncertainty/method":"public"},"metrics":{"primary":0.270047,"secondary":{"distance":0.168806,"energy":2.024814}},"peak_memory":{"megabytes":24},"record_type":"experiment","runtime":{"seconds":0.0},"schema_version":"1.0","status":"success","uncertainty":{"method":"none","value":null}}],"ideas":{"candidates":[{"candidate_id":"idea-001","differentiating_claim":"The full search is reproducible offline with zero dependencies.","hypothesis":"Bounded random search over PD gains finds a controller reaching the target.","mechanism":"Four gains are searched with a fixed seed; cost is terminal distance plus weighted control effort.","minimum_falsification_experiment":"A trial whose terminal distance exceeds the baseline cost.","nearest_work":[{"evidence_id":"evidence-001"}],"overlap":{"claimed_contribution":"none","data":"none","evaluation":"partial","method":"partial","question":"none"},"pivots":["Increase trials","Add noise to the dynamics"],"resource_estimate":{"expected":{"wall_time_seconds":30},"high":{"wall_time_seconds":120},"low":{"wall_time_seconds":5}},"risks":["Simulator is not a physical robot"],"scores":{"compute_fit":5,"evidence_quality":5,"feasibility":5,"impact":2,"information_gain":3,"risk":1},"status":"differentiated"}],"field_sensitivity":{"/candidates/0/differentiating_claim":"public","/candidates/0/hypothesis":"public","/candidates/0/mechanism":"public","/candidates/0/minimum_falsification_experiment":"public","/candidates/0/overlap/claimed_contribution":"public","/candidates/0/overlap/data":"public","/candidates/0/overlap/evaluation":"public","/candidates/0/overlap/method":"public","/candidates/0/overlap/question":"public","/candidates/0/pivots/0":"public","/candidates/0/pivots/1":"public","/candidates/0/risks/0":"public"},"record_type":"idea-candidates","schema_version":"1.0"},"skill_recommendations":[]}</script>
+  <script>
+  (() => {
+    "use strict";
+    const data = JSON.parse(document.getElementById("researchhelm-data").textContent);
+    const NS = "http://www.w3.org/2000/svg";
+    let figureNumber = 0;
+
+    const text = value => {
+      if (value === null || value === undefined || value === "") return "Not recorded";
+      if (Array.isArray(value)) return value.length ? value.map(text).join(", ") : "None";
+      if (typeof value === "object") return Object.entries(value).map(([key, item]) => `${key}: ${text(item)}`).join("; ");
+      return String(value);
+    };
+    const node = (tag, className, content) => {
+      const result = document.createElement(tag);
+      if (className) result.className = className;
+      if (content !== undefined) result.textContent = text(content);
+      return result;
+    };
+    const svgNode = (tag, attributes = {}) => {
+      const result = document.createElementNS(NS, tag);
+      Object.entries(attributes).forEach(([key, value]) => result.setAttribute(key, String(value)));
+      return result;
+    };
+    const appendSvgText = (svg, x, y, content, attributes = {}) => {
+      const label = svgNode("text", { x, y, ...attributes });
+      label.textContent = text(content);
+      svg.appendChild(label);
+      return label;
+    };
+    const frame = (label, description, height = 360) => {
+      figureNumber += 1;
+      const titleId = `figure-title-${figureNumber}`;
+      const descId = `figure-desc-${figureNumber}`;
+      const svg = svgNode("svg", { viewBox: `0 0 900 ${height}`, role: "img", "aria-labelledby": `${titleId} ${descId}` });
+      const title = svgNode("title", { id: titleId });
+      title.textContent = label;
+      const desc = svgNode("desc", { id: descId });
+      desc.textContent = description;
+      svg.append(title, desc);
+      const figure = document.createElement("figure");
+      figure.appendChild(svg);
+      const caption = document.createElement("figcaption");
+      caption.textContent = description;
+      figure.appendChild(caption);
+      return { figure, svg };
+    };
+    const table = (captionText, columns, rows) => {
+      const wrapper = node("div", "table-wrap");
+      const result = document.createElement("table");
+      const caption = document.createElement("caption");
+      caption.textContent = captionText;
+      const thead = document.createElement("thead");
+      const headRow = document.createElement("tr");
+      columns.forEach(column => {
+        const th = document.createElement("th");
+        th.scope = "col";
+        th.textContent = column.label;
+        headRow.appendChild(th);
+      });
+      thead.appendChild(headRow);
+      const tbody = document.createElement("tbody");
+      rows.forEach(row => {
+        const tr = document.createElement("tr");
+        columns.forEach(column => {
+          const td = document.createElement("td");
+          td.dataset.label = column.label;
+          td.textContent = text(column.value(row));
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      result.append(caption, thead, tbody);
+      wrapper.appendChild(result);
+      return wrapper;
+    };
+    const contentFor = id => document.querySelector(`#${id} .content`);
+    const empty = message => node("p", "empty", message);
+    const bounded = (value, low, high) => Math.max(low, Math.min(high, Number(value) || 0));
+    const finiteMetric = value => typeof value === "number" && Number.isFinite(value) ? value : Number.NaN;
+
+    document.getElementById("data-boundary").textContent = text(data.data_boundary);
+
+    const brief = data.brief || {};
+    const compute = (brief.resources || {}).compute || {};
+    const constraints = brief.constraints || {};
+    const resourceHost = contentFor("resources");
+    const stats = node("div", "stat-grid");
+    [
+      ["Mode", brief.mode], ["Stage", brief.stage], ["CPU", compute.cpu], ["Accelerator", compute.accelerator],
+      ["RAM", compute.ram_gb === undefined ? null : `${compute.ram_gb} GB`],
+      ["Storage", compute.storage_gb === undefined ? null : `${compute.storage_gb} GB`],
+      ["Time ceiling", constraints.wall_time_seconds === undefined ? null : `${constraints.wall_time_seconds} s`],
+      ["Budget", constraints.monetary_budget]
+    ].forEach(([label, value]) => {
+      const card = node("div", "stat");
+      card.append(node("span", "", label), node("strong", "", value));
+      stats.appendChild(card);
+    });
+    resourceHost.appendChild(stats);
+    const apis = ((brief.resources || {}).apis || []);
+    resourceHost.appendChild(table("Text equivalent for resource and data boundaries", [
+      { label: "Item", value: row => row.item },
+      { label: "Declared value", value: row => row.value }
+    ], [
+      { item: "Allowed scope", value: constraints.allowed_scope },
+      { item: "Forbidden scope", value: constraints.forbidden_scope },
+      { item: "Network available", value: (brief.network_status || {}).available },
+      { item: "APIs", value: apis.map(api => `${text(api.provider)} / ${text(api.capability)} / credential available: ${text(api.credential_available)}`) }
+    ]));
+
+    const ideas = ((data.ideas || {}).candidates || []);
+    const ideaHost = contentFor("ideas");
+    if (!ideas.length) {
+      ideaHost.appendChild(empty("No idea candidates recorded."));
+    } else {
+      const layout = node("div", "visual-grid");
+      const { figure, svg } = frame("Idea novelty, feasibility, and cost map", "Each circle is an idea. Horizontal position represents novelty status, vertical position represents feasibility, and circle size represents expected wall time.");
+      const novelty = { overlapping: 1, incremental: 2, unknown: 3, differentiated: 4 };
+      svg.append(svgNode("line", { x1: 80, y1: 310, x2: 850, y2: 310, stroke: "#536170", "stroke-width": 2 }));
+      svg.append(svgNode("line", { x1: 80, y1: 40, x2: 80, y2: 310, stroke: "#536170", "stroke-width": 2 }));
+      appendSvgText(svg, 465, 345, "Novelty status: overlap to differentiated", { "text-anchor": "middle" });
+      appendSvgText(svg, 22, 175, "Feasibility", { transform: "rotate(-90 22 175)", "text-anchor": "middle" });
+      ideas.forEach((idea, index) => {
+        const status = novelty[idea.status] || 3;
+        const feasibility = bounded((idea.scores || {}).feasibility, 0, 5);
+        const seconds = Number((((idea.resource_estimate || {}).expected || {}).wall_time_seconds)) || 1;
+        const x = 80 + ((status - 1) / 3) * 740;
+        const y = 310 - (feasibility / 5) * 245;
+        const radius = Math.max(13, Math.min(32, 10 + Math.log10(seconds + 1) * 6));
+        const circle = svgNode("circle", { cx: x, cy: y, r: radius, fill: index % 2 ? "#e69f00" : "#0072b2", opacity: 0.78, stroke: "#17212b", "stroke-width": 1.5, tabindex: 0, role: "img", "aria-label": `${text(idea.candidate_id)}; ${text(idea.status)}; feasibility ${feasibility}; expected ${seconds} seconds` });
+        svg.appendChild(circle);
+        appendSvgText(svg, x, y - radius - 7, idea.candidate_id, { "text-anchor": "middle", "font-weight": 700 });
+      });
+      layout.append(figure, table("Text equivalent for the idea map", [
+        { label: "Candidate", value: row => row.candidate_id },
+        { label: "Status", value: row => row.status },
+        { label: "Information gain", value: row => (row.scores || {}).information_gain },
+        { label: "Feasibility", value: row => (row.scores || {}).feasibility },
+        { label: "Expected time", value: row => `${(((row.resource_estimate || {}).expected || {}).wall_time_seconds) || "Not recorded"} s` },
+        { label: "Differentiating claim", value: row => row.differentiating_claim }
+      ], ideas));
+      ideaHost.appendChild(layout);
+    }
+
+    const overlapHost = contentFor("overlap");
+    if (!ideas.length) {
+      overlapHost.appendChild(empty("No overlap evidence recorded."));
+    } else {
+      const dimensions = ["question", "method", "data", "evaluation", "claimed_contribution"];
+      const palette = { none: "#d8e2ea", partial: "#56b4e9", high: "#d55e00", unknown: "#e69f00" };
+      const layout = node("div", "visual-grid");
+      const height = 105 + ideas.length * 62;
+      const { figure, svg } = frame("Five-column overlap grid", "Rows are candidate ideas. Each labeled cell reports overlap for question, method, data, evaluation, and claimed contribution.", height);
+      dimensions.forEach((dimension, column) => appendSvgText(svg, 260 + column * 122, 42, dimension.replace("_", " "), { "text-anchor": "middle", "font-weight": 700 }));
+      ideas.forEach((idea, row) => {
+        appendSvgText(svg, 12, 82 + row * 62, idea.candidate_id, { "font-weight": 700 });
+        dimensions.forEach((dimension, column) => {
+          const value = text((idea.overlap || {})[dimension]).toLowerCase();
+          const rect = svgNode("rect", { x: 202 + column * 122, y: 56 + row * 62, width: 112, height: 40, rx: 7, fill: palette[value] || palette.unknown, stroke: "#536170" });
+          svg.appendChild(rect);
+          appendSvgText(svg, 258 + column * 122, 82 + row * 62, value, { "text-anchor": "middle", "font-weight": 700 });
+        });
+      });
+      const legend = node("ul", "legend");
+      Object.entries(palette).forEach(([label, color]) => {
+        const item = document.createElement("li");
+        const swatch = document.createElement("span");
+        swatch.style.background = color;
+        item.append(swatch, document.createTextNode(label));
+        legend.appendChild(item);
+      });
+      figure.appendChild(legend);
+      layout.append(figure, table("Text equivalent for the overlap matrix", [
+        { label: "Candidate", value: row => row.candidate_id },
+        ...dimensions.map(dimension => ({ label: dimension.replace("_", " "), value: row => (row.overlap || {})[dimension] }))
+      ], ideas));
+      overlapHost.appendChild(layout);
+    }
+
+    const decisions = (data.decisions || []).slice().sort((left, right) => text(left.timestamp).localeCompare(text(right.timestamp)));
+    const decisionHost = contentFor("decisions");
+    if (!decisions.length) {
+      decisionHost.appendChild(empty("No gate decisions recorded."));
+    } else {
+      const layout = node("div", "visual-grid");
+      const timeline = node("ol", "timeline");
+      timeline.setAttribute("aria-label", "Chronological decision cards");
+      decisions.forEach(decision => {
+        const item = node("li", "decision-card");
+        const heading = document.createElement("h3");
+        const badge = node("span", "badge", decision.decision);
+        heading.append(badge, document.createTextNode(text(decision.stage)));
+        item.append(heading, node("p", "", `${text(decision.timestamp)} · ${text(decision.actor)}`), node("p", "", decision.rationale));
+        timeline.appendChild(item);
+      });
+      layout.append(timeline, table("Text equivalent for the decision timeline", [
+        { label: "Stage", value: row => row.stage },
+        { label: "Decision", value: row => row.decision },
+        { label: "Actor", value: row => row.actor },
+        { label: "Timestamp", value: row => row.timestamp },
+        { label: "Constraints", value: row => row.constraints }
+      ], decisions));
+      decisionHost.appendChild(layout);
+    }
+
+    const experiments = data.experiments || [];
+    const experimentHost = contentFor("experiments");
+    if (!experiments.length) {
+      experimentHost.appendChild(empty("No experiments recorded."));
+    } else {
+      const layout = node("div", "visual-grid");
+      const { figure, svg } = frame("Experiment cost and primary metric plot", "Successful experiments are circles positioned by cost and primary metric. Crashed experiments are marked with an X and retain a null metric.");
+      const validMetrics = experiments.map(item => finiteMetric((item.metrics || {}).primary)).filter(Number.isFinite);
+      const costs = experiments.map(item => Number((item.cost || {}).amount) || 0);
+      const minMetric = validMetrics.length ? Math.min(...validMetrics) : 0;
+      const maxMetric = validMetrics.length ? Math.max(...validMetrics) : 1;
+      const maxCost = Math.max(...costs, 1);
+      svg.append(svgNode("line", { x1: 80, y1: 310, x2: 850, y2: 310, stroke: "#536170", "stroke-width": 2 }));
+      svg.append(svgNode("line", { x1: 80, y1: 40, x2: 80, y2: 310, stroke: "#536170", "stroke-width": 2 }));
+      appendSvgText(svg, 465, 345, "Recorded cost", { "text-anchor": "middle" });
+      appendSvgText(svg, 22, 175, "Primary metric", { transform: "rotate(-90 22 175)", "text-anchor": "middle" });
+      experiments.forEach((experiment, index) => {
+        const cost = Number((experiment.cost || {}).amount) || 0;
+        const metric = finiteMetric((experiment.metrics || {}).primary);
+        const x = 90 + (cost / maxCost) * 730;
+        const y = Number.isFinite(metric) ? 295 - ((metric - minMetric) / Math.max(maxMetric - minMetric, 1e-9)) * 225 : 286;
+        if (experiment.status === "crash" || !Number.isFinite(metric)) {
+          svg.append(svgNode("line", { x1: x - 10, y1: y - 10, x2: x + 10, y2: y + 10, stroke: "#d55e00", "stroke-width": 5 }));
+          svg.append(svgNode("line", { x1: x - 10, y1: y + 10, x2: x + 10, y2: y - 10, stroke: "#d55e00", "stroke-width": 5 }));
+        } else {
+          svg.append(svgNode("circle", { cx: x, cy: y, r: 11, fill: index % 2 ? "#009e73" : "#0072b2", stroke: "#17212b", tabindex: 0, role: "img", "aria-label": `${text(experiment.experiment_id)}; cost ${cost}; primary metric ${metric}` }));
+        }
+        appendSvgText(svg, x, Math.max(54, y - 18), experiment.experiment_id, { "text-anchor": "middle", "font-weight": 700 });
+      });
+      layout.append(figure, table("Text equivalent for experiment cost and performance", [
+        { label: "Experiment", value: row => row.experiment_id },
+        { label: "Status", value: row => row.status },
+        { label: "Primary metric", value: row => (row.metrics || {}).primary },
+        { label: "Cost", value: row => `${text((row.cost || {}).amount)} ${text((row.cost || {}).currency)}` },
+        { label: "Runtime", value: row => `${text((row.runtime || {}).seconds)} s` },
+        { label: "Decision", value: row => row.decision }
+      ], experiments));
+      experimentHost.appendChild(layout);
+    }
+
+    const claims = ((data.claims || {}).claims || []);
+    const artifacts = ((data.artifacts || {}).artifacts || []);
+    const claimHost = contentFor("claims");
+    if (!claims.length) {
+      claimHost.appendChild(empty("No claims recorded."));
+    } else {
+      const layout = node("div", "visual-grid");
+      const height = Math.max(280, 90 + Math.max(claims.length, artifacts.length) * 62);
+      const { figure, svg } = frame("Claim-to-artifact evidence graph", "Claims appear on the left and registered artifacts on the right. Lines show every recorded claim-to-artifact relationship.", height);
+      const artifactIndex = new Map(artifacts.map((artifact, index) => [artifact.artifact_id, index]));
+      const claimY = index => 62 + index * ((height - 100) / Math.max(claims.length - 1, 1));
+      const artifactY = index => 62 + index * ((height - 100) / Math.max(artifacts.length - 1, 1));
+      claims.forEach((claim, claimIndex) => {
+        (claim.artifact_ids || []).forEach(artifactId => {
+          if (artifactIndex.has(artifactId)) svg.append(svgNode("line", { x1: 300, y1: claimY(claimIndex), x2: 610, y2: artifactY(artifactIndex.get(artifactId)), stroke: "#56b4e9", "stroke-width": 3, opacity: 0.8 }));
+        });
+      });
+      claims.forEach((claim, index) => {
+        const y = claimY(index);
+        svg.append(svgNode("rect", { x: 35, y: y - 20, width: 265, height: 40, rx: 8, fill: "#eaf2f6", stroke: "#0072b2" }));
+        appendSvgText(svg, 48, y + 4, `${text(claim.claim_id)} · ${text(claim.status)}`, { "font-weight": 700 });
+      });
+      artifacts.forEach((artifact, index) => {
+        const y = artifactY(index);
+        svg.append(svgNode("rect", { x: 610, y: y - 20, width: 255, height: 40, rx: 8, fill: "#e7f4ee", stroke: "#009e73" }));
+        appendSvgText(svg, 623, y + 4, `${text(artifact.artifact_id)} · ${text(artifact.kind)}`, { "font-weight": 700 });
+      });
+      layout.append(figure, table("Text equivalent for claim and artifact links", [
+        { label: "Claim", value: row => row.claim_id },
+        { label: "Status", value: row => row.status },
+        { label: "Claim text", value: row => row.text },
+        { label: "Artifacts", value: row => row.artifact_ids },
+        { label: "Caveats", value: row => row.caveats },
+        { label: "Counter-evidence", value: row => row.counter_evidence }
+      ], claims));
+      claimHost.appendChild(layout);
+    }
+  })();
+  </script>
+</body>
+</html>

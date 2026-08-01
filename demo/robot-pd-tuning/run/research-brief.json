@@ -1,0 +1,57 @@
+{
+  "constraints": {
+    "allowed_scope": [
+      "demo/robot-pd-tuning/"
+    ],
+    "commands": [
+      {
+        "template": "py demo/robot-pd-tuning/simulator.py"
+      }
+    ],
+    "forbidden_scope": [],
+    "monetary_budget": 0,
+    "wall_time_seconds": 600
+  },
+  "created_at": "2026-08-01T13:47:36Z",
+  "field_sensitivity": {
+    "/constraints/allowed_scope/0": "public",
+    "/constraints/commands/0/template": "public",
+    "/private_question": "project-private",
+    "/public_summary": "public",
+    "/resources/apis/0/capability": "public",
+    "/resources/apis/0/provider": "public",
+    "/resources/compute/accelerator": "public",
+    "/resources/compute/cpu": "public"
+  },
+  "mode": "optimize",
+  "network_status": {
+    "approved_for_project_private_data": false,
+    "available": false
+  },
+  "private_question": "Which gain combination minimizes terminal distance and control effort?",
+  "public_summary": "Bounded offline PD-gain search for a deterministic planar arm simulator.",
+  "record_type": "research-brief",
+  "resources": {
+    "apis": [
+      {
+        "capability": "none",
+        "credential_available": false,
+        "provider": "none"
+      }
+    ],
+    "compute": {
+      "accelerator": "none",
+      "cpu": "public-standard",
+      "ram_gb": 16,
+      "storage_gb": 1
+    }
+  },
+  "resume": {
+    "enabled": false
+  },
+  "run_id": "robot-pd-tuning",
+  "schema_version": "1.0",
+  "stage": "BOUNDED_EXECUTION",
+  "stage_input_hash": "672d157ce997a8d437092a8d1d52e72db7bc9a12a32a4186491998b1fa9d9fdc",
+  "updated_at": "2026-08-01T13:48:06Z"
+}

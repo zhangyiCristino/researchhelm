@@ -1,0 +1,66 @@
+{
+  "candidates": [
+    {
+      "candidate_id": "idea-001",
+      "differentiating_claim": "The full search is reproducible offline with zero dependencies.",
+      "hypothesis": "Bounded random search over PD gains finds a controller reaching the target.",
+      "mechanism": "Four gains are searched with a fixed seed; cost is terminal distance plus weighted control effort.",
+      "minimum_falsification_experiment": "A trial whose terminal distance exceeds the baseline cost.",
+      "nearest_work": [
+        {
+          "evidence_id": "evidence-001"
+        }
+      ],
+      "overlap": {
+        "claimed_contribution": "none",
+        "data": "none",
+        "evaluation": "partial",
+        "method": "partial",
+        "question": "none"
+      },
+      "pivots": [
+        "Increase trials",
+        "Add noise to the dynamics"
+      ],
+      "resource_estimate": {
+        "expected": {
+          "wall_time_seconds": 30
+        },
+        "high": {
+          "wall_time_seconds": 120
+        },
+        "low": {
+          "wall_time_seconds": 5
+        }
+      },
+      "risks": [
+        "Simulator is not a physical robot"
+      ],
+      "scores": {
+        "compute_fit": 5,
+        "evidence_quality": 5,
+        "feasibility": 5,
+        "impact": 2,
+        "information_gain": 3,
+        "risk": 1
+      },
+      "status": "differentiated"
+    }
+  ],
+  "field_sensitivity": {
+    "/candidates/0/differentiating_claim": "public",
+    "/candidates/0/hypothesis": "public",
+    "/candidates/0/mechanism": "public",
+    "/candidates/0/minimum_falsification_experiment": "public",
+    "/candidates/0/overlap/claimed_contribution": "public",
+    "/candidates/0/overlap/data": "public",
+    "/candidates/0/overlap/evaluation": "public",
+    "/candidates/0/overlap/method": "public",
+    "/candidates/0/overlap/question": "public",
+    "/candidates/0/pivots/0": "public",
+    "/candidates/0/pivots/1": "public",
+    "/candidates/0/risks/0": "public"
+  },
+  "record_type": "idea-candidates",
+  "schema_version": "1.0"
+}

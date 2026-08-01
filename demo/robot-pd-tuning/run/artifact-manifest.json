@@ -1,0 +1,28 @@
+{
+  "artifacts": [
+    {
+      "artifact_id": "artifact-simulator",
+      "frozen": true,
+      "kind": "code",
+      "path": "artifacts/simulator.py",
+      "producing_run": "robot-pd-tuning",
+      "sha256": "1c3e94fb20b8e835ab9bd4a4ece0dc95ff135654c031b76bf9da00534c2d7bdb"
+    },
+    {
+      "artifact_id": "artifact-results",
+      "frozen": true,
+      "kind": "result",
+      "path": "artifacts/results.json",
+      "producing_run": "robot-pd-tuning",
+      "sha256": "236564325f42e5d841afe939545bd35b701a62cd2121aaa43cc885234b292bc2"
+    }
+  ],
+  "field_sensitivity": {
+    "/artifacts/0/kind": "public",
+    "/artifacts/0/path": "public",
+    "/artifacts/1/kind": "public",
+    "/artifacts/1/path": "public"
+  },
+  "record_type": "artifact-manifest",
+  "schema_version": "1.0"
+}

@@ -1,0 +1,51 @@
+{
+  "claims": [
+    {
+      "artifact_ids": [
+        "artifact-simulator",
+        "artifact-results"
+      ],
+      "caveats": [
+        "Simulated walkthrough only; not a hardware, benchmark, or generalization claim."
+      ],
+      "citations": [
+        "evidence-001"
+      ],
+      "claim_id": "claim-001",
+      "counter_evidence": [],
+      "run_ids": [
+        "robot-pd-tuning"
+      ],
+      "status": "supported",
+      "text": "Best PD gains reach a terminal distance of 0.049675 at cost 0.180638 in the deterministic simulator."
+    },
+    {
+      "artifact_ids": [
+        "artifact-simulator"
+      ],
+      "caveats": [
+        "Deterministic only within this simulator and Python standard library."
+      ],
+      "citations": [
+        "evidence-001"
+      ],
+      "claim_id": "claim-002",
+      "counter_evidence": [],
+      "run_ids": [
+        "robot-pd-tuning"
+      ],
+      "status": "supported",
+      "text": "The full search reproduces exactly from the committed generator and seed."
+    }
+  ],
+  "field_sensitivity": {
+    "/claims/0/caveats/0": "public",
+    "/claims/0/citations/0": "public",
+    "/claims/0/text": "public",
+    "/claims/1/caveats/0": "public",
+    "/claims/1/citations/0": "public",
+    "/claims/1/text": "public"
+  },
+  "record_type": "claim-evidence",
+  "schema_version": "1.0"
+}
