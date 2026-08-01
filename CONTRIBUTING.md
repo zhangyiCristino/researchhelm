@@ -39,6 +39,15 @@ For a faster smoke check during iteration:
 python scripts/quick_verify.py
 ```
 
+The repository also ships a pip-installable CLI wrapping the canonical
+protocol scripts (standard library only):
+
+```bash
+pip install -e .
+researchhelm --help
+researchhelm validate <run_dir>
+```
+
 The compatibility table in the READMEs is generated from
 `evals/compatibility/clients.json`; never edit the marked block by hand:
 

@@ -1,3 +1,24 @@
+Metadata-Version: 2.4
+Name: researchhelm
+Version: 3.1.0
+Summary: Human-governed research protocol toolchain: validate, render, audit, sanitize, compat, inspect
+Author: Yi Zhang
+License: MIT
+Keywords: claude-code,ai-agents,research,human-in-the-loop,reproducible-research
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
 # ResearchHelm
 
 **Human-governed research, from resources to audited claims.**
@@ -29,7 +50,6 @@ Three ways in, same protocol:
 | Path | When to use |
 |---|---|
 | `npx skills use zhangyiCristino/researchhelm@researchhelm` | Try without installing (community installer) |
-| `pip install researchhelm` | Offline protocol toolchain: `validate`, `render`, `audit`, `sanitize`, `compat`, `inspect`, `verify` |
 | Claude Code plugin commands below | Existing Claude Code users |
 | Manual copy of the skill folder below | Any capable coding agent |
 

@@ -1,0 +1,2 @@
+[console_scripts]
+researchhelm = researchhelm_cli:main

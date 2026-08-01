@@ -10,6 +10,21 @@ All notable changes to ResearchHelm are documented here. This project follows
 
 - README (EN/中文): quick-start table, live-demo link to the hosted Research
   Cockpit, a `How it works` pipeline diagram, and an FAQ section.
+
+## [3.1.0] - 2026-08-01
+
+### Added
+
+- `researchhelm` command-line interface: a pip-installable toolchain
+  (`pip install researchhelm`, standard library only) wrapping the canonical
+  protocol scripts as subcommands — `validate`, `render`, `audit`,
+  `sanitize`, `compat`, `inspect`, `verify`. The skill folder itself is
+  untouched and stays contract-pinned.
+- `tests/test_cli.py` covering CLI dispatch and every subcommand.
+
+### Changed
+
+- Plugin and marketplace metadata versions bumped to 3.1.0.
 - Community infrastructure: `CONTRIBUTING.md`, `CHANGELOG.md`, `ROADMAP.md`,
   `CODE_OF_CONDUCT.md`, bug-report and feature-request issue templates, and a
   `scripts/quick_verify.py` smoke check.

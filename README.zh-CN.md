@@ -29,6 +29,7 @@ ResearchHelm 是一套**人主导的科研协议**，面向具备读写文件、
 | 方式 | 适用场景 |
 |---|---|
 | `npx skills use zhangyiCristino/researchhelm@researchhelm` | 不安装直接试用（社区安装器） |
+| `pip install researchhelm` | 离线协议工具链：`validate`、`render`、`audit`、`sanitize`、`compat`、`inspect`、`verify` |
 | 下文 Claude Code 插件命令 | 现有 Claude Code 用户 |
 | 下文手动复制 Skill 目录 | 任意具备能力的编码 Agent |
 
