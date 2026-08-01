@@ -8,6 +8,8 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![在线演示](https://img.shields.io/badge/live%20demo-Research%20Cockpit-2ea44f)](https://zhangyiCristino.github.io/researchhelm/)
 
+![ResearchHelm 流程](docs/assets/researchhelm-logo.svg)
+
 ResearchHelm **不是自主 AI 科学家**，也不承诺把一个题目自动变成论文，更不会替代科研判断。你始终是负责人：Agent 在获批边界内搜集证据、构建、验证，并把每条保留结论追溯到具体产物。
 
 `资源 -> 可辩护的想法 -> 人的决策 -> 受限执行 -> 经审计的结论`

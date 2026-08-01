@@ -8,6 +8,8 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Live demo](https://img.shields.io/badge/live%20demo-Research%20Cockpit-2ea44f)](https://zhangyiCristino.github.io/researchhelm/)
 
+![ResearchHelm pipeline](docs/assets/researchhelm-logo.svg)
+
 ResearchHelm is **not an autonomous AI scientist**. It does not promise to turn a topic into a paper or replace scientific judgment. You remain the principal investigator: the agent gathers evidence, builds and verifies within approved limits, and ties every retained claim back to artifacts.
 
 `resources -> defensible ideas -> human decisions -> bounded execution -> audited claims`
