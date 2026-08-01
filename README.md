@@ -196,6 +196,8 @@ Local Cockpits are private and untracked by default. A committed public Cockpit 
 
 ### Demo status
 
+An additional **offline protocol walkthrough** — bounded PD-gain search on a deterministic planar-arm simulator ([`demo/robot-pd-tuning/`](demo/robot-pd-tuning/)) — shows the full state contract and Cockpit generation with zero dependencies, no network, and no agent. It is a local reproducibility demo, not an agent-run or benchmark claim.
+
 The public walkthrough completed all four human gates and 18 frozen runs on UCI Covertype. In this exact dataset/model/split protocol, matched-random macro-F1 exceeded whole-area-holdout macro-F1 in all nine paired area-and-seed comparisons; the mean paired difference was `+0.211`. The evidence is limited to this setup, and the measured GPU time (`646 s`) is budget evidence rather than a performance benchmark. Inspect the [claim ledger and immutable artifacts](demo/one-gpu-public/) instead of trusting the summary.
 
 ### Governed Skill Recommendations
