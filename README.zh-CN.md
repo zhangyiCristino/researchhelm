@@ -198,6 +198,10 @@ ResearchHelm 只在项目工作区和用户明确批准的路径内工作。它�
 
 另有一个**离线协议走查**——确定性平面机械臂上的受限 PD 增益搜索（[`demo/robot-pd-tuning/`](demo/robot-pd-tuning/)）——零依赖、无网络、无 Agent 地展示完整状态契约与 Cockpit 生成。它是本地可复现性演示，不是 Agent 运行或基准声明。
 
+![Robot PD-tuning 可视化](demo/robot-pd-tuning/visuals.svg)
+
+两个演示均可在线上查看：[单 GPU 走查](https://zhangyicristino.github.io/researchhelm/one-gpu-public.html) 与 [机器人 PD 调优 Cockpit](https://zhangyicristino.github.io/researchhelm/robot-pd-tuning.html)，或从[演示首页](https://zhangyicristino.github.io/researchhelm/)进入。
+
 公开演示已经完成四道人类决策门和 18 次冻结的 UCI Covertype 运行。在这一个明确的数据集、模型和拆分协议中，类别计数匹配的随机拆分在 9/9 个区域与 seed 配对中都高于整区域留出，平均配对差值为 `+0.211`。该证据只适用于本设置；实测 GPU 时间（`646 s`）是预算证据，不是性能基准。请直接检查[结论账本和不可变产物](demo/one-gpu-public/)，不要只相信摘要。
 
 ### 受控 Skill 推荐
