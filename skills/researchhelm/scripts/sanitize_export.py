@@ -404,7 +404,7 @@ WINDOWS_ABSOLUTE = re.compile(
     r"(?i)(?:^|[\s='\"])(?:[A-Z]:[\\/][^\s,;]+|\\\\[^\\\s]+\\[^\s,;]+)"
 )
 POSIX_ABSOLUTE = re.compile(
-    r"(?:^|[\s='\"(\[{])/(?!/)[^\s,;)\]}]+"
+    r"(?:^|[\s='\"(\[{])/(?![/>])[^\s,;)\]}]+"
 )
 LOCAL_FILE_URL = re.compile(r"(?i)\bfile:///(?:[^\s,;]+)")
 LOCAL_IPV4 = re.compile(

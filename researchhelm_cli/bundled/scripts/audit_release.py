@@ -83,37 +83,113 @@ FILESYSTEM_ROOT_SEGMENTS = {
     "windows",
 }
 SCHEMA_POINTER_ROOTS = {
+    "actor",
+    "actual",
+    "approval_hash",
+    "approved_tier",
+    "artifact_id",
     "artifact_ids",
     "artifacts",
+    "branch",
+    "candidate_id",
     "candidates",
+    "capability",
+    "caveats",
+    "citations",
+    "claim_id",
+    "claimed_contribution",
     "claims",
     "code_hash",
     "commit",
+    "compute_fit",
     "config_hash",
+    "constraints",
     "content_hash",
+    "cost",
+    "counter_evidence",
+    "coverage",
     "created_at",
+    "credential_available",
+    "data_boundary",
     "data_hash",
     "decision",
     "decision_requested",
+    "dependencies",
+    "differentiating_claim",
+    "drivers",
+    "enabled",
     "environment",
     "environment_hash",
+    "evaluation",
     "event_hash",
     "event_id",
     "evidence_id",
+    "evidence_quality",
     "experiment_id",
+    "feasibility",
+    "field_sensitivity",
+    "floor",
+    "from_tier",
+    "frozen",
+    "hardware_class",
+    "hypothesis",
+    "impact",
+    "information_gain",
     "input_hash",
+    "kind",
+    "mechanism",
+    "method",
+    "metrics",
+    "minimum_falsification_experiment",
     "mode",
+    "model",
+    "model_selection",
+    "model_tier",
+    "nearest_work",
+    "network_status",
+    "notes",
+    "overlap",
+    "path",
+    "peak_memory",
+    "permissions",
+    "pivots",
     "previous_event_hash",
+    "private_question",
+    "producing_run",
+    "provider",
+    "public_summary",
+    "question",
+    "rationale",
     "recommendation_id",
+    "recommended_tier",
     "record_type",
+    "resource_estimate",
+    "resources",
     "resume",
     "retrieved_at",
+    "revision",
+    "risk",
+    "risks",
     "run_id",
+    "run_ids",
+    "runtime",
     "schema_version",
+    "score",
+    "scores",
+    "sha256",
+    "source",
     "stage",
     "stage_input_hash",
+    "state_hash",
+    "status",
+    "template",
+    "text",
     "timestamp",
+    "to_tier",
+    "trigger",
+    "uncertainty",
     "updated_at",
+    "used",
 }
 DEFAULT_POLICY = {
     "schema_version": 1,
@@ -348,9 +424,31 @@ def _python_pointer_values(path: str, text: str) -> dict[int, set[str]]:
             value = node.value
             for target in node.targets:
                 names.update(_assignment_names(target))
+                # Pointer keys written by subscript assignment, including the
+                # nested field_sensitivity form used by fixtures and tests.
+                if isinstance(target, ast.Subscript) and isinstance(
+                    target.slice, ast.Constant
+                ):
+                    candidate = target.slice.value
+                    if isinstance(candidate, str) and _is_explicit_schema_pointer(
+                        candidate
+                    ):
+                        start = getattr(target.slice, "lineno", 0)
+                        if start > 0:
+                            lines.setdefault(start, set()).add(candidate)
         elif isinstance(node, ast.AnnAssign):
             value = node.value
             names.update(_assignment_names(node.target))
+        # Walk dict literals looking for string keys matching pointer structure
+        # when the dict's parent context suggests field_sensitivity.
+        if isinstance(node, ast.Dict):
+            for key_node in node.keys:
+                if isinstance(key_node, ast.Constant) and isinstance(key_node.value, str):
+                    candidate = key_node.value
+                    if _is_explicit_schema_pointer(candidate):
+                        start = getattr(key_node, "lineno", 0)
+                        if start > 0:
+                            lines.setdefault(start, set()).add(candidate)
         if value is None or not any("POINTER" in name.upper() for name in names):
             continue
         for item in ast.walk(value):
