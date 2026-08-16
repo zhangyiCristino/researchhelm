@@ -545,7 +545,26 @@ def _json_field_sensitivity_spans(
     path: str, text: str
 ) -> dict[int, set[tuple[int, int]]]:
     suffix = PurePosixPath(normalized(path)).suffix.lower()
-    if suffix not in {".json", ".jsonl"}:
+    # Offsets that translate span positions back to the original document.
+    line_offset = 0
+    column_offset = 0
+    # Cockpit HTML embeds the run state as <script type="application/json">.
+    if suffix == ".html":
+        match = re.search(
+            r'<script[^>]+type\s*=\s*["\']application/json["\'][^>]*>\s*(\{.*?\})\s*</script>',
+            text,
+            re.DOTALL | re.IGNORECASE,
+        )
+        if not match:
+            return {}
+        start = match.start(1)
+        preceding = text[:start]
+        # _json_tokens numbers the extracted text from line 1, so shift by the
+        # lines consumed before the payload and by the column it starts at.
+        line_offset = preceding.count("\n")
+        column_offset = start - (preceding.rfind("\n") + 1)
+        text = match.group(1)
+    elif suffix not in {".json", ".jsonl"}:
         return {}
     tokens = _json_tokens(text)
     allowed: dict[int, set[tuple[int, int]]] = {}
@@ -567,7 +586,9 @@ def _json_field_sensitivity_spans(
                     return index, False
                 index += 1
                 if sensitivity and STRICT_JSON_POINTER_VALUE.fullmatch(key.value):
-                    allowed.setdefault(key.line, set()).add((key.start, key.end))
+                    line = key.line + line_offset
+                    span = (key.start + column_offset, key.end + column_offset)
+                    allowed.setdefault(line, set()).add(span)
                 index, valid = parse_value(
                     index, sensitivity=key.value == "field_sensitivity"
                 )
