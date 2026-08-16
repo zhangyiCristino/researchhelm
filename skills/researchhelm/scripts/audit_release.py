@@ -61,6 +61,17 @@ QUOTED_SLASH_SEPARATOR = re.compile(
 SLASH_COMMAND = re.compile(
     r"(?:/plugin\s+(?:marketplace\s+add|install)\b|/researchhelm\b|/autoresearch\b)"
 )
+SYNTHETIC_CREDENTIAL_FIXTURE_PATH = "tests/test_credential_scan.py"
+SYNTHETIC_CREDENTIAL_FIXTURE_KEY = "API_" + "KEY"
+SYNTHETIC_CREDENTIAL_FIXTURE_VALUE = "super-secret-" + "value-do-not-leak"
+SYNTHETIC_CREDENTIAL_FIXTURE = re.compile(
+    re.escape(
+        SYNTHETIC_CREDENTIAL_FIXTURE_KEY
+        + "="
+        + SYNTHETIC_CREDENTIAL_FIXTURE_VALUE
+    )
+    + r"(?=[\"'\s,)]|$)"
+)
 FILESYSTEM_ROOT_SEGMENTS = {
     "dev",
     "etc",
@@ -304,6 +315,13 @@ def _mask_approved_emails(text: str, approved: Iterable[str]) -> str:
         return match.group(0)
 
     return EMAIL_TOKEN.sub(replace, text)
+
+
+def _mask_known_synthetic_credential_fixture(path: str, text: str) -> str:
+    if normalized(path) != SYNTHETIC_CREDENTIAL_FIXTURE_PATH:
+        return text
+    replacement = SYNTHETIC_CREDENTIAL_FIXTURE_KEY + "=<synthetic-test-value>"
+    return SYNTHETIC_CREDENTIAL_FIXTURE.sub(replacement, text)
 
 
 def _mask_strict_json_pointers(
@@ -694,6 +712,7 @@ def scan_blob(
 
     for number, original_line in enumerate(text.splitlines(), 1):
         masked_line = _mask_approved_emails(original_line, approved_public_emails)
+        masked_line = _mask_known_synthetic_credential_fixture(path, masked_line)
         scanned = _scan_release_line(
             masked_line,
             allowed_pointer_values=pointer_values.get(number, set()),

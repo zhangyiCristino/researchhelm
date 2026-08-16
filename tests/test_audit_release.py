@@ -166,6 +166,41 @@ class AuditReleaseRedTests(unittest.TestCase):
                 "content-free result leaked protected material",
             )
 
+    def test_known_synthetic_credential_fixture_is_path_scoped(self):
+        module = load_module(self)
+        synthetic = "API_" + "KEY=super-secret-value-do-not-leak"
+        source = f'secret.write_text("{synthetic}", encoding="utf-8")\n'
+
+        fixture_findings = module.scan_blob(
+            "tests/test_credential_scan.py",
+            source.encode("utf-8"),
+            "history",
+        )
+        ordinary_findings = module.scan_blob(
+            "tests/other_test.py",
+            source.encode("utf-8"),
+            "history",
+        )
+        real_value = "API_" + "KEY=real-looking-secret-value-12345"
+        real_findings = module.scan_blob(
+            "tests/test_credential_scan.py",
+            real_value.encode("utf-8"),
+            "history",
+        )
+
+        self.assertNotIn(
+            "credential.generic_assignment",
+            {item.code for item in fixture_findings},
+        )
+        self.assertIn(
+            "credential.generic_assignment",
+            {item.code for item in ordinary_findings},
+        )
+        self.assertIn(
+            "credential.generic_assignment",
+            {item.code for item in real_findings},
+        )
+
     def test_private_author_email_is_blocked_without_echo(self):
         module = load_module(self)
         private_email = "private-person" + "@example.test"
