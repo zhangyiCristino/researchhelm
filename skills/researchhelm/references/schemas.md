@@ -29,6 +29,12 @@ The mode enum is `pi|scout|optimize`. The lifecycle stage enum is:
 Skill recommendation is a sidecar and is never a lifecycle stage. Human
 decision values are `approve|revise|reject|defer`.
 
+Model tier values are `light|balanced|frontier`. Model routing is a sidecar
+concern and is never a lifecycle stage. A tier escalation is recorded as a
+decision event whose `decision` is `escalate` and which additionally contains
+`from_tier`, `to_tier`, and a `trigger` string; escalation raises the tier and
+never lowers it.
+
 ## Field sensitivity and public projection
 
 Every JSON document object and every JSONL record contains a
@@ -64,6 +70,19 @@ The `record_type` is `research-brief`. Required fields are `schema_version`,
 contains exactly `provider`, `capability`, and `credential_available`, where
 `credential_available` is a Boolean. It never contains an environment-variable
 name, credential value, credential location, or account identifier.
+
+If present, `resources.model_tiers` maps the tier names `light`, `balanced`, and
+`frontier` to non-empty model identifier strings. Model identifiers are public
+structural values; they are never credential-derived and never account
+identifiers.
+
+If present, `model_selection` records the approved model tier for the current
+stage. It contains `stage`, `recommended_tier`, `approved_tier`, `model`,
+`score`, `floor`, `rationale`, and `approval_hash`. Tier values are restricted
+to `light|balanced|frontier`. `score` is an integer from 0 to 60 and
+`approval_hash` is a SHA-256 digest matching the approving decision event.
+An `approved_tier` below the stage floor recorded in
+[Model Routing](model-routing.md) fails closed.
 
 `constraints.commands` is an array of objects containing a non-empty `template`
 and an optional string `description`; it never stores captured command-line
@@ -130,6 +149,11 @@ decision enum. `metrics` is an object. When `status` is `crash`, `metrics`
 explicitly contains `primary` and its value is JSON `null`, not a number,
 numeric sentinel, or omitted field.
 
+When model routing is used, each record also contains `model_tier` and `model`.
+`model_tier` is restricted to `light|balanced|frontier`. `model` is a non-empty
+string. Both are structural public values and are never credentials or account
+identifiers.
+
 An optional `environment` record contains only `dependencies`, `runtime`,
 `drivers`, and `hardware_class`. It may record public dependency, runtime and
 driver versions and a public hardware class. It excludes full environment
@@ -159,7 +183,9 @@ The validator returns content-free findings. Required stable codes are
 `hash.invalid_sha256`, `json.malformed`, `approval.input_hash_mismatch`,
 `decision.hash_chain_broken`, `decision.event_hash_mismatch`,
 `experiment.crash_metric_must_be_null`, `recommendation.approval_missing`,
-`recommendation.approval_binding_mismatch`, `resume.hash_mismatch`, and
+`recommendation.approval_binding_mismatch`, `resume.hash_mismatch`,
+`model.invalid_tier`, `model.floor_violation`,
+`model.escalation_lowers_tier`, and
 `artifact.path_escapes_run` and unsafe artifact identifiers as
 `artifact.invalid_id`. Credential content is reported as
 `security.high_confidence_content`; personal-machine content retains its

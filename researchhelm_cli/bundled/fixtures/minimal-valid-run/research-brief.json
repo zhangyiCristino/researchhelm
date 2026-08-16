@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "record_type": "research-brief",
+  "run_id": "minimal-valid-run",
+  "mode": "pi",
+  "stage": "BUILD",
+  "created_at": "2026-07-14T00:00:00Z",
+  "updated_at": "2026-07-14T00:02:00Z",
+  "stage_input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "resources": {
+    "compute": {
+      "cpu": "public-standard",
+      "accelerator": "none",
+      "ram_gb": 16,
+      "storage_gb": 10
+    },
+    "apis": [
+      {
+        "provider": "none",
+        "capability": "none",
+        "credential_available": false
+      }
+    ]
+  },
+  "constraints": {
+    "wall_time_seconds": 3600,
+    "monetary_budget": 0,
+    "allowed_scope": [
+      "src/"
+    ],
+    "forbidden_scope": [
+      "tests/"
+    ],
+    "commands": [
+      {
+        "template": "py -m unittest"
+      }
+    ]
+  },
+  "network_status": {
+    "available": false,
+    "approved_for_project_private_data": false
+  },
+  "resume": {
+    "enabled": true,
+    "expected": {
+      "state_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "branch": "codex/human-guided-autoresearch-v2",
+      "code_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "data_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "config_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "environment_hash": "1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    "actual": {
+      "state_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "branch": "codex/human-guided-autoresearch-v2",
+      "code_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "data_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "config_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "environment_hash": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  },
+  "public_summary": "A synthetic public research-state summary.",
+  "private_question": "How should the synthetic validator contract be tested?",
+  "field_sensitivity": {
+    "/resources/compute/cpu": "public",
+    "/resources/compute/accelerator": "public",
+    "/resources/apis/0/provider": "public",
+    "/resources/apis/0/capability": "public",
+    "/constraints/allowed_scope/0": "public",
+    "/constraints/forbidden_scope/0": "public",
+    "/constraints/commands/0/template": "public",
+    "/resume/expected/branch": "public",
+    "/resume/actual/branch": "public",
+    "/public_summary": "public",
+    "/private_question": "project-private"
+  }
+}

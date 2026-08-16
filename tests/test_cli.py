@@ -1,3 +1,4 @@
+import json
 import subprocess
 import sys
 import tempfile
@@ -57,6 +58,63 @@ class CliDispatchTests(unittest.TestCase):
             ),
         )
 
+    def test_init_scaffolds_valid_run(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "demo-run"
+            self.assertEqual(0, main(["init", str(target), "--run-id", "demo-run"]))
+            self.assertTrue((target / "research-brief.json").is_file())
+            brief = json.loads((target / "research-brief.json").read_text(encoding="utf-8"))
+            self.assertEqual("demo-run", brief["run_id"])
+            self.assertEqual(0, main(["validate", str(target)]))
+
+    def test_init_refuses_nonempty(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "busy"
+            target.mkdir()
+            (target / "x.txt").write_text("x", encoding="utf-8")
+            self.assertEqual(1, main(["init", str(target)]))
+
+    def test_doctor_returns_zero(self):
+        self.assertEqual(0, main(["doctor"]))
+
+    def test_scan_credentials_clean_tree(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)
+            (path / "readme.txt").write_text("ok", encoding="utf-8")
+            self.assertEqual(0, main(["scan-credentials", str(path)]))
+
+    def test_scan_credentials_flags_forbidden_name(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)
+            (path / ".env").write_text("x=1", encoding="utf-8")
+            self.assertEqual(1, main(["scan-credentials", str(path)]))
+
+    def test_recommend_model_gate_4_frontier(self):
+        result = main([
+            "recommend-model",
+            "--stage", "GATE_4_CLAIMS",
+            "--novelty", "2",
+            "--ambiguity", "3",
+            "--scope", "1",
+            "--risk", "5",
+            "--reversibility", "5",
+            "--safety", "5",
+        ])
+        self.assertEqual(0, result)
+
+    def test_recommend_model_build_balanced(self):
+        result = main([
+            "recommend-model",
+            "--stage", "BUILD",
+            "--novelty", "5",
+            "--ambiguity", "4",
+            "--scope", "5",
+            "--risk", "4",
+            "--reversibility", "5",
+            "--safety", "3",
+        ])
+        self.assertEqual(0, result)
+
     def test_python_dash_m_help(self):
         proc = subprocess.run(
             [sys.executable, "-m", "researchhelm_cli", "--help"],
@@ -65,7 +123,26 @@ class CliDispatchTests(unittest.TestCase):
             capture_output=True,
         )
         self.assertEqual(0, proc.returncode)
-        self.assertIn("researchhelm — ResearchHelm protocol toolchain", proc.stdout)
+        self.assertIn("ResearchHelm protocol toolchain", proc.stdout)
+        self.assertIn("init", proc.stdout)
+        self.assertIn("doctor", proc.stdout)
+
+
+class BundledScriptsTests(unittest.TestCase):
+    def test_bundled_scripts_match_canonical_when_present(self):
+        canonical = ROOT / "skills" / "researchhelm" / "scripts"
+        bundled = ROOT / "researchhelm_cli" / "bundled" / "scripts"
+        names = sorted(p.name for p in canonical.glob("*.py"))
+        self.assertTrue(names)
+        for name in names:
+            left = (canonical / name).read_bytes()
+            right = (bundled / name).read_bytes()
+            self.assertEqual(left, right, name)
+
+    def test_bundled_root_helpers_present(self):
+        root = ROOT / "researchhelm_cli" / "bundled" / "root"
+        for name in ("quick_verify.py", "native_preflight.py", "credential_scan.py"):
+            self.assertTrue((root / name).is_file(), name)
 
 
 if __name__ == "__main__":

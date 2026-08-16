@@ -5,7 +5,7 @@ states what is done, what is next, and how new ideas get in. It is a plan, not
 a promise: every item ships only when it passes the release gates (CI,
 Security audit, release auditor) and keeps the human-governed boundary intact.
 
-## Delivered (2026-07 snapshot)
+## Delivered (2026-08 snapshot)
 
 - Deterministic state and validation (`validate_state.py`)
 - Privacy and publication boundary (local Cockpit is private and untracked;
@@ -16,14 +16,22 @@ Security audit, release auditor) and keeps the human-governed boundary intact.
   identifiers
 - Sanitized one-GPU public walkthrough with 18 frozen runs on UCI Covertype
   (`demo/one-gpu-public/`)
+- Offline robot PD-tuning walkthrough with SVG visuals
+  (`demo/robot-pd-tuning/`)
 - Release audit (`audit_release.py`) and CI across Python 3.9/3.11/3.13 on
   Linux and Windows
+- Pip-installable CLI with bundled scripts (`researchhelm` package) including
+  `init`, `doctor`, `scan-credentials`, and the protocol subcommands
+- Independent worktree credential **filename** scanner
+  (`scripts/credential_scan.py`) — content-free findings only
+- Native-tested verification protocol docs and preflight (label still requires
+  a real client evidence report)
 
 ## Next release gates (declared in SECURITY.md / TESTING.md)
 
 - Reachable-history sanitization for public exports
-- Exact release-archive scanning
-- Independent credential scanner
+- Exact release-archive scanning (beyond current archive scope helpers)
+- Broader independent credential **content** scanning (not only filenames)
 - Remote publication of run artifacts
 
 ## Community directions (candidate, not committed)

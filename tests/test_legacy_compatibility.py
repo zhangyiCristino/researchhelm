@@ -35,8 +35,8 @@ class LegacyCompatibilityTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
-        self.assertEqual("3.1.0", plugin["version"])
-        self.assertEqual("3.1.0", market["plugins"][0]["version"])
+        self.assertEqual("3.2.0", plugin["version"])
+        self.assertEqual("3.2.0", market["plugins"][0]["version"])
 
     def test_every_readme_documents_the_legacy_identity_migration(self):
         commands = (

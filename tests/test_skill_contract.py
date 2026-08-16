@@ -61,6 +61,25 @@ class SkillContractTests(unittest.TestCase):
         ):
             self.assertIn(phrase, self.text)
 
+    def test_model_routing_is_human_gated_with_binding_floors(self):
+        for phrase in (
+            "[Model Routing](references/model-routing.md)",
+            "scripts/recommend_model.py",
+            "silence is not approval",
+            "never downgrade below the floor",
+            "require the frontier tier",
+            "Escalate the tier",
+        ):
+            self.assertIn(phrase, self.text)
+
+    def test_model_routing_does_not_bypass_gates(self):
+        routing = self.text.index("## Model Routing")
+        end = self.text.find("\n## ", routing + len("## Model Routing"))
+        section = self.text[routing:] if end == -1 else self.text[routing:end]
+        self.assertIn("human decision", section)
+        for forbidden in ("without approval", "skip the gate", "autonomous"):
+            self.assertNotIn(forbidden, section.lower())
+
     def test_main_skill_stays_progressive(self):
         self.assertLess(len(self.text.splitlines()), 500)
 

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "researchhelm"
-version = "3.1.0"
-description = "Human-governed research protocol toolchain: validate, render, audit, sanitize, compat, inspect"
+version = "3.2.0"
+description = "Human-governed research protocol toolchain: validate, render, audit, sanitize, init, doctor"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
@@ -27,8 +27,18 @@ dependencies = []
 [project.scripts]
 researchhelm = "researchhelm_cli:main"
 
+[project.urls]
+Homepage = "https://github.com/zhangyiCristino/researchhelm"
+Repository = "https://github.com/zhangyiCristino/researchhelm"
+Issues = "https://github.com/zhangyiCristino/researchhelm/issues"
+
 [tool.setuptools]
 packages = ["researchhelm_cli"]
 
 [tool.setuptools.package-data]
-researchhelm_cli = ["py.typed"]
+researchhelm_cli = [
+    "py.typed",
+    "bundled/scripts/*.py",
+    "bundled/root/*.py",
+    "bundled/fixtures/minimal-valid-run/*",
+]

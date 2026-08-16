@@ -80,6 +80,95 @@ class ValidateStateTests(unittest.TestCase):
         findings = module.validate_run(ROOT / "tests" / "fixtures" / "invalid-artifact-path")
         self.assertEqual(["artifact.path_escapes_run"], [item.code for item in findings])
 
+    def test_model_tier_mapping_validates(self):
+        module = load_module()
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            run_dir = self.copy_valid_run(temporary_directory)
+            brief_path = run_dir / "research-brief.json"
+            brief = json.loads(brief_path.read_text(encoding="utf-8"))
+
+            brief["resources"]["model_tiers"] = {
+                "light": "claude-haiku-4-5",
+                "balanced": "claude-sonnet-5",
+                "frontier": "claude-opus-5",
+            }
+            brief_path.write_text(
+                json.dumps(brief, ensure_ascii=False), encoding="utf-8"
+            )
+            findings = module.validate_run(run_dir)
+            self.assertNotIn(
+                "model.invalid_tier", [item.code for item in findings]
+            )
+
+            brief["resources"]["model_tiers"]["heavy"] = "model-x"
+            brief_path.write_text(
+                json.dumps(brief, ensure_ascii=False), encoding="utf-8"
+            )
+            findings = module.validate_run(run_dir)
+            self.assertIn("model.invalid_tier", [item.code for item in findings])
+
+    def test_model_selection_floor_is_enforced(self):
+        module = load_module()
+        approval_hash = "1234567890abcdef" * 4
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            run_dir = self.copy_valid_run(temporary_directory)
+            brief_path = run_dir / "research-brief.json"
+            brief = json.loads(brief_path.read_text(encoding="utf-8"))
+            brief["model_selection"] = {
+                "stage": "GATE_4_CLAIMS",
+                "recommended_tier": "balanced",
+                "approved_tier": "balanced",
+                "model": "claude-sonnet-5",
+                "score": 28,
+                "floor": "frontier",
+                "rationale": "floor violation probe",
+                "approval_hash": approval_hash,
+            }
+            brief["field_sensitivity"]["/model_selection/model"] = "public"
+            brief["field_sensitivity"]["/model_selection/rationale"] = "public"
+            brief_path.write_text(
+                json.dumps(brief, ensure_ascii=False), encoding="utf-8"
+            )
+            findings = module.validate_run(run_dir)
+            self.assertIn(
+                "model.floor_violation", [item.code for item in findings]
+            )
+
+            brief["model_selection"]["approved_tier"] = "frontier"
+            brief["model_selection"]["model"] = "claude-opus-5"
+            brief_path.write_text(
+                json.dumps(brief, ensure_ascii=False), encoding="utf-8"
+            )
+            findings = module.validate_run(run_dir)
+            self.assertNotIn(
+                "model.floor_violation", [item.code for item in findings]
+            )
+
+    def test_model_selection_rejects_invalid_tier_and_score(self):
+        module = load_module()
+        approval_hash = "abcdef1234567890" * 4
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            run_dir = self.copy_valid_run(temporary_directory)
+            brief_path = run_dir / "research-brief.json"
+            brief = json.loads(brief_path.read_text(encoding="utf-8"))
+            brief["model_selection"] = {
+                "stage": "BUILD",
+                "recommended_tier": "turbo",
+                "approved_tier": "turbo",
+                "model": "claude-sonnet-5",
+                "score": 99,
+                "floor": None,
+                "rationale": "invalid tier probe",
+                "approval_hash": approval_hash,
+            }
+            brief["field_sensitivity"]["/model_selection/model"] = "public"
+            brief["field_sensitivity"]["/model_selection/rationale"] = "public"
+            brief_path.write_text(
+                json.dumps(brief, ensure_ascii=False), encoding="utf-8"
+            )
+            findings = module.validate_run(run_dir)
+            self.assertIn("model.invalid_tier", [item.code for item in findings])
+
     def test_artifact_id_must_be_a_safe_single_segment(self):
         module = load_module()
         unsafe_ids = (

@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "record_type": "idea-candidates",
+  "candidates": [
+    {
+      "candidate_id": "idea-001",
+      "hypothesis": "A validated recorder makes later derived views safer.",
+      "mechanism": "Canonical hashes and exact approval bindings detect drift.",
+      "nearest_work": [
+        {
+          "evidence_id": "evidence-001"
+        }
+      ],
+      "overlap": {
+        "question": "partial",
+        "method": "partial",
+        "data": "none",
+        "evaluation": "partial",
+        "claimed_contribution": "none"
+      },
+      "differentiating_claim": "The contract binds gates, resume state, and governed skills.",
+      "minimum_falsification_experiment": "Run the validator against one valid and seven invalid fixtures.",
+      "resource_estimate": {
+        "low": {
+          "wall_time_seconds": 1
+        },
+        "expected": {
+          "wall_time_seconds": 2
+        },
+        "high": {
+          "wall_time_seconds": 5
+        }
+      },
+      "scores": {
+        "information_gain": 5,
+        "feasibility": 5,
+        "impact": 4,
+        "evidence_quality": 4,
+        "compute_fit": 5,
+        "risk": 1
+      },
+      "risks": [
+        "Schema drift"
+      ],
+      "pivots": [
+        "Revise the schema version"
+      ],
+      "status": "differentiated"
+    }
+  ],
+  "field_sensitivity": {
+    "/candidates/0/hypothesis": "public",
+    "/candidates/0/mechanism": "public",
+    "/candidates/0/overlap/question": "public",
+    "/candidates/0/overlap/method": "public",
+    "/candidates/0/overlap/data": "public",
+    "/candidates/0/overlap/evaluation": "public",
+    "/candidates/0/overlap/claimed_contribution": "public",
+    "/candidates/0/differentiating_claim": "public",
+    "/candidates/0/minimum_falsification_experiment": "public",
+    "/candidates/0/risks/0": "public",
+    "/candidates/0/pivots/0": "public"
+  }
+}

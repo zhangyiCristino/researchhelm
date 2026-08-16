@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "record_type": "claim-evidence",
+  "claims": [
+    {
+      "claim_id": "claim-001",
+      "text": "The synthetic valid run satisfies the recorder contract.",
+      "status": "supported",
+      "run_ids": [
+        "minimal-valid-run"
+      ],
+      "artifact_ids": [
+        "artifact-001"
+      ],
+      "citations": [
+        "evidence-001"
+      ],
+      "caveats": [
+        "Synthetic fixture only"
+      ],
+      "counter_evidence": []
+    }
+  ],
+  "field_sensitivity": {
+    "/claims/0/text": "public",
+    "/claims/0/citations/0": "public",
+    "/claims/0/caveats/0": "public"
+  }
+}

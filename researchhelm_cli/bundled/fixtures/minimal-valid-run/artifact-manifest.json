@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "record_type": "artifact-manifest",
+  "artifacts": [
+    {
+      "artifact_id": "artifact-001",
+      "path": "artifacts/result.json",
+      "kind": "result",
+      "sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "producing_run": "minimal-valid-run",
+      "frozen": true
+    }
+  ],
+  "field_sensitivity": {
+    "/artifacts/0/path": "public",
+    "/artifacts/0/kind": "public"
+  }
+}

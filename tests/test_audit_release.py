@@ -930,6 +930,7 @@ class AuditReleaseRedTests(unittest.TestCase):
                 "## Reporting a Vulnerability",
                 "## Incident Response",
                 "## Security Claims",
+                "## Independent filename credential scan",
             ],
             headings,
         )

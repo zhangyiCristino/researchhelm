@@ -27,3 +27,12 @@ If sensitive content entered Git history, history cleanup and any force update r
 ## Security Claims
 
 Public statements may name a dated check, its version, scope, result, and limitation. They must not claim absolute security, zero risk, or protection beyond the evidence actually produced. A passing deterministic test is not a substitute for reachable-history, release-archive, independent scanner, client-runtime, or deployment evidence.
+
+## Independent filename credential scan
+
+Maintainers and contributors may run `scripts/credential_scan.py` (or
+`researchhelm scan-credentials <path>`) to flag forbidden credential-like
+filenames and path segments in a worktree. Findings are content-free: codes and
+paths only. This helper does not claim complete secret detection, does not scan
+Git history by itself, and does not replace `audit_release.py` history/archive
+scopes or human review before publication.

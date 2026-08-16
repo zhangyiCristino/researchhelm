@@ -45,6 +45,8 @@ protocol scripts (standard library only):
 ```bash
 pip install -e .
 researchhelm --help
+researchhelm doctor
+researchhelm scan-credentials .
 researchhelm validate <run_dir>
 ```
 

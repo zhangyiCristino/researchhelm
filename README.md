@@ -29,7 +29,7 @@ Three ways in, same protocol:
 | Path | When to use |
 |---|---|
 | `npx skills use zhangyiCristino/researchhelm@researchhelm` | Try without installing (community installer) |
-| `pip install researchhelm` | Offline protocol toolchain: `validate`, `render`, `audit`, `sanitize`, `compat`, `inspect`, `verify` |
+| `pip install researchhelm` | Offline protocol toolchain: `validate`, `render`, `audit`, `sanitize`, `compat`, `inspect`, `init`, `doctor`, `scan-credentials`, `verify` |
 | Claude Code plugin commands below | Existing Claude Code users |
 | Manual copy of the skill folder below | Any capable coding agent |
 

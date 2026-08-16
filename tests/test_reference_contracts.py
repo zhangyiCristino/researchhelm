@@ -51,6 +51,17 @@ REQUIRED = {
         "## Approval",
         "## Untrusted Sources",
     ),
+    "model-routing.md": (
+        "# Model Routing",
+        "## Tier definitions",
+        "## Minimum tier floors",
+        "## Complexity scoring",
+        "## Decision Card integration",
+        "## Escalation triggers",
+        "## State recording",
+        "## Cost governance",
+        "## Honest Claims",
+    ),
     "privacy-security.md": (
         "# Credential, Privacy, and Publication Security",
         "## Global Precedence",
@@ -237,6 +248,48 @@ class ReferenceContractTests(unittest.TestCase):
         recommendation = read_reference("skill-recommendations.md")
         self.assertIn("repository-relative", recommendation)
         self.assertIn("inside the approved project root", recommendation)
+
+    def test_model_routing_contract(self):
+        assert_phrases(
+            self,
+            "model-routing.md",
+            (
+                "light", "balanced", "frontier",
+                "claude-haiku-4-5", "claude-sonnet-5", "claude-opus-5",
+                "resources.model_tiers", "novelty", "ambiguity", "scope",
+                "risk", "reversibility", "safety",
+                "recommend_model.py", "Decision Card",
+                "Exact decision requested", "Resource consequences",
+                "Failure modes", "Alternatives", "uncertainty",
+                "cannot be downgraded", "never downgrade below the floor",
+                "silence is never approval",
+                "non-reproducibility", "Verification failure",
+                "escalate", "model_selection", "experiment-ledger.jsonl",
+                "does not promise",
+            ),
+        )
+        routing = read_reference("model-routing.md")
+        self.assertIn("Gate 4", routing)
+        self.assertIn("Verifier", routing)
+        self.assertIn("frontier", routing)
+
+    def test_model_routing_floors_require_frontier_for_claim_audit(self):
+        routing = read_reference("model-routing.md")
+        floors = markdown_section_lines(routing, "## Minimum tier floors")
+        claim_rows = [
+            line for line in floors
+            if "Gate 4" in line or "Verifier" in line or "Anomalous" in line
+        ]
+        self.assertTrue(claim_rows, "no safety-critical floor rows found")
+        for row in claim_rows:
+            self.assertIn("frontier", row, row)
+
+
+def markdown_section_lines(text, heading):
+    start = text.index(heading)
+    end = text.find("\n## ", start + len(heading))
+    section = text[start:] if end == -1 else text[start:end]
+    return section.splitlines()
 
 
 if __name__ == "__main__":

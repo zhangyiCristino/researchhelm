@@ -10,7 +10,7 @@
       "name": "researchhelm",
       "source": "./",
       "description": "Use ResearchHelm to scout resource-feasible ideas, supervise Builder-Verifier experiments, and audit claims while preserving the legacy optimize loop.",
-      "version": "3.1.0",
+      "version": "3.2.0",
       "license": "MIT"
     }
   ]
